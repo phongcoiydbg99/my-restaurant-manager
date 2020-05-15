@@ -117,8 +117,7 @@ export default ({ navigation }) => {
         username: username ,
         password: password ,
       };
-      // navigation.navigate("Home", {screen: user: user});
-      console.log(user);
+      signUp(user);
     } else alert("Sai");
   };
 
