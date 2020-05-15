@@ -55,7 +55,7 @@ const QuanLyBanStackScreen = () => (
 const QuanLyMenuStack = createStackNavigator();
 const QuanLyMenuStackScreen = () => (
   <QuanLyMenuStack.Navigator>
-    <QuanLyMenuStack.Screen name="QuanLyMenu" component={QuanLyBan} />
+    <QuanLyMenuStack.Screen name="QuanLyMenu" component={QuanLyMenu} />
   </QuanLyMenuStack.Navigator>
 );
 
