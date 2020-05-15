@@ -1,14 +1,31 @@
 import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  ImageBackground,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
 import { AuthContext } from "../context/context";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons"; 
-import { MaterialIcons } from "@expo/vector-icons"; 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Splash } from '../components/Splash';
+import { Splash } from "../components/Splash";
 
 import DangNhap from "../screens/dang_nhap";
 import DangKi from "../screens/dang_ky";
@@ -18,6 +35,9 @@ import QuanLyMenu from "../screens/quan_ly_menu";
 import ThongKe from "../screens/thong_ke";
 import HoaDon from "../screens/hoa_don";
 import ThongTin from "../screens/thong_tin";
+import Logo from "../assets/gb2.png";
+import BackAv from "../assets/Backgr-Login.jpg";
+import Avatar from "../assets/avatar.jpg";
 
 const QuanLyBanStack = createStackNavigator();
 const QuanLyBanStackScreen = () => (
@@ -50,7 +70,6 @@ const HoaDonStack = createStackNavigator();
 const HoaDonStackScreen = () => (
   <HoaDonStack.Navigator>
     <HoaDonStack.Screen name="HoaDon" component={HoaDon} />
-    
   </HoaDonStack.Navigator>
 );
 
@@ -94,7 +113,7 @@ const AppTabsScreen = () => (
       }}
     />
     <AppTabs.Screen
-      name="ThongKe"
+      name="Statistical"
       component={ThongKeStackScreen}
       options={{
         tabBarLabel: "ThongKe",
@@ -143,52 +162,107 @@ const AuthStackScreen = () => (
     />
   </AuthStack.Navigator>
 );
-
+const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      <ImageBackground source={BackAv} style={styles.container}>
+        <View style={styles.overlayContainer}>
+          <Image source={Avatar} style={styles.avatar}></Image>
+          <Text style={styles.text}>Name</Text>
+        </View>
+      </ImageBackground>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
+  );
+};
 const AppDrawer = createDrawerNavigator();
-const AppDrawerScreen = () => (
-  <AppDrawer.Navigator >
-    <AppDrawer.Screen name="Home" component={AppTabsScreen} />
-    <AppDrawer.Screen name="Profile" component={ThongTinStackScreen} />
-  </AppDrawer.Navigator>
+const AppDrawerScreen = () => {
+  return (
+    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props} /> }>
+      <AppDrawer.Screen name="Home" component={AppTabsScreen} />
+      <AppDrawer.Screen name="Profile" component={ThongTinStackScreen} />
+    </AppDrawer.Navigator>
+  );
+};
+
+const RootStack = createStackNavigator();
+const RootStackScreen = () => (
+  <RootStack.Navigator
+    headerMode="none"
+    screenOptions={{ animationEnabled: false }}
+    mode="modal"
+    initialRouteName="AuthStackScreen"
+  >
+    <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
+    <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen} />
+  </RootStack.Navigator>
 );
 
 export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-
   const authContext = React.useMemo(() => {
     return {
       signIn: () => {
         setIsLoading(false);
         setUserToken("asdf");
       },
-      signUp: () => {
+      signUp: (u) => {
         setIsLoading(false);
         setUserToken("asdf");
       },
       signOut: () => {
         setIsLoading(false);
         setUserToken(null);
-      }
+      },
     };
-  }, [])
+  }, []);
 
   React.useEffect(() => {
-    setTimeout(
-      () => {
-        setIsLoading(false);
-      }, 1000)
-  },[])
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   if (isLoading) {
-    return <Splash/>
+    return <Splash />;
   }
-
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {!userToken ? <AuthStackScreen /> : <AppDrawerScreen />}
+        {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+        {/* <AppDrawerScreen /> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: 150,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  overlayContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(85,85,85,0.7)",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 10,
+    borderColor: "rgba(255,255,255,0.7)",
+  },
+  text: {
+    color: "rgba(255,255,255,1)",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});
