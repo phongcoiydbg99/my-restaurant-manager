@@ -13,7 +13,7 @@ import {
 export default Bill = () => {
   return (
     <View>
-      <Text>hoa_don.js</Text>
+      <Text>hoa_don.jsrtyrtyrtyrty</Text>
     </View>
   );
 };
