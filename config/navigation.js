@@ -49,7 +49,7 @@ const ThongKeStackScreen = () => (
 const HoaDonStack = createStackNavigator();
 const HoaDonStackScreen = () => (
   <HoaDonStack.Navigator>
-    <HoaDonStack.Screen name="HoaDon" component={QuanLyBan} />
+    <HoaDonStack.Screen name="HoaDon" component={HoaDon} />
   </HoaDonStack.Navigator>
 );
 
