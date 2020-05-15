@@ -1,6 +1,13 @@
 import React from 'react';
-import { Button } from 'react-native';
-
-export default ({ navigation }) => (
-  <Button title="Drawer" onPress={() => navigation.toggleDrawer()} />
-);
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  ImageBackground,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+export default () => (null);

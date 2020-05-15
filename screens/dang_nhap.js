@@ -13,7 +13,7 @@ import {
 
 import { AuthContext } from "../context/context";
 import Background from "../assets/Backgr-Login.jpg";
-import Logo from "../assets/gb1.png";
+import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(85,85,85,0.5)",
   },
   logoContainer: {
-    top: -80,
+    top: -50,
   },
   inputContainer: {
     marginBottom: 20,
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 150,
+    height: 200,
   },
   input: {
     width: WIDTH - 55,
