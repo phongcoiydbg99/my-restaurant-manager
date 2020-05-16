@@ -10,8 +10,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  SafeAreaView,
 } from "react-native";
+import backGroundApp from "../assets/Backgr-app.png";
 const { width: WIDTH} = Dimensions.get('window');
 const styles = StyleSheet.create({
     btn: {
@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "rgba(255,102,0,1)",
-        borderRadius: 20,
-     
+        borderRadius: 20,     
       },
     text: {
         color: "rgba(255,255,255,1)",
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: 20,
+         borderRadius: 20,
         shadowColor: "#000",
         shadowOffset: {
 	        width: 0,
@@ -67,10 +66,21 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.36,
       shadowRadius: 6.68,     
       //elevation: 11,
-    } 
+    },
+    container: {
+      flex: 1,
+      width: "100%",
+      height: "100%",
+    },
+    overlayContainer: {
+      flex: 1,
+      backgroundColor: "#313131",
+      opacity: 0.945,
+    }, 
 })
 export default Table = () => (
-  <View>
+  <ImageBackground source = {backGroundApp} style={styles.container}>
+    <View style = {styles.overlayContainer}>
     <View style ={styles.fixToText}>
     <TouchableOpacity style={styles.btn} onPress={() => Alert.alert('Menu chinh')}>
           <Text style={styles.text}>MainCourses</Text>
@@ -82,8 +92,8 @@ export default Table = () => (
           <Text style={styles.text}>Drink</Text>
       </TouchableOpacity>
       </View>
-    <View>
-
     </View>
+    <View>
   </View>
+  </ImageBackground>
 );
