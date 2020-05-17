@@ -13,7 +13,7 @@ import {
 import Background from "../assets/Backgr-app.png";
 import { overlay } from "react-native-paper";
 
-export default Bill = () => {
+export default () => {
   return (
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>

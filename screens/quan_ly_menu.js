@@ -12,6 +12,8 @@ import {
   Alert,
 } from "react-native";
 import backGroundApp from "../assets/Backgr-app.png";
+import TabMenu from "../config/tabMenu";
+
 const { width: WIDTH} = Dimensions.get('window');
 const styles = StyleSheet.create({
     btn: {
@@ -78,22 +80,23 @@ const styles = StyleSheet.create({
       opacity: 0.945,
     }, 
 })
-export default Table = () => (
-  <ImageBackground source = {backGroundApp} style={styles.container}>
-    <View style = {styles.overlayContainer}>
-    <View style ={styles.fixToText}>
-    <TouchableOpacity style={styles.btn} onPress={() => Alert.alert('Menu chinh')}>
-          <Text style={styles.text}>MainCourses</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btn1 } onPress={() => Alert.alert('Diem Tam')}>
-          <Text style={styles.text}>Desert</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btn2} onPress={() => Alert.alert('do uong')}>
-          <Text style={styles.text}>Drink</Text>
-      </TouchableOpacity>
-      </View>
-    </View>
-    <View>
-  </View>
-  </ImageBackground>
+export default () => (
+  // <ImageBackground source={backGroundApp} style={styles.container}>
+  //   <View style={styles.overlayContainer}>
+  //     <View style ={styles.fixToText}>
+  //   <TouchableOpacity style={styles.btn} onPress={() => Alert.alert('Menu chinh')}>
+  //         <Text style={styles.text}>MainCourses</Text>
+  //     </TouchableOpacity>
+  //     <TouchableOpacity style={styles.btn1 } onPress={() => Alert.alert('Diem Tam')}>
+  //         <Text style={styles.text}>Desert</Text>
+  //     </TouchableOpacity>
+  //     <TouchableOpacity style={styles.btn2} onPress={() => Alert.alert('do uong')}>
+  //         <Text style={styles.text}>Drink</Text>
+  //     </TouchableOpacity>
+  //     </View>
+  //   </View>
+  //   <View>
+  //   </View>
+  //  </ImageBackground>
+  <TabMenu/>
 );

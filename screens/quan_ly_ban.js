@@ -10,8 +10,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-export default Table = () => (
+import TabMenu from '../config/tabMenu';
+export default () => (
   <View>
-    <Text>quan_ly_ban.js</Text>
+    <Text>Bàn</Text>
   </View>
 );
