@@ -1304,6 +1304,11 @@
     lodash "^4.5.0"
     prop-types "^15.6.1"
 
+"@use-expo/font@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@use-expo/font/-/font-2.0.0.tgz#09b56d626e5b0c83cd0116f5bb69ad6d612d677f"
+  integrity sha512-oOJ2uaRyZNQg7PnQviz7nBcdrRL38zxScab4ktgtI4asa6G0dHW9wg307uJJmn0sHS04Yqtw+m0EOjDcGw3iWg==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
@@ -2421,10 +2426,10 @@ expo-web-browser@~8.2.1:
   dependencies:
     compare-urls "^2.0.0"
 
-expo@~37.0.3:
-  version "37.0.10"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-37.0.10.tgz#2aa3b2286a5ce0e40584298c61d807a347591c59"
-  integrity sha512-QffyIdYR8sPD9u/ouaft/vtLXeEOhtC7/vVwg/gdEWLeK7RXYfQPLI2Iaa265Vz6Lfv9x2LlmO5PrNc8sD+A7w==
+expo@^37.0.11:
+  version "37.0.11"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-37.0.11.tgz#f7e1838941d40ea5ccb6ab01301f103ddee5ffe7"
+  integrity sha512-O9rpK/tgProp8E1IkmxcAut0zySNVOfpb8+hzYsOUegFO3r7m8H4kYFXZULTwekMSAmnBxX0+qmzELRxlmKxHQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
     "@expo/vector-icons" "^10.0.2"
@@ -4308,7 +4313,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -4435,6 +4440,13 @@ react-native-screens@~2.2.0:
   integrity sha512-a0VzxOWot7F9B/GQyDSssBRd3jUJazFnTQS61IiyReWB6aHlFhf3Xz10jBRoURXy1EMCDCHgenmTVTkKHpKyqQ==
   dependencies:
     debounce "^1.2.0"
+
+react-native-search-bar@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-search-bar/-/react-native-search-bar-3.5.1.tgz#b05e12ecbe747e0fa43d19084b06db006f7b8097"
+  integrity sha512-L+y2gQZstApb2DavE8se6Mzj3CgxZiHxM0DezAdT4kb6+kV4+WeTN8jPxvrP6zgwbGcjuYKaHrASKnBmhuWmhA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-tab-view@^2.14.0:
   version "2.14.0"

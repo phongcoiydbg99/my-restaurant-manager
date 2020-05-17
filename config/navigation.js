@@ -69,7 +69,28 @@ const ThongKeStackScreen = () => (
 const HoaDonStack = createStackNavigator();
 const HoaDonStackScreen = () => (
   <HoaDonStack.Navigator>
-    <HoaDonStack.Screen name="HoaDon" component={HoaDon} />
+    <HoaDonStack.Screen
+      name="HoaDon"
+      component={HoaDon} 
+      options={{
+        headerTitle: false,
+        headerTransparent: true,
+        headerStyle: {
+          height: 80,
+          opacity: .9,
+        },
+        //headerStatusBarHeight: 20,
+        headerRight: 
+          props => (<LogoTitle {...props} />
+          )
+        ,
+        headerBackground: () =>(
+          <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#373534', opacity: .9, borderWidth: 1, borderColor: '#707070'}}>
+            <Text style={{color: '#ffffff', fontSize: 20, marginTop: 35, marginBottom: 15, marginLeft: 12, fontWeight: 'bold',}}>GB Restaurant</Text>
+          </View>
+        ),
+      }}
+    />
   </HoaDonStack.Navigator>
 );
 
@@ -266,3 +287,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+
+function LogoTitle() {
+  return (
+    <Image
+      style={{ width: 50, height: 50, marginRight: 12,}}
+      source={require('../assets/gb1.png')}
+    />
+  );
+}
