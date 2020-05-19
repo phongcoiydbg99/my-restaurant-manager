@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { AuthContext } from "../context/context";
-import Background from "../assets/Backgr-app.png";
+import Background from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     fontSize: 16,
     paddingLeft: 45,
-    backgroundColor: "rgba(255,255,255,0.7)",
+    backgroundColor: "rgba(255,255,255,0.9)",
     color: "rgba(0, 0, 0, 1)",
     marginHorizontal: 25,
   },
@@ -109,7 +109,6 @@ export default ({ navigation }) => {
         <View style={styles.logoContainer}>
           <Image source={Logo} style={styles.logo} />
         </View>
-
         <View style={styles.inputContainer}>
           <FontAwesome
             name="user-o"
