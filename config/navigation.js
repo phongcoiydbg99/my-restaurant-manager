@@ -275,8 +275,8 @@ export default () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {/* {!userToken ? <RootStackScreen /> : <AppDrawerScreen />} */}
-        <AppDrawerScreen />
+        {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+        {/* <AppDrawerScreen /> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
