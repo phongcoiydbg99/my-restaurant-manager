@@ -46,7 +46,41 @@ const QuanLyBanStackScreen = () => (
       name="QuanLyBan"
       component={QuanLyBan}
       options={{
-        headerTitle: "Tables",
+        headerTitle: false,
+        headerTransparent: true,
+        headerStyle: {
+          height: 80,
+          opacity: 0.9,
+        },
+        //headerStatusBarHeight: 20,
+        headerRight: (props) => <LogoTitle {...props} />,
+        headerBackground: () => (
+          // <ImageBackground source={BackAv} style={styles.container1}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              backgroundColor: "#373534",
+              opacity: 0.7,
+              borderWidth: 1,
+              borderColor: "#707070",
+            }}
+          >
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 20,
+                marginTop: 35,
+                marginBottom: 15,
+                marginLeft: 12,
+                fontWeight: "bold",
+              }}
+            >
+              GB Restaurant
+            </Text>
+          </View>
+          // </ImageBackground>
+        ),
       }}
     />
   </QuanLyBanStack.Navigator>
