@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { AuthContext } from "../context/context";
-import Background from "../assets/Backgr-Login.jpg";
+import Background from "../assets/Backgr-app.png";
 import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
