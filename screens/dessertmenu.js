@@ -16,9 +16,9 @@ export default () => (
     <ImageBackground
     source = {Background} style ={styles.container}
     >
-      <View
-      style = {styles.overlayContainer}
-      ></View>
+      <View style = {styles.overlayContainer}>
+        
+      </View>
     </ImageBackground>
 );
 const styles = StyleSheet.create({
