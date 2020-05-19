@@ -71,12 +71,12 @@ const QuanLyMenuStackScreen = () => (
         )
       ,
       headerBackground: () =>(
-        <ImageBackground source={BackAv} style={styles.container1}>
-        <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#373534', opacity: .9, borderWidth: 1, borderColor: '#707070'}}>
+        // <ImageBackground source={BackAv} style={styles.container1}>
+        <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#373534', opacity: .7, borderWidth: 1, borderColor: '#707070'}}>
 
           <Text style={{color: '#ffffff', fontSize: 20, marginTop: 35, marginBottom: 15, marginLeft: 12, fontWeight: 'bold',}}>GB Restaurant</Text>
         </View>
-        </ImageBackground>
+        // </ImageBackground>
       ),
     }}
     />

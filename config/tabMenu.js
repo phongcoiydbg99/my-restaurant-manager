@@ -23,10 +23,10 @@ export default () => {
   return (
       <Tab.Navigator
       tabBarOptions={{
-        //labelStyle: { fontSize: 12 },
+        labelStyle: { fontSize: 13, fontWeight: 'bold' },
         //tabStyle: { width: 100 },
         style: { 
-          //backgroundColor: '#FFFFFF' ,
+          backgroundColor: '#FFFFFF' ,
           marginTop: 80,
         },
         

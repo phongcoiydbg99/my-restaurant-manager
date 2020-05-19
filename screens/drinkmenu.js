@@ -10,8 +10,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import Background from "../assets/Backgr-Login.jpg";
 import { NavigationContainer } from "@react-navigation/native";
+import Background from "../assets/Backgr-Login.jpg";
 export default () => (
     <ImageBackground
     source = {Background} style ={styles.container}
