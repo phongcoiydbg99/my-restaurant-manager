@@ -55,31 +55,12 @@ const QuanLyBanStackScreen = () => (
         //headerStatusBarHeight: 20,
         headerRight: (props) => <LogoTitle {...props} />,
         headerBackground: () => (
-          // <ImageBackground source={BackAv} style={styles.container1}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              backgroundColor: "#373534",
-              opacity: 0.7,
-              borderWidth: 1,
-              borderColor: "#707070",
-            }}
-          >
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 20,
-                marginTop: 35,
-                marginBottom: 15,
-                marginLeft: 12,
-                fontWeight: "bold",
-              }}
-            >
-              GB Restaurant
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>
+              <Text style={styles.GBtype}>GB</Text>
+              <Text > Restaurant</Text>
             </Text>
           </View>
-          // </ImageBackground>
         ),
       }}
     />
@@ -105,12 +86,12 @@ const QuanLyMenuStackScreen = () => (
         )
       ,
       headerBackground: () =>(
-        // <ImageBackground source={BackAv} style={styles.container1}>
-        <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#373534', opacity: .7, borderWidth: 1, borderColor: '#707070'}}>
-
-          <Text style={{color: '#ffffff', fontSize: 20, marginTop: 35, marginBottom: 15, marginLeft: 12, fontWeight: 'bold',}}>GB Restaurant</Text>
-        </View>
-        // </ImageBackground>
+        <View style={styles.header}>
+            <Text style={styles.headerTitle}>
+              <Text style={styles.GBtype}>GB</Text>
+              <Text > Restaurant</Text>
+            </Text>
+          </View>
       ),
     }}
     />
@@ -143,8 +124,11 @@ const HoaDonStackScreen = () => (
           )
         ,
         headerBackground: () =>(
-          <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#373534', opacity: .9, borderWidth: 1, borderColor: '#707070'}}>
-            <Text style={{color: '#ffffff', fontSize: 20, marginTop: 35, marginBottom: 15, marginLeft: 12, fontWeight: 'bold',}}>GB Restaurant</Text>
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>
+              <Text style={styles.GBtype}>GB</Text>
+              <Text > Restaurant</Text>
+            </Text>
           </View>
         ),
       }}
@@ -351,6 +335,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  header: {
+    flex: 1, 
+    justifyContent: 'center', 
+    backgroundColor: '#373534', 
+    opacity: .7, 
+    borderWidth: 1, 
+    borderColor: '#707070',
+  },
+  headerTitle: {
+    color: '#ffffff', 
+    fontSize: 25, 
+    marginTop: 35, 
+    marginBottom: 15, 
+    marginLeft: 12, 
+    fontStyle: 'italic'
+  },
+  GBtype: {
+    fontWeight: 'bold',
   },
 });
 
