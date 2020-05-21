@@ -29,12 +29,6 @@ export default Bill = () => {
                 placeholderTextColor={'#000'}
                 />
 
-        {/* <FlatList
-          data={ListTables}
-          renderItem={({ item }) => <Table name={item.name} />}
-          keyExtractor={item=> '${item.id}'} 
-          /> */}
-
           <View style={styles.billContainer}>
             <View style={styles.billTitle}>
               <Text style={styles.textBillTitle}>GB Restaurant</Text>
@@ -45,7 +39,32 @@ export default Bill = () => {
             </View>
 
             <View style={styles.billContent}>
+              <View style={styles.billContentTitle}>
+                <View>
+                  <Text style={styles.billTable}>Name</Text>
+                </View>
+                <View>
+                  <Text style={styles.billTable}>Price</Text>
+                </View>
+                <View>
+                  <Text style={styles.billTable}>Amount</Text>
+                </View>
+                <View>
+                  <Text style={styles.billTable}>Total</Text>
+                </View>
+              </View>
 
+              <View style={{height: ((HIGHT - 280)/2),}}>
+                <FlatList
+                  data={ListOrder}
+                  renderItem={({ item }) => <Table item={item} />}
+                  keyExtractor={item=> '${item.id}'} 
+                />
+              </View>
+
+              <View style={styles.totalView}>
+                <Text style={{fontSize: 25, color: '#fff'}}>Total</Text>
+              </View>
             </View>
           </View>
       </View>
@@ -57,6 +76,35 @@ const ListTables = [{ id: 1, name: "Table1", },
                     { id: 2, name: "Table2", },
                     { id: 3, name: "Table3", },
                     { id: 4, name: "Table4", }
+                  ];
+            
+const ListOrder = [{id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 2, name: 'Salad', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+                  {id: 1, name: 'Chicken', price: '5', Amount: '01', Total: '5'},
+
                   ];
 
 const { width: WIDTH} = Dimensions.get('window');
@@ -71,16 +119,13 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    //backgroundColor: "#313131",
-    //opacity: .9,
     borderColor: "#707070",
     borderWidth: 1,
     marginTop: 80,
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   tableContainer: {
+    flexDirection:'row',
     paddingTop: 10, 
     backgroundColor: "#fff",
     borderWidth: 2, 
@@ -113,13 +158,20 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   billTitle: {
-    height: (HIGHT - 240)/8,
+    height: (HIGHT - 260)/8,
     borderBottomColor: 'rgba(243, 242, 242, 0.60)',
     borderBottomWidth: 3,
     
   },
   billContent: {
-
+    marginTop: 5,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  billContentTitle: {
+    flexDirection: 'row',
+    alignItems: "flex-start",
+    justifyContent: "space-between",
   },
   textBillTitle: {
     color: '#ffffff', 
@@ -130,26 +182,50 @@ const styles = StyleSheet.create({
   },
   textTableName: {
     position: "relative", 
-    flex: 1, textAlign: "left", 
-    marginTop: 10, 
+    flex: 1, 
+    textAlign: "left", 
+    marginTop: 5, 
     marginLeft: 30,
-    color: '#fff'
+    color: '#fff',
   },
   textMaHoaDon: {
     position:"relative", 
     flex: 1, 
     textAlign: 'right', 
-    marginTop: 10, 
+    marginTop: 5, 
     marginRight: 30,
     color: '#fff'
+  },
+  billTable: {
+    fontSize: 16, 
+    position: 'relative', 
+    textAlign:'center', 
+    width: (WIDTH-120)/4, 
+    color: '#fff',
+  },
+  totalView: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginTop: 40,
   },
 });
 
 
-function Table({ name }) {
-  return (
-    <View style={styles.tableContainer}>
-      <Text style={{fontSize: 32}}>{name}</Text>
+export const Table = ({ item }) => (
+    <View style={{flexDirection: 'row',}}>
+      <View>
+        <Text style={styles.billTable}>{item.name}</Text>
+      </View>
+      <View>
+        <Text style={styles.billTable}>{item.price}$</Text>
+      </View>
+      <View>
+        <Text style={styles.billTable}>{item.Amount}</Text>
+      </View>
+      <View>
+        <Text style={styles.billTable}>{item.Total}$</Text>
+      </View>
     </View>
-  );
-}
+
+);
