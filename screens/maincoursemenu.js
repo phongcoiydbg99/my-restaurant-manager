@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,23 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-export default () => (
-    <ImageBackground
-    source = {Background} style ={styles.container}
-    >
+export default class maincoursemenu extends Component {
+  
+   componentDidMount(){
+      console.log("Mounted");
+   }
+    render(){
+      return(
+        <ImageBackground
+       source = {Background} style ={styles.container}
+         >
       <View
       style = {styles.overlayContainer}
       ></View>
     </ImageBackground>
-);
+      )
+    }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
