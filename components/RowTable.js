@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RowTable = ({ item }) => (
-         <TouchableOpacity style={styles.container}>
+export const RowTable = ({ item , onPress}) => (
+         <TouchableOpacity style={styles.container} onPress={onPress}>
            <View style={styles.content}>
              <View>
                <Text style={styles.title}>{item.id}</Text>

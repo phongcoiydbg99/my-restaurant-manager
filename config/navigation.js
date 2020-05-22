@@ -114,23 +114,7 @@ const HoaDonStackScreen = () => (
       options={{
         headerTitle: false,
         headerTransparent: true,
-        headerStyle: {
-          height: 80,
-          opacity: .9,
-        },
-        //headerStatusBarHeight: 20,
-        headerRight: 
-          props => (<LogoTitle {...props} />
-          )
-        ,
-        headerBackground: () =>(
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-              <Text style={styles.GBtype}>GB</Text>
-              <Text > Restaurant</Text>
-            </Text>
-          </View>
-        ),
+       
       }}
     />
   </HoaDonStack.Navigator>
@@ -149,7 +133,7 @@ const AppTabsScreen = () => (
     <AppTabs.Screen
       name="Table"
       component={QuanLyBanStackScreen}
-      options={{
+      options={{  
         tabBarLabel: "Table",
         showLabel: false,
         tabBarIcon: (props) => (
