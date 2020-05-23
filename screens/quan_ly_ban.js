@@ -14,9 +14,7 @@ import {
 import TabTable from "../config/tabTable";
 import Background from "../assets/Backgr-Login.jpg";
 export default () => (
-  <ImageBackground source={Background} style={styles.container}>
     <TabTable />
-  </ImageBackground>
 );
 const styles = StyleSheet.create({
   container: {

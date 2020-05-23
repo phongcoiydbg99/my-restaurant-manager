@@ -11,27 +11,90 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ListTable from "../screens/list_table";
-import ListOrder from "../screens/list_order";
+import { createStackNavigator } from "@react-navigation/stack";
+import Table from "../screens/table";
+import EditTable from "../screens/edit_table";
 import Background from "../assets/Backgr-Login.jpg";
-const Tab = createMaterialTopTabNavigator();
+const Tab = createStackNavigator();
 
 export default () => {
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        labelStyle: { fontSize: 13, fontWeight: "bold" },
-        //tabStyle: { width: 100 },
-        style: {
-          backgroundColor: "#FFFFFF",
-          marginTop: 80,
-        },
-      }}
-    >
-      <Tab.Screen name="ListTable" component={ListTable} />
-      <Tab.Screen name="ListOrder" component={ListOrder} />
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Table"
+        component={Table}
+        options={{
+          // headerShown: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerStyle: {
+            height: 70,
+          },
+          //headerStatusBarHeight: 20,
+          headerRight: (props) => <LogoTitle {...props} />,
+          headerBackground: () => (
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>
+                <Text style={styles.GBtype}>GB</Text>
+                <Text> Restaurant</Text>
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="EditTable"
+        component={EditTable}
+        options={{
+          headerShown: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerStyle: {
+            height: 80,
+            opacity: 0.9,
+          },
+          //headerStatusBarHeight: 20,
+          headerRight: (props) => <LogoTitle {...props} />,
+          headerBackground: () => (
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>
+                {/* <Text style={styles.GBtype}>GB</Text>
+                  <Text > Restaurant</Text> */}
+              </Text>
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
+const styles = StyleSheet.create({
+  header: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "rgba(60,50,41,0.59)",
+    opacity: 0.7,
+    borderWidth: 1,
+    borderColor: "#707070",
+  },
+  headerTitle: {
+    color: "#ffffff",
+    fontSize: 25,
+    marginTop: 35,
+    marginBottom: 15,
+    marginLeft: 12,
+    fontStyle: "italic",
+  },
+  GBtype: {
+    fontWeight: "bold",
+  },
+});
+
+function LogoTitle() {
+  return (
+    <Image
+      style={{ width: 35, height: 35, marginRight: 12 }}
+      source={require("../assets/gb1.png")}
+    />
+  );
+}

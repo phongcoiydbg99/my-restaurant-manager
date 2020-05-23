@@ -110,12 +110,6 @@ export default ({ navigation }) => {
           <Image source={Logo} style={styles.logo} />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesome
-            name="user-o"
-            size={24}
-            color="rgba(0, 0, 0, 2)"
-            style={styles.inputIcon}
-          />
           <TextInput
             style={styles.input}
             placeholder={"Username"}
@@ -123,15 +117,15 @@ export default ({ navigation }) => {
             underLineColorAndroid="transparent"
             onChangeText={(text) => onChangeUser(text)}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <FontAwesome5
-            name="lock"
+          <FontAwesome
+            name="user-o"
             size={24}
             color="rgba(0, 0, 0, 2)"
             style={styles.inputIcon}
           />
+        </View>
+
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             placeholder={"Password"}
@@ -140,10 +134,16 @@ export default ({ navigation }) => {
             secureTextEntry={true}
             onChangeText={(text) => onChangePassword(text)}
           />
+          <FontAwesome5
+            name="lock"
+            size={24}
+            color="rgba(0, 0, 0, 2)"
+            style={styles.inputIcon}
+          />
         </View>
 
         <TouchableOpacity
-          style={{marginBottom: 10}}
+          style={{ marginBottom: 10 }}
           onPress={() => navigation.push("DangKi")}
         >
           <Text style={styles.underline}>Create account </Text>

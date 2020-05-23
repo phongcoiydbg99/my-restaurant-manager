@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import axios from "axios";
+// import axios from "axios";
 export default class dessertmenu extends Component {
   constructor(props){
     super(props);
