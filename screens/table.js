@@ -18,7 +18,7 @@ import {
 } from "react-native";
 import { TableItem, Separator } from "../components/TableItem";
 import { List, ListItem, SearchBar } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -42,7 +42,9 @@ export default class Table extends Component {
       modalVisible: false,
       toggleMode: false,
       toggleInput: false,
-      value: '',
+      value: "",
+      sort: "All",
+      result: table,
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
@@ -54,7 +56,7 @@ export default class Table extends Component {
     if (text) {
       this.state.toggleInput = true;
     } else this.state.toggleInput = false;
-    if (this.state.toggleInput){
+    if (this.state.toggleInput) {
       Animated.sequence([
         Animated.parallel([
           Animated.timing(this.state.btWidth, { toValue: 24, duration: 0 }),
@@ -87,13 +89,23 @@ export default class Table extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  deleteText(){
-                this.setState({ value: "" });
-                this.toggleInputmode("");
-              }
+  deleteText() {
+    this.setState({ value: "" });
+    this.toggleInputmode("");
+  }
+  changeTable() {
+    if(this.state.sort == 'All') this.state.result = table
+    else if (this.state.sort == 'Ready') this.state.result = table.filter((table) => table.status == "Ready");
+    else this.state.result = table.filter((table) => table.status == "Empty");
+  }
 
+  edit(){
+    this.state.result.push(route.params.table);
+  }
   render() {
     const { navigation } = this.props;
+
+    // console.log(this.props);
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Modal
@@ -111,6 +123,9 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
+                  // this.setState({ sort: "All" });
+                  this.state.sort = "All";
+                  this.changeTable();
                 }}
                 style={styles.modalContent}
               >
@@ -119,6 +134,9 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
+                  // this.setState({ sort: "Ready" });
+                  this.state.sort = "Ready";
+                  this.changeTable();
                 }}
                 style={styles.modalContent}
               >
@@ -127,6 +145,9 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
+                  // this.setState({ sort: "Empty" });
+                  this.state.sort = "Empty";
+                  this.changeTable();
                 }}
                 style={styles.modalContent}
               >
@@ -140,7 +161,7 @@ export default class Table extends Component {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder={'Search'}
+                placeholder={"Search"}
                 value={this.state.value}
                 placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
                 underLineColorAndroid="transparent"
@@ -233,7 +254,7 @@ export default class Table extends Component {
             </View>
           </View>
           <FlatList
-            data={table}
+            data={this.state.result}
             keyExtractor={(item) => {
               return `${item.id}`;
             }}
