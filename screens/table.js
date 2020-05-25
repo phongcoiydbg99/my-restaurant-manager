@@ -99,13 +99,9 @@ export default class Table extends Component {
     else this.state.result = table.filter((table) => table.status == "Empty");
   }
 
-  edit(){
-    this.state.result.push(route.params.table);
-  }
   render() {
     const { navigation } = this.props;
 
-    // console.log(this.props);
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Modal
