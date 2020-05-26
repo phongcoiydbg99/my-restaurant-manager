@@ -18,7 +18,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import { TableItem, Separator } from "../components/TableItem";
+import { MenuItem, Separator } from "../components/MenuItem";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -104,7 +104,7 @@ export default class drinkmenu extends Component {
       // <ImageBackground
       // source = {Background} style ={styles.container}
       //  >
-      <View style = {{...styles.overlayContainer, backgroundColor: "transparent"}}>
+      <View style = {{...styles.overlayContainer, }}>
         <View>
           <TouchableOpacity
             onPress={() => {
@@ -113,6 +113,8 @@ export default class drinkmenu extends Component {
             style={{
               height: 40,
               borderRadius: 10,
+              width: 40,
+              marginLeft:350,
               backgroundColor: "blue",
             }}
           >
@@ -128,7 +130,7 @@ export default class drinkmenu extends Component {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ ...styles.contentContainer, height: 40 }}>
+        <View style={{ ...styles.contentContainer, height: 40, marginBottom: -20, }}>
           <View style={styles.content}>
             <View style={{ width: "10%" }}>
               <Text style={styles.title}>ID</Text>
@@ -139,17 +141,14 @@ export default class drinkmenu extends Component {
             <View style={{ width: "15%" }}>
               <Text style={styles.title}>Price</Text>
             </View>
-            {/* <View style={{ width: "20%" }}>
-              <Text style={styles.subtitle}>Status</Text>
-            </View> */}
             <Animated.View
-              style={{
-                width: this.state.width,
-                marginRight: this.state.right,
-              }}
-            >
-              <Text style={styles.subtitle}>Edit</Text>
-            </Animated.View>
+                style={{
+                  width: this.state.width,
+                  marginRight: this.state.right,
+                }}
+              >
+                <Text style={styles.subtitle}>Edit</Text>
+            </Animated.View>       
           </View>
       </View>
         <FlatList
@@ -159,7 +158,7 @@ export default class drinkmenu extends Component {
           }}
           renderItem={({ item }) => {
             return (
-              <TableItem
+              <MenuItem
                 item={item}
                 //onPress={() => navigation.push("EditTable", { table: item })}
                 width={this.state.width}
@@ -178,110 +177,6 @@ export default class drinkmenu extends Component {
   }
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     width: "100%",
-//     height: "100%",
-//     opacity: 0.9,
-//   },
-//   overlayContainer: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "rgba(60,50,41,0.59)",
-//   },
-//   contentContainer: {
-//     paddingHorizontal: 20,
-//     paddingVertical: 10,
-//     alignItems: "center",
-//     backgroundColor: "orange",
-//     marginTop: 20,
-//   },
-//   checkboxContainer: {
-//     flexDirection: "row",
-//     marginBottom: 20,
-//   },
-//   checkbox: {
-//     alignSelf: "center",
-//   },
-//   label: {
-//     margin: 8,
-//   },
-//   content: {
-//     width: WIDTH - 50,
-//     flexDirection: "row",
-//     alignItems: "flex-start",
-//     justifyContent: "space-between",
-//   },
-//   title: {
-//     fontSize: 18,
-//     fontWeight: "600",
-//     color: "#3a3a3a",
-//   },
-//   subtitle: {
-//     color: "#666",
-//     fontSize: 16,
-//     marginTop: 2,
-//   },
-//   inputContainer: {
-//     width: WIDTH - 110,
-//     height: 40,
-//     backgroundColor: "#fff",
-//     borderRadius: 10,
-//     marginLeft: 10,
-//     marginRight: 5,
-//   },
-//   logo: {
-//     width: 150,
-//     height: 200,
-//   },
-//   input: {
-//     width: WIDTH - 140,
-//     height: 40,
-//     borderRadius: 10,
-//     fontSize: 16,
-//     paddingLeft: 45,
-//     backgroundColor: "#fff",
-//     color: "rgba(0, 0, 0, 1)",
-//   },
-//   inputIcon: {
-//     position: "absolute",
-//     top: 8,
-//     left: 15,
-//   },
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "rgba(0, 0, 0, 0.5)",
-//   },
-//   modalView: {
-//     backgroundColor: "white",
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//     borderRadius: 5,
-//   },
-//   modalContent: {
-//     width: WIDTH - 50,
-//     justifyContent: "center",
-//     padding: 15,
-//     fontSize: 16,
-//     // borderBottomWidth: 0.5,
-//   },
-//   inputClose: {
-//     position: "absolute",
-//     top: 8,
-//     right: 5,
-//   },
-// })
 const styles = StyleSheet.create({
   container: {
     flex: 1,
