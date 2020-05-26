@@ -28,6 +28,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 const { width: WIDTH } = Dimensions.get("window");
 import dataMenu from "../data/menu";
+import axios from "axios";
 export default class drinkmenu extends Component {
   constructor(props){
     super(props);
@@ -37,11 +38,15 @@ export default class drinkmenu extends Component {
       toggleInput: false,
       value: "",
       sort: "All",
-      result: dataMenu,
+      result: dataMenu.filter((dataMenu) => dataMenu.Species =="Drink"),
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
+      height: new Animated.Value(-30),
     };
+  }
+  componentDidMount(){
+    axios.get('http://localhost:8080/dish/all').then(res => this.setState({result: res}));
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
@@ -88,12 +93,7 @@ export default class drinkmenu extends Component {
     this.setState({ value: "" });
     this.toggleInputmode("");
   }
-  // doi bang
-  // changeTable() {
-  //   if(this.state.sort == 'All') this.state.result = table
-  //   else if (this.state.sort == 'Ready') this.state.result = table.filter((table) => table.status == "Ready");
-  //   else this.state.result = table.filter((table) => table.status == "Empty");
-  // }
+ 
   // edit
   edit(){
     this.state.result.push(route.params.table);
@@ -101,9 +101,9 @@ export default class drinkmenu extends Component {
   render(){
     const { navigation } = this.props;
     return(
-      // <ImageBackground
-      // source = {Background} style ={styles.container}
-      //  >
+      <ImageBackground
+      source = {Background} style ={styles.container}
+       >
       <View style = {{...styles.overlayContainer, }}>
         <View>
           <TouchableOpacity
@@ -130,7 +130,7 @@ export default class drinkmenu extends Component {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ ...styles.contentContainer, height: 40, marginBottom: -20, }}>
+      <View style={{ ...styles.contentContainer, height: 40, marginBottom: -20, }}>
           <View style={styles.content}>
             <View style={{ width: "10%" }}>
               <Text style={styles.title}>ID</Text>
@@ -151,18 +151,24 @@ export default class drinkmenu extends Component {
             </Animated.View>       
           </View>
       </View>
+        <View
+        style ={{
+          height: 400,
+        }}
+        >
         <FlatList
           data={this.state.result}
           keyExtractor={(item) => {
             return `${item.id}`;
           }}
           renderItem={({ item }) => {
-            return (
+            return (         
               <MenuItem
                 item={item}
                 //onPress={() => navigation.push("EditTable", { table: item })}
                 width={this.state.width}
                 right={this.state.right}
+                //height={this.state.height}
               />
             );
           }}
@@ -170,9 +176,10 @@ export default class drinkmenu extends Component {
           ListHeaderComponent={() => <Separator />}
           ListFooterComponent={() => <Separator />}
           contentContainerStyle={{ paddingVertical: 20 }}
-        />           
+        />
+        </View>           
       </View>
-  // </ImageBackground>
+  </ImageBackground>
     )
   }
 };
