@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#373534",
     opacity: 0.7,
-    borderWidth: 1,
-    borderColor: "#707070",
+    borderBottomWidth: 1,
+    borderBottomColor: "#707070",
   },
   headerTitle: {
     color: "#ffffff",

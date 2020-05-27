@@ -14,6 +14,7 @@ import {
 import { createStackNavigator } from "@react-navigation/stack";
 import Table from "../screens/table";
 import EditTable from "../screens/edit_table";
+import AddTable from "../screens/add_table.js";
 import Background from "../assets/Backgr-Login.jpg";
 const Tab = createStackNavigator();
 
@@ -58,8 +59,31 @@ export default () => {
           headerBackground: () => (
             <View style={styles.header}>
               <Text style={styles.headerTitle}>
-                {/* <Text style={styles.GBtype}>GB</Text>
-                  <Text > Restaurant</Text> */}
+                <Text style={styles.GBtype}>GB</Text>
+                <Text> Restaurant</Text>
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AddTable"
+        component={AddTable}
+        options={{
+          headerShown: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerStyle: {
+            height: 80,
+            opacity: 0.9,
+          },
+          //headerStatusBarHeight: 20,
+          headerRight: (props) => <LogoTitle {...props} />,
+          headerBackground: () => (
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>
+                <Text style={styles.GBtype}>GB</Text>
+                <Text> Restaurant</Text>
               </Text>
             </View>
           ),
@@ -70,20 +94,20 @@ export default () => {
 };
 const styles = StyleSheet.create({
   header: {
-    flex: 1, 
-    justifyContent: 'center', 
-    backgroundColor: '#373534', 
-    opacity: .7, 
-    borderWidth: 1, 
-    borderColor: '#707070',
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#373534",
+    opacity: 0.7,
+    borderBottomWidth: 1,
+    borderBottomColor: "#707070",
   },
   headerTitle: {
-    color: '#ffffff', 
-    fontSize: 25, 
-    marginTop: 35, 
-    marginBottom: 15, 
-    marginLeft: 12, 
-    fontStyle: 'italic'
+    color: "#ffffff",
+    fontSize: 25,
+    marginTop: 35,
+    marginBottom: 15,
+    marginLeft: 12,
+    fontStyle: "italic",
   },
   GBtype: {
     fontWeight: "bold",

@@ -26,7 +26,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+
 const { width: WIDTH } = Dimensions.get("window");
+const { height: HEIGHT } = Dimensions.get("window");
+
 import dataMenu from "../data/menu";
 import axios from "axios";
 export default class drinkmenu extends Component {
@@ -106,99 +109,99 @@ export default class drinkmenu extends Component {
   }
   render(){
     const { navigation } = this.props;
-    return(
-      <ImageBackground
-      source = {Background} style ={styles.container}
-       >
-      <View style = {{...styles.overlayContainer, }}>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.toggleEditMode();
-            }}
-            style={{
-              height: 40,
-              borderRadius: 10,
-              width: 40,
-              marginLeft:350,
-              backgroundColor: "blue",
-            }}
-          >
-            <FontAwesome5
-              name="edit"
-              size={24}
-              color="white"
-              style={{
-                paddingTop: 5,
-                paddingLeft: 10,
-                paddingRight: 5,
+    return (
+      <ImageBackground source={Background} style={styles.container}>
+        <View style={{ ...styles.overlayContainer, marginTop: 130 }}>
+          <View style={{ marginTop: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.toggleEditMode();
               }}
-            />
-          </TouchableOpacity>
-        </View>
-      <View style={{ ...styles.contentContainer, height: 40, marginBottom: -20, }}>
-          <View style={styles.content}>
-            <View style={{ width: "10%" }}>
-              <Text style={styles.title}>ID</Text>
-            </View>
-            <View style={{ width: "30%" }}>
-              <Text style={styles.title}>Name</Text>
-            </View>
-            <View style={{ width: "15%" }}>
-              <Text style={styles.title}>Price</Text>
-            </View>
-            <Animated.View
+              style={{
+                height: 40,
+                borderRadius: 10,
+                width: 40,
+                marginLeft: 350,
+                backgroundColor: "blue",
+              }}
+            >
+              <FontAwesome5
+                name="edit"
+                size={24}
+                color="white"
+                style={{
+                  paddingTop: 5,
+                  paddingLeft: 10,
+                  paddingRight: 5,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ ...styles.contentContainer, height: 40 }}>
+            <View style={styles.content}>
+              <View style={{ width: "10%" }}>
+                <Text style={styles.title}>ID</Text>
+              </View>
+              <View style={{ width: "30%" }}>
+                <Text style={styles.title}>Name</Text>
+              </View>
+              <View style={{ width: "15%" }}>
+                <Text style={styles.title}>Price</Text>
+              </View>
+              <Animated.View
                 style={{
                   width: this.state.width,
                   marginRight: this.state.right,
                 }}
               >
                 <Text style={styles.subtitle}>Edit</Text>
-            </Animated.View>       
+              </Animated.View>
+            </View>
           </View>
-      </View>
-        <View
-        style ={{
-          height: 400,
-        }}
-        >
-        <FlatList
-          data={this.state.result}
-          keyExtractor={(item) => {
-            return `${item.id}`;
-          }}
-          renderItem={({ item }) => {
-            return (         
-              <MenuItem
-                item={item}
-                //onPress={() => navigation.push("EditTable", { table: item })}
-                width={this.state.width}
-                right={this.state.right}
-                //height={this.state.height}
-              />
-            );
-          }}
-          ItemSeparatorComponent={Separator}
-          ListHeaderComponent={() => <Separator />}
-          ListFooterComponent={() => <Separator />}
-          contentContainerStyle={{ paddingVertical: 20 }}
-        />
-        </View>           
-      </View>
-  </ImageBackground>
-    )
+          <View
+            style={{
+              height: 400,
+            }}
+          >
+            <FlatList
+              data={this.state.result}
+              keyExtractor={(item) => {
+                return `${item.id}`;
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <MenuItem
+                    item={item}
+                    //onPress={() => navigation.push("EditTable", { table: item })}
+                    width={this.state.width}
+                    right={this.state.right}
+                    //height={this.state.height}
+                  />
+                );
+              }}
+              ItemSeparatorComponent={Separator}
+              ListHeaderComponent={() => <Separator />}
+              ListFooterComponent={() => <Separator />}
+            />
+          </View>
+        </View>
+      </ImageBackground>
+    );
   }
 };
 
 const styles = StyleSheet.create({
   container: {
+    // position: "absolute",
+    bottom: 130,
     flex: 1,
-    width: "100%",
-    height: "100%",
+    width: WIDTH,
+    height: HEIGHT,
     // opacity: 0.9,
   },
   overlayContainer: {
-    flex: 1,
+    width: WIDTH,
+    height: HEIGHT,
     //justifyContent: "center",
     //alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "orange",
-    marginTop: 20,
+    marginTop: 10,
   },
   checkboxContainer: {
     flexDirection: "row",

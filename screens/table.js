@@ -71,7 +71,7 @@ export default class Table extends Component {
       ]).start();
     }
   }
-// chuyen doi giua cac che do
+  // chuyen doi giua cac che do
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
@@ -97,12 +97,13 @@ export default class Table extends Component {
   }
   // doi bang
   changeTable() {
-    if(this.state.sort == 'All') this.state.result = table
-    else if (this.state.sort == 'Ready') this.state.result = table.filter((table) => table.status == "Ready");
+    if (this.state.sort == "All") this.state.result = table;
+    else if (this.state.sort == "Ready")
+      this.state.result = table.filter((table) => table.status == "Ready");
     else this.state.result = table.filter((table) => table.status == "Empty");
   }
   // edit
-  edit(){
+  edit() {
     this.state.result.push(route.params.table);
   }
   render() {
@@ -156,7 +157,13 @@ export default class Table extends Component {
           </TouchableHighlight>
         </Modal>
         <View style={styles.overlayContainer}>
-          <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 40,
+              justifyContent: "space-around",
+            }}
+          >
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -180,13 +187,34 @@ export default class Table extends Component {
                 </TouchableOpacity>
               </Animated.View>
             </View>
-            <View>
+            <View style={{ marginLeft: 5 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("AddTable")}
+                style={{
+                  height: 40,
+                  width: 40,
+                  borderRadius: 10,
+                  backgroundColor: "#00cfff",
+                }}
+              >
+                <MaterialIcons
+                  name="add"
+                  size={30}
+                  color="white"
+                  style={{
+                    padding: 5,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginLeft: 10 }}>
               <TouchableOpacity
                 onPress={() => {
                   this.toggleEditMode();
                 }}
                 style={{
                   height: 40,
+                  width: 40,
                   borderRadius: 10,
                   backgroundColor: "#00ccff",
                 }}
@@ -196,7 +224,7 @@ export default class Table extends Component {
                   size={24}
                   color="white"
                   style={{
-                    paddingTop: 5,
+                    paddingVertical: 5,
                     paddingLeft: 10,
                     paddingRight: 5,
                   }}
@@ -204,13 +232,14 @@ export default class Table extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={{ marginLeft: 5 }}>
+            <View style={{ marginHorizontal: 10 }}>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: true });
                 }}
                 style={{
                   height: 40,
+                  width: 40,
                   borderRadius: 10,
                   backgroundColor: "yellow",
                 }}
@@ -228,51 +257,57 @@ export default class Table extends Component {
               </TouchableOpacity>
             </View>
           </View>
-
-          <View style={{ ...styles.contentContainer, height: 40 }}>
-            <View style={styles.content}>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.title}>ID</Text>
+          <View
+            style={{
+              height: 480,
+            }}
+          >
+            <View style={{ ...styles.contentContainer, height: 40 }}>
+              <View style={styles.content}>
+                <View style={{ width: "20%" }}>
+                  <Text style={styles.title}>ID</Text>
+                </View>
+                <View style={{ width: "25%" }}>
+                  <Text style={styles.title}>Table</Text>
+                </View>
+                <View style={{ width: "25%" }}>
+                  <Text style={styles.title}>People</Text>
+                </View>
+                <View style={{ width: "20%" }}>
+                  <Text style={styles.subtitle}>Status</Text>
+                </View>
+                <Animated.View
+                  style={{
+                    width: this.state.width,
+                    marginRight: this.state.right,
+                  }}
+                >
+                  <Text style={styles.subtitle}>Edit</Text>
+                </Animated.View>
               </View>
-              <View style={{ width: "25%" }}>
-                <Text style={styles.title}>Table</Text>
-              </View>
-              <View style={{ width: "25%" }}>
-                <Text style={styles.title}>People</Text>
-              </View>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.subtitle}>Status</Text>
-              </View>
-              <Animated.View
-                style={{
-                  width: this.state.width,
-                  marginRight: this.state.right,
-                }}
-              >
-                <Text style={styles.subtitle}>Edit</Text>
-              </Animated.View>
             </View>
+            <FlatList
+              data={this.state.result}
+              keyExtractor={(item) => {
+                return `${item.id}`;
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <TableItem
+                    item={item}
+                    onPress={() =>
+                      navigation.push("EditTable", { table: item })
+                    }
+                    width={this.state.width}
+                    right={this.state.right}
+                  />
+                );
+              }}
+              ItemSeparatorComponent={Separator}
+              ListHeaderComponent={() => <Separator />}
+              ListFooterComponent={() => <Separator />}
+            />
           </View>
-          <FlatList
-            data={this.state.result}
-            keyExtractor={(item) => {
-              return `${item.id}`;
-            }}
-            renderItem={({ item }) => {
-              return (
-                <TableItem
-                  item={item}
-                  onPress={() => navigation.push("EditTable", { table: item })}
-                  width={this.state.width}
-                  right={this.state.right}
-                />
-              );
-            }}
-            ItemSeparatorComponent={Separator}
-            ListHeaderComponent={() => <Separator />}
-            ListFooterComponent={() => <Separator />}
-            // contentContainerStyle={{ paddingVertical: 20 }}
-          />
         </View>
       </ImageBackground>
     );
@@ -290,7 +325,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
-    marginTop: 85
   },
   contentContainer: {
     paddingHorizontal: 20,
@@ -326,7 +360,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   inputContainer: {
-    width: WIDTH - 110,
+    // width: WIDTH - 110,
     height: 40,
     backgroundColor: "#fff",
     borderRadius: 10,

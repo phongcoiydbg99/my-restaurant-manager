@@ -94,10 +94,8 @@ const ThongKeStackScreen = () => (
       headerTitle: false,
       headerTransparent: true,
       headerStyle: {
-        height: 80,
-        opacity: .9,
+        height: 70,
       },
-      //headerStatusBarHeight: 20,
       headerRight: 
         props => (<LogoTitle {...props} />
         )
@@ -303,8 +301,8 @@ export default () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {/* {!userToken ? <RootStackScreen /> : <AppDrawerScreen />} */}
-        <AppDrawerScreen />
+        {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+        {/* <AppDrawerScreen /> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
@@ -347,23 +345,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   header: {
-    flex: 1, 
-    justifyContent: 'center', 
-    backgroundColor: '#373534', 
-    opacity: .7, 
-    borderWidth: 1, 
-    borderColor: '#707070',
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#373534",
+    opacity: 0.7,
+    borderBottomWidth: 1,
+    borderBottomColor: "#707070",
   },
   headerTitle: {
-    color: '#ffffff', 
-    fontSize: 25, 
-    marginTop: 35, 
-    marginBottom: 15, 
-    marginLeft: 12, 
-    fontStyle: 'italic'
+    color: "#ffffff",
+    fontSize: 25,
+    marginTop: 35,
+    marginBottom: 15,
+    marginLeft: 12,
+    fontStyle: "italic",
   },
   GBtype: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

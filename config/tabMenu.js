@@ -13,37 +13,26 @@ import {
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import dessertMenu from '../screens/dessertmenu';
-import mainCourseMenu from '../screens/maincoursemenu';
-import drinkMenu from '../screens/drinkmenu';
+import dessertMenu from "../screens/dessertmenu";
+import mainCourseMenu from "../screens/maincoursemenu";
+import drinkMenu from "../screens/drinkmenu";
 import Background from "../assets/Backgr-Login.jpg";
 const Tab = createMaterialTopTabNavigator();
 
 export default () => {
   return (
-      <Tab.Navigator
+    <Tab.Navigator
       tabBarOptions={{
-        labelStyle: { fontSize: 13, fontWeight: 'bold', color: "white" },
-        //tabStyle: { width: 100 },
-        style: { 
-          //backgroundColor: '#FFFFFF' ,
+        labelStyle: { fontSize: 13, fontWeight: "bold", color: "white" },
+        style: {
           backgroundColor: "transparent",
-          opacity: 0.7,
           marginTop: 80,
         },
-        
       }}
-     >
-        <Tab.Screen name="MainCourse" component={mainCourseMenu} 
-        options={{
-          // headerShown: false,
-          headerTitle: false,
-          headerTransparent: true,
-        }}
-        
-        />
-        <Tab.Screen name="Dessert" component={dessertMenu} />
-        <Tab.Screen name="Drink" component={drinkMenu} />
-      </Tab.Navigator>
+    >
+      <Tab.Screen name="MainCourse" component={mainCourseMenu} />
+      <Tab.Screen name="Dessert" component={dessertMenu} />
+      <Tab.Screen name="Drink" component={drinkMenu} />
+    </Tab.Navigator>
   );
-}
+};
