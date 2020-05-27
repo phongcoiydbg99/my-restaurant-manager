@@ -18,7 +18,7 @@ export default () => (
     source = {Background} style ={styles.container}
     >
         <TabMenu/> 
-    </ImageBackground>
+     </ImageBackground>
 );
 const styles = StyleSheet.create({
   container: {

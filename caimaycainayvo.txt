@@ -1,0 +1,4 @@
+java -jar C:\Users\datan\OneDrive\Documents\GitHub\my-restaurant-manager\RestaurntManagement-0.0.1.jar
+yarn add exios
+postman
+sql dev
