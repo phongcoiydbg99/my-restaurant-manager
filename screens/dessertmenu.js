@@ -53,5 +53,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
   },
-  
 })

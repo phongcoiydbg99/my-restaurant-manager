@@ -23,25 +23,16 @@ export default () => {
   return (
       <Tab.Navigator
       tabBarOptions={{
-        labelStyle: { fontSize: 13, fontWeight: 'bold', color: "white" },
+        labelStyle: { fontSize: 13, fontWeight: 'bold' },
         //tabStyle: { width: 100 },
         style: { 
-          //backgroundColor: '#FFFFFF' ,
-          backgroundColor: "transparent",
-          opacity: 0.7,
+          backgroundColor: '#FFFFFF' ,
           marginTop: 80,
         },
         
       }}
      >
-        <Tab.Screen name="MainCourse" component={mainCourseMenu} 
-        options={{
-          // headerShown: false,
-          headerTitle: false,
-          headerTransparent: true,
-        }}
-        
-        />
+        <Tab.Screen name="MainCourse" component={mainCourseMenu} />
         <Tab.Screen name="Dessert" component={dessertMenu} />
         <Tab.Screen name="Drink" component={drinkMenu} />
       </Tab.Navigator>

@@ -50,7 +50,6 @@ export default class Table extends Component {
       right: new Animated.Value(-30),
     };
   }
-  // chuyen doi che do nhap
   toggleInputmode(text) {
     console.log(text);
     this.setState({ value: text });
@@ -71,7 +70,7 @@ export default class Table extends Component {
       ]).start();
     }
   }
-// chuyen doi giua cac che do
+
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
@@ -90,24 +89,23 @@ export default class Table extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  // Xoa Text
   deleteText() {
     this.setState({ value: "" });
     this.toggleInputmode("");
   }
-  // doi bang
   changeTable() {
     if(this.state.sort == 'All') this.state.result = table
     else if (this.state.sort == 'Ready') this.state.result = table.filter((table) => table.status == "Ready");
     else this.state.result = table.filter((table) => table.status == "Empty");
   }
-  // edit
+
   edit(){
     this.state.result.push(route.params.table);
   }
   render() {
     const { navigation } = this.props;
 
+    // console.log(this.props);
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Modal
@@ -206,7 +204,6 @@ export default class Table extends Component {
                 />
               </TouchableOpacity>
             </View>
-
             <View style={{ marginLeft: 10 }}>
               <TouchableOpacity
                 onPress={() => {
