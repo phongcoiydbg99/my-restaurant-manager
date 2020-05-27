@@ -132,7 +132,14 @@ const HoaDonStackScreen = () => (
 const ThongTinStack = createStackNavigator();
 const ThongTinStackScreen = () => (
   <ThongTinStack.Navigator>
-    <ThongTinStack.Screen name="ThongTin" component={ThongTin} />
+    <ThongTinStack.Screen
+      name="ThongTin"
+      component={ThongTin}
+      options={{
+        headerTitle: false,
+        headerTransparent: true,
+      }}
+    />
   </ThongTinStack.Navigator>
 );
 
@@ -142,7 +149,7 @@ const AppTabsScreen = () => (
     <AppTabs.Screen
       name="Table"
       component={QuanLyBanStackScreen}
-      options={{  
+      options={{
         tabBarLabel: "Table",
         showLabel: false,
         tabBarIcon: (props) => (
@@ -219,6 +226,7 @@ const AuthStackScreen = () => (
   </AuthStack.Navigator>
 );
 const CustomDrawerContent = (props) => {
+  const { signOut } = React.useContext(AuthContext);
   return (
     <DrawerContentScrollView {...props}>
       <ImageBackground source={BackAv} style={styles.container}>
@@ -228,6 +236,14 @@ const CustomDrawerContent = (props) => {
         </View>
       </ImageBackground>
       <DrawerItemList {...props} />
+      <TouchableOpacity
+        onPress={() => signOut()}
+        style={{ alignItems: "center", justifyContent: "center" }}
+      >
+        <Text style={{ padding: 10, backgroundColor: "#00ccff", borderRadius: 10 }}>
+          Sign Out
+        </Text>
+      </TouchableOpacity>
     </DrawerContentScrollView>
   );
 };
@@ -240,6 +256,7 @@ const AppDrawerScreen = () => {
     </AppDrawer.Navigator>
   );
 };
+
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (

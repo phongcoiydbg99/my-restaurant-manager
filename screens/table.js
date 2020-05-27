@@ -125,7 +125,6 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  // this.setState({ sort: "All" });
                   this.state.sort = "All";
                   this.changeTable();
                 }}
@@ -136,7 +135,6 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  // this.setState({ sort: "Ready" });
                   this.state.sort = "Ready";
                   this.changeTable();
                 }}
@@ -147,7 +145,6 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  // this.setState({ sort: "Empty" });
                   this.state.sort = "Empty";
                   this.changeTable();
                 }}
@@ -159,7 +156,7 @@ export default class Table extends Component {
           </TouchableHighlight>
         </Modal>
         <View style={styles.overlayContainer}>
-          <View style={{ flexDirection: "row", marginTop: 85 }}>
+          <View style={{ flexDirection: "row" }}>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -191,7 +188,7 @@ export default class Table extends Component {
                 style={{
                   height: 40,
                   borderRadius: 10,
-                  backgroundColor: "blue",
+                  backgroundColor: "#00ccff",
                 }}
               >
                 <FontAwesome5
@@ -207,7 +204,7 @@ export default class Table extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: 5 }}>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: true });
@@ -290,9 +287,10 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
+    marginTop: 85
   },
   contentContainer: {
     paddingHorizontal: 20,
