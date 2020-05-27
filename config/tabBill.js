@@ -23,11 +23,11 @@ export default () => {
           name="billOfTable" 
           component={billOfTable} 
           options={{
+            // headerShown: false,
             headerTitle: false,
             headerTransparent: true,
             headerStyle: {
-              height: 80,
-              opacity: 0.9,
+              height: 70,
             },
             //headerStatusBarHeight: 20,
             headerRight: (props) => <LogoTitle {...props} />,
@@ -35,7 +35,7 @@ export default () => {
               <View style={styles.header}>
                 <Text style={styles.headerTitle}>
                   <Text style={styles.GBtype}>GB</Text>
-                  <Text > Restaurant</Text>
+                  <Text> Restaurant</Text>
                 </Text>
               </View>
             ),
@@ -48,8 +48,7 @@ export default () => {
             headerTitle: false,
             headerTransparent: true,
             headerStyle: {
-              height: 80,
-              opacity: 0.9,
+              height: 70,
             },
             //headerStatusBarHeight: 20,
             headerRight: (props) => <LogoTitle {...props} />,
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center', 
     backgroundColor: '#373534', 
-    opacity: .7, 
+    opacity: .9, 
     borderWidth: 1, 
     borderColor: '#707070',
   },
@@ -92,8 +91,8 @@ const styles = StyleSheet.create({
 function LogoTitle() {
   return (
     <Image
-      style={{ width: 50, height: 50, marginRight: 12,}}
-      source={require('../assets/gb1.png')}
+      style={{ width: 35, height: 35, marginRight: 12 }}
+      source={require("../assets/gb1.png")}
     />
   );
 }

@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: "#707070",
     borderWidth: 1,
-    marginTop: 80,
+    marginTop: 70,
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   tableContainer: {

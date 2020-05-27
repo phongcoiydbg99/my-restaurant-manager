@@ -26,6 +26,7 @@ export default Bill = ({navigation}) => {
         <SearchBar 
                 onChangeText={() => {}}
                 placeholder='Search'
+                placeholderTextColor='#86939e'
                 platform = "android"
                 containerStyle={styles.searchBarContainer}
                 inputContainerStyle={styles.SearchBar}
@@ -34,17 +35,17 @@ export default Bill = ({navigation}) => {
 
           {/* Danh sách bàn đang live */}
           <View style={styles.contentContainer}>
-            <View style={styles.content}>
-              <View>
+          <View style={styles.content}>
+              <View style={{ width: "20%" }}>
                 <Text style={styles.title}>ID</Text>
               </View>
-              <View>
+              <View style={{ width: "25%" }}>
                 <Text style={styles.title}>Table</Text>
               </View>
-              <View>
+              <View style={{ width: "25%" }}>
                 <Text style={styles.title}>People</Text>
               </View>
-              <View>
+              <View style={{ width: "20%" }}>
                 <Text style={styles.subtitle}>Status</Text>
               </View>
             </View>
@@ -53,6 +54,9 @@ export default Bill = ({navigation}) => {
                     data={table}
                     renderItem={({ item }) =>  <RowTable item={item} 
                     onPress = {() => navigation.navigate('bill')}/>}
+                    ItemSeparatorComponent={Separator}
+                    ListHeaderComponent={() => <Separator />}
+                    ListFooterComponent={() => <Separator />}
                     keyExtractor={(item) => {
                       return `${item.id}`;} }
                    />
@@ -145,13 +149,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    opacity: 0.9,
+    //opacity: 0.9,
   },
   overlayContainer: {
     flex: 1,
-    borderColor: "#707070",
-    borderWidth: 1,
-    marginTop: 80,
+    // borderColor: "#707070",
+    // borderWidth: 1,
+    marginTop: 70,
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   tableContainer: {
@@ -165,17 +169,17 @@ const styles = StyleSheet.create({
   },
   searchBarContainer:{
     backgroundColor: "#fff",
-    height: 30,
-    opacity: .5,
+    height: 40,
+    //opacity: .5,
     borderColor: "#707070",
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 10,
     marginLeft: 40,
     marginRight: 40,
     marginTop: 15,
   },
   SearchBar: {
-    height: 10,
+    height: 20,
   },
   // billContainer: {
   //   borderColor: 'rgba(243, 242, 242, 0.60)',
@@ -244,8 +248,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "orange",
     marginTop: 20,
+    height: 40,
   },
   content: {
     width: WIDTH - 50,

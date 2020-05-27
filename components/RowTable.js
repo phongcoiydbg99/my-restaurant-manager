@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   content: {
-    width: WIDTH-50,
+    width: WIDTH - 50,
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
@@ -50,18 +50,18 @@ const styles = StyleSheet.create({
 });
 
 export const RowTable = ({ item , onPress}) => (
-         <TouchableOpacity style={styles.container} onPress={onPress}>
-           <View style={styles.content}>
-             <View>
+         <TouchableOpacity activeOpacity={0.6} style={styles.container} onPress={onPress}>
+          <View style={styles.content}>
+             <View style={{ width: "20%" }}>
                <Text style={styles.title}>{item.id}</Text>
              </View>
-             <View>
+             <View style={{ width: "25%" }}>
                <Text style={styles.title}>{item.table}</Text>
              </View>
-             <View>
+             <View style={{ width: "25%", paddingHorizontal: "5%" }}>
                <Text style={styles.title}>{item.people}</Text>
              </View>
-             <View>
+             <View style={{ width: "20%" }}>
                <Text style={styles.subtitle}>{item.status}</Text>
              </View>
            </View>

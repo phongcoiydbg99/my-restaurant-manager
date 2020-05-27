@@ -70,20 +70,20 @@ export default () => {
 };
 const styles = StyleSheet.create({
   header: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(60,50,41,0.59)",
-    opacity: 0.7,
-    borderWidth: 1,
-    borderColor: "#707070",
+    flex: 1, 
+    justifyContent: 'center', 
+    backgroundColor: '#373534', 
+    opacity: .7, 
+    borderWidth: 1, 
+    borderColor: '#707070',
   },
   headerTitle: {
-    color: "#ffffff",
-    fontSize: 25,
-    marginTop: 35,
-    marginBottom: 15,
-    marginLeft: 12,
-    fontStyle: "italic",
+    color: '#ffffff', 
+    fontSize: 25, 
+    marginTop: 35, 
+    marginBottom: 15, 
+    marginLeft: 12, 
+    fontStyle: 'italic'
   },
   GBtype: {
     fontWeight: "bold",
