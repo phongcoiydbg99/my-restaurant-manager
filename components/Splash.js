@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   Sologan: {
     color: "rgba(169,169,169,1)",
   }
-});
+}); 
 
 export const Splash = () => (
   <ScreenContainer>
