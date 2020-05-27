@@ -46,7 +46,13 @@ export default class drinkmenu extends Component {
     };
   }
   componentDidMount(){
+    
+  }
+  getData(){
     axios.get('http://localhost:8080/dish/all').then(res => this.setState({result: res}));
+  }
+  postData(){
+    axios.post('http://localhost:8080/dish/add','').then(getData());
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
