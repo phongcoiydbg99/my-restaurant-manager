@@ -18,25 +18,6 @@ import dataBill from "../data/bill"
 export default () => (
   <ImageBackground source={Background} style={styles.container}>
     <View style={styles.overlayContainer}>
-      {/* <SearchBar 
-              onChangeText={() => {}}
-              placeholder='Search'
-              platform = "android"
-              containerStyle={styles.searchBarContainer}
-              inputContainerStyle={styles.SearchBar}
-              placeholderTextColor={'#000'}
-              /> */}
-
-        {/* Danh sách bàn đang live */}
-        {/* <View>
-          <FlatList
-                  data={ListTables}
-                  renderItem={({ item }) =>  <Table item={item} 
-                  onPress = {() => navigation.navigate('bill')}/>}
-                  keyExtractor={item=> '${item.id}'} 
-                />
-        </View> */}
-
 
         {/* hóa đơn */}
         <View style={styles.billContainer}>

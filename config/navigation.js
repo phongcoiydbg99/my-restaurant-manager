@@ -87,7 +87,30 @@ const QuanLyMenuStackScreen = () => (
 const ThongKeStack = createStackNavigator();
 const ThongKeStackScreen = () => (
   <ThongKeStack.Navigator>
-    <ThongKeStack.Screen name="ThongKe" component={ThongKe} />
+    <ThongKeStack.Screen 
+    name="ThongKe" 
+    component={ThongKe} 
+    options={{
+      headerTitle: false,
+      headerTransparent: true,
+      headerStyle: {
+        height: 80,
+        opacity: .9,
+      },
+      //headerStatusBarHeight: 20,
+      headerRight: 
+        props => (<LogoTitle {...props} />
+        )
+      ,
+      headerBackground: () =>(
+        <View style={styles.header}>
+            <Text style={styles.headerTitle}>
+              <Text style={styles.GBtype}>GB</Text>
+              <Text > Restaurant</Text>
+            </Text>
+          </View>
+      ),
+    }}/>
   </ThongKeStack.Navigator>
 );
 
