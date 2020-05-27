@@ -14,6 +14,8 @@ import {
 import {createStackNavigator} from '@react-navigation/stack'
 import billOfTable from '../screens/billOfTable'
 import Bill from "../screens/bill";
+import { Ionicons } from "@expo/vector-icons";
+
 const Tab = createStackNavigator();
 
 export default () => {
@@ -44,7 +46,7 @@ export default () => {
         <Tab.Screen 
           name="bill" 
           component={Bill} 
-          options={{
+          options={({navigation}) => ({
             headerTitle: false,
             headerTransparent: true,
             headerStyle: {
@@ -52,15 +54,19 @@ export default () => {
             },
             //headerStatusBarHeight: 20,
             headerRight: (props) => <LogoTitle {...props} />,
+            headerLeft: () => (
+              <TouchableOpacity
+                  //style={styles.btnBack}
+                  onPress = {() => navigation.pop()}
+                >
+                <Ionicons name="ios-arrow-back" size={30} color="white" />
+                </TouchableOpacity>
+            ),
             headerBackground: () => (
-              <View style={styles.header}>
-                <Text style={styles.headerTitle}>
-                  {/* <Text style={styles.GBtype}>GB</Text>
-                  <Text > Restaurant</Text> */}
-                </Text>
+              <View style={styles.header}>  
               </View>
             ),
-          }}
+          })}
           />
       </Tab.Navigator>
   );
@@ -85,6 +91,11 @@ const styles = StyleSheet.create({
   },
   GBtype: {
     fontWeight: 'bold',
+  },
+  btnBack: {
+    position: "absolute",
+    top: 15,
+    left: 20,
   },
 });
 
