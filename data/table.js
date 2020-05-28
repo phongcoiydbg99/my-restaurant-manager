@@ -95,4 +95,17 @@ export default [
     people: "5",
     status: "Empty",
   },
+  {
+    id: "17",
+    table: "table 17",
+    people: "5",
+    status: "Live",
+  },
+  {
+    id: "18",
+    table: "table 18",
+    people: "5",
+    status: "Live",
+  },
+  
 ];

@@ -63,7 +63,7 @@ const QuanLyMenuStackScreen = () => (
       headerTitle: false,
       headerTransparent: true,
       headerStyle: {
-        height: 80,
+        height: 70,
         opacity: .9,
       },
       //headerStatusBarHeight: 20,
@@ -93,21 +93,7 @@ const ThongKeStackScreen = () => (
     options={{
       headerTitle: false,
       headerTransparent: true,
-      headerStyle: {
-        height: 70,
-      },
-      headerRight: 
-        props => (<LogoTitle {...props} />
-        )
-      ,
-      headerBackground: () =>(
-        <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-              <Text style={styles.GBtype}>GB</Text>
-              <Text > Restaurant</Text>
-            </Text>
-          </View>
-      ),
+      
     }}/>
   </ThongKeStack.Navigator>
 );
@@ -369,8 +355,8 @@ const styles = StyleSheet.create({
 function LogoTitle() {
   return (
     <Image
-      style={{ width: 50, height: 50, marginRight: 12,}}
-      source={require('../assets/gb1.png')}
+      style={{ width: 35, height: 35, marginRight: 12 }}
+      source={require("../assets/gb1.png")}
     />
   );
 }

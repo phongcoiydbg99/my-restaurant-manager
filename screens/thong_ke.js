@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-export default Table = () => (
-  <View>
-    <Text>Thong Ke</Text>
-  </View>
+import TabRevenue from '../config/tabRevenue'
+export default () => (
+    <TabRevenue />
 );
