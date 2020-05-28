@@ -54,7 +54,7 @@ export default class BillOfTable extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <View style={styles.overlayContainer}>
+        <View style={{...styles.overlayContainer}}>
           <SearchBar 
                   onChangeText={() => {}}
                   placeholder='Search'
@@ -102,7 +102,7 @@ export default class BillOfTable extends Component {
 
 
 const { width: WIDTH} = Dimensions.get('window');
-const { height: HIGHT} = Dimensions.get('window');
+const { height: HEIGHT} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -116,18 +116,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
-    marginTop: 70,
   },
   tableContainer: {
-    flexDirection:'row',
-    paddingTop: 10, 
+    flexDirection: "row",
+    paddingTop: 10,
     backgroundColor: "#fff",
-    borderWidth: 2, 
-    borderColor: '#000',
+    borderWidth: 2,
+    borderColor: "#000",
     marginLeft: 10,
     marginRight: 10,
   },
-  searchBarContainer:{
+  searchBarContainer: {
     backgroundColor: "#fff",
     height: 40,
     //opacity: .5,
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 40,
     marginRight: 40,
-    marginTop: 15,
+    marginTop: 85,
   },
   SearchBar: {
     height: 20,
