@@ -10,30 +10,30 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   FlatList,
   Modal,
   CheckBox,
   Picker,
   Animated,
 } from "react-native";
-import { TableItem, Separator } from "../components/TableItem";
+import { Row, Separator } from "../components/Row";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import FloatingButton from "../components/FloatingButton";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
+import { SERVER_ID } from "../config/properties";
+
 import Background from "../assets/Backgr-Login.jpg";
-import table from "../data/table";
 
 const { width: WIDTH } = Dimensions.get("window");
-// const [modalVisible, setModalVisible] = useState(false);
-// const [isEdit, setEdit] = useState(false);
-// const [left, setleft] = useState(0);
-// const [right, setright] = useState(0);
-// const navigation = useNavigation();
+
+import axios from "axios";
 
 export default class Table extends Component {
   constructor(props) {
@@ -44,11 +44,38 @@ export default class Table extends Component {
       toggleInput: false,
       value: "",
       sort: "All",
-      result: table,
+      result: [],
+      table: [],
+      newTable: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
     };
+  }
+
+  componentDidMount() {
+    axios.get(`${SERVER_ID}table/all`).then((res) => {
+      this.setState({ result: res.data });
+      this.setState({ table: res.data });
+    });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newTable !== this.state.newTable) {
+      axios.get(`${SERVER_ID}table/all`).then((res) => {
+        this.setState({ table: res.data });
+        this.setState({ result: res.data });
+      });
+    } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
+  }
+
+  saveNewData() {
+    //ham nay se duoc invoke khi save du lieu moi
+    axios
+      .post(`${SERVER_ID}table/add`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newTable: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
@@ -97,17 +124,86 @@ export default class Table extends Component {
   }
   // doi bang
   changeTable() {
-    if (this.state.sort == "All") this.state.result = table;
+    if (this.state.sort == "all") this.state.table = this.state.result;
     else if (this.state.sort == "Ready")
-      this.state.result = table.filter((table) => table.status == "Ready");
-    else this.state.result = table.filter((table) => table.status == "Empty");
+      this.state.table = this.state.result.filter(
+        (table) => table.status == "Ready"
+      );
+    else
+      this.state.table = this.state.result.filter(
+        (table) => table.status == "empty"
+      );
   }
-  // edit
-  edit() {
-    this.state.result.push(route.params.table);
-  }
+  // floating button
+  animation = new Animated.Value(0);
+
+  toggleMenu = () => {
+    const toValue = this.open ? 0 : 1;
+
+    Animated.spring(this.animation, {
+      toValue,
+      friction: 5,
+    }).start();
+
+    this.open = !this.open;
+  };
+
   render() {
     const { navigation } = this.props;
+
+    const sortStyle = {
+      transform: [
+        {
+          scale: this.animation,
+        },
+        {
+          translateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -200],
+          }),
+        },
+      ],
+    };
+    const editStyle = {
+      transform: [
+        {
+          scale: this.animation,
+        },
+        {
+          translateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -140],
+          }),
+        },
+      ],
+    };
+    const addStyle = {
+      transform: [
+        {
+          scale: this.animation,
+        },
+        {
+          translateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -80],
+          }),
+        },
+      ],
+    };
+    const rotation = {
+      transform: [
+        {
+          rotate: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["0deg", "45deg"],
+          }),
+        },
+      ],
+    };
+    const opacity = this.animation.interpolate({
+      inputRange: [0, 0.5, 1],
+      outputRange: [0, 0, 1],
+    });
 
     return (
       <ImageBackground source={Background} style={styles.container}>
@@ -126,7 +222,7 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  this.state.sort = "All";
+                  this.state.sort = "all";
                   this.changeTable();
                 }}
                 style={styles.modalContent}
@@ -136,7 +232,7 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  this.state.sort = "Ready";
+                  this.state.sort = "ready";
                   this.changeTable();
                 }}
                 style={styles.modalContent}
@@ -146,7 +242,7 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  this.state.sort = "Empty";
+                  this.state.sort = "empty";
                   this.changeTable();
                 }}
                 style={styles.modalContent}
@@ -157,157 +253,98 @@ export default class Table extends Component {
           </TouchableHighlight>
         </Modal>
         <View style={styles.overlayContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: 40,
-              justifyContent: "space-around",
-            }}
-          >
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder={"Search"}
-                value={this.state.value}
-                placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-                underLineColorAndroid="transparent"
-                onChangeText={(text) => this.toggleInputmode(text)}
-              />
-              <FontAwesome
-                name="search"
-                size={24}
-                color="black"
-                style={styles.inputIcon}
-              />
-              <Animated.View
-                style={{ ...styles.inputClose, width: this.state.btWidth }}
-              >
-                <TouchableOpacity onPress={() => this.deleteText()}>
-                  <AntDesign name="close" size={24} color="black" />
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
-            <View style={{ marginLeft: 5 }}>
-              <TouchableOpacity
-                onPress={() => navigation.push("AddTable")}
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 10,
-                  backgroundColor: "#00cfff",
-                }}
-              >
-                <MaterialIcons
-                  name="add"
-                  size={30}
-                  color="white"
-                  style={{
-                    padding: 5,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginLeft: 10 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.toggleEditMode();
-                }}
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 10,
-                  backgroundColor: "#00ccff",
-                }}
-              >
-                <FontAwesome5
-                  name="edit"
-                  size={24}
-                  color="white"
-                  style={{
-                    paddingVertical: 5,
-                    paddingLeft: 10,
-                    paddingRight: 5,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ marginHorizontal: 10 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.setState({ modalVisible: true });
-                }}
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 10,
-                  backgroundColor: "yellow",
-                }}
-              >
-                <MaterialIcons
-                  name="sort"
-                  size={30}
-                  color="black"
-                  style={{
-                    paddingTop: 5,
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View
-            style={{
-              height: 480,
-            }}
-          >
-            <View style={{ ...styles.contentContainer, height: 40 }}>
-              <View style={styles.content}>
-                <View style={{ width: "20%" }}>
-                  <Text style={styles.title}>ID</Text>
-                </View>
-                <View style={{ width: "25%" }}>
-                  <Text style={styles.title}>Table</Text>
-                </View>
-                <View style={{ width: "25%" }}>
-                  <Text style={styles.title}>People</Text>
-                </View>
-                <View style={{ width: "20%" }}>
-                  <Text style={styles.subtitle}>Status</Text>
-                </View>
-                <Animated.View
-                  style={{
-                    width: this.state.width,
-                    marginRight: this.state.right,
-                  }}
-                >
-                  <Text style={styles.subtitle}>Edit</Text>
-                </Animated.View>
-              </View>
-            </View>
-            <FlatList
-              data={this.state.result}
-              keyExtractor={(item) => {
-                return `${item.id}`;
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <TableItem
-                    item={item}
-                    onPress={() =>
-                      navigation.push("EditTable", { table: item })
-                    }
-                    width={this.state.width}
-                    right={this.state.right}
-                  />
-                );
-              }}
-              ItemSeparatorComponent={Separator}
-              ListHeaderComponent={() => <Separator />}
-              ListFooterComponent={() => <Separator />}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={"Search"}
+              value={this.state.value}
+              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+              underLineColorAndroid="transparent"
+              onChangeText={(text) => this.toggleInputmode(text)}
             />
+            <FontAwesome
+              name="search"
+              size={24}
+              color="black"
+              style={styles.inputIcon}
+            />
+            <Animated.View
+              style={{
+                ...styles.inputClose,
+                width: this.state.btWidth,
+              }}
+            >
+              <TouchableOpacity onPress={() => this.deleteText()}>
+                <AntDesign name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </Animated.View>
           </View>
+
+          <FlatList
+            data={this.state.table}
+            keyExtractor={(item) => {
+              return `${item.name}`;
+            }}
+            renderItem={({ item }) => {
+              return (
+                <Row
+                  image={Background}
+                  item={item}
+                  onPress={() => navigation.push("EditTable", { table: item })}
+                  width={this.state.width}
+                  right={this.state.right}
+                />
+              );
+            }}
+            ItemSeparatorComponent={Separator}
+            // ListHeaderComponent={() => <Separator />}
+            ListFooterComponent={() => <Separator />}
+          />
+        </View>
+        <View
+          style={{
+            ...styles.floatinContainer,
+            bottom: 70,
+            right: 40,
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => {
+            this.setState({ modalVisible: true });
+             this.toggleMenu();
+          }}>
+            <Animated.View
+              style={[styles.button, styles.floating, sortStyle, opacity]}
+            >
+              <MaterialIcons name="sort" size={20} color="#f02a4b" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => this.toggleEditMode()}>
+            <Animated.View
+              style={[styles.button, styles.floating, editStyle, opacity]}
+            >
+              <FontAwesome5 name="edit" size={20} color="#f02a4b" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.push("AddTable");
+              this.toggleMenu();
+            }}
+          >
+            <Animated.View
+              style={[styles.button, styles.floating, addStyle, opacity]}
+            >
+              <AntDesign name="plus" size={20} color="#f02a4b" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
+            <Animated.View style={[styles.button, styles.menu, rotation]}>
+              <AntDesign name="plus" size={24} color="#fff" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
         </View>
       </ImageBackground>
     );
@@ -318,27 +355,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    // opacity: 0.9,
   },
   overlayContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
-  },
-  contentContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    alignItems: "center",
-    backgroundColor: "orange",
-    marginTop: 20,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
-  },
-  checkbox: {
-    alignSelf: "center",
   },
   label: {
     margin: 8,
@@ -364,8 +384,8 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginLeft: 10,
-    marginRight: 5,
+    marginHorizontal: 10,
+    marginTop: 70,
   },
   logo: {
     width: 150,
@@ -415,5 +435,31 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 5,
+  },
+  floatinContainer: {
+    alignItems: "center",
+    position: "absolute",
+  },
+  button: {
+    position: "absolute",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowRadius: 10,
+    shadowColor: "#f02a4b",
+    shadowOpacity: 1,
+    shadowOffset: { height: 10 },
+    elevation: 3,
+  },
+  menu: {
+    backgroundColor: "#f02a4b",
+  },
+  floating: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#fff",
   },
 });

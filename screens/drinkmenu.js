@@ -27,35 +27,54 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
+import {SERVER_ID} from "../config/properties";
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import dataMenu from "../data/menu";
 import axios from "axios";
+
 export default class drinkmenu extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       modalVisible: false,
       toggleMode: false,
       toggleInput: false,
       value: "",
       sort: "All",
-      result: dataMenu.filter((dataMenu) => dataMenu.Species =="Drink"),
+      result: [],
+      newDrink: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
       height: new Animated.Value(-30),
     };
   }
-  componentDidMount(){
+  componentDidMount() {
+    axios
+      .get(`${SERVER_ID}dish/category/MainCourse`)
+      .then((res) => {
+        this.setState({ result: res.data});
+      });
     
   }
-  getData(){
-    axios.get('http://localhost:8080/dish/all').then(res => this.setState({result: res}));
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newDrink !== this.state.newDrink) {
+      axios
+        .get(`${SERVER_ID}dish/category/MainCourse`)
+        .then((res) => this.setState({ result: res }));
+    } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
-  postData(){
-    axios.post('http://localhost:8080/dish/add','').then(getData());
+
+  saveNewData() {
+    //ham nay se duoc invoke khi save du lieu moi
+    axios
+      .post(`${SERVER_ID}dish/add`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newDrink: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewDrink
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
@@ -67,31 +86,49 @@ export default class drinkmenu extends Component {
     if (this.state.toggleInput) {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 24, duration: 0 }),
+          Animated.timing(this.state.btWidth, {
+            toValue: 24,
+            duration: 0,
+          }),
         ]),
       ]).start();
     } else {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 0, duration: 0 }),
+          Animated.timing(this.state.btWidth, {
+            toValue: 0,
+            duration: 0,
+          }),
         ]),
       ]).start();
     }
   }
-// chuyen doi giua cac che do
+  // chuyen doi giua cac che do
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.width, { toValue: 40, duration: 0 }),
-          Animated.timing(this.state.right, { toValue: 0, duration: 0 }),
+          Animated.timing(this.state.width, {
+            toValue: 40,
+            duration: 0,
+          }),
+          Animated.timing(this.state.right, {
+            toValue: 0,
+            duration: 0,
+          }),
         ]),
       ]).start();
     } else {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.width, { toValue: 0, duration: 0 }),
-          Animated.timing(this.state.right, { toValue: -30, duration: 0 }),
+          Animated.timing(this.state.width, {
+            toValue: 0,
+            duration: 0,
+          }),
+          Animated.timing(this.state.right, {
+            toValue: -30,
+            duration: 0,
+          }),
         ]),
       ]).start();
     }
@@ -102,16 +139,21 @@ export default class drinkmenu extends Component {
     this.setState({ value: "" });
     this.toggleInputmode("");
   }
- 
+
   // edit
-  edit(){
+  edit() {
     this.state.result.push(route.params.table);
   }
-  render(){
+  render() {
     const { navigation } = this.props;
     return (
-      <ImageBackground source={Background} style={styles.container}>
-        <View style={{ ...styles.overlayContainer, marginTop: 130 }}>
+      <ImageBackground
+        source={Background}
+        style={styles.container}
+      >
+        <View
+          style={{ ...styles.overlayContainer, marginTop: 130 }}
+        >
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity
               onPress={() => {
@@ -137,16 +179,18 @@ export default class drinkmenu extends Component {
               />
             </TouchableOpacity>
           </View>
-          <View style={{ ...styles.contentContainer, height: 40 }}>
+          {/* <View
+            style={{ ...styles.contentContainer, height: 40 }}
+          >
             <View style={styles.content}>
               <View style={{ width: "10%" }}>
-                <Text style={styles.title}>ID</Text>
+                <Text style={styles.title}>Name </Text>
               </View>
               <View style={{ width: "30%" }}>
-                <Text style={styles.title}>Name</Text>
+                <Text style={styles.title}>Gia</Text>
               </View>
               <View style={{ width: "15%" }}>
-                <Text style={styles.title}>Price</Text>
+                <Text style={styles.title}>ta</Text>
               </View>
               <Animated.View
                 style={{
@@ -157,7 +201,7 @@ export default class drinkmenu extends Component {
                 <Text style={styles.subtitle}>Edit</Text>
               </Animated.View>
             </View>
-          </View>
+          </View> */}
           <View
             style={{
               height: 400,
@@ -166,7 +210,7 @@ export default class drinkmenu extends Component {
             <FlatList
               data={this.state.result}
               keyExtractor={(item) => {
-                return `${item.id}`;
+                return `${item.name}`;
               }}
               renderItem={({ item }) => {
                 return (

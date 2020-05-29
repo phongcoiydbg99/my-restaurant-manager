@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     alignItems: "center",
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    // elevation: 1,
   },
   image: {
     width: 40,
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: "#ececec",
-    height: 1
+    height: 2
   },
   right: {
     alignItems: "flex-end",
@@ -40,19 +41,21 @@ const styles = StyleSheet.create({
   }
 });
 
-export const Row = ({ image, title, subtitle, onPress }) => (
-  <TouchableOpacity onPress={onPress} style={styles.container}>
-    <View>
-      <Image source={image} style={styles.image} />
-    </View>
-    <View style={styles.content}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
-    </View>
-    <View style={styles.right}>
-      <Ionicons name="ios-arrow-forward" color="#666" size={20} />
-    </View>
-  </TouchableOpacity>
-);
+export const Row = ({ image, item, onPress, width, right }) => (
+         <TouchableOpacity onPress={onPress} style={styles.container}>
+           <View>
+             <Image source={image} style={styles.image} />
+           </View>
+           <View style={styles.content}>
+             <Text style={styles.title}>{item.fullName}</Text>
+             <Text style={styles.title}>{item.chairNum}</Text>
+             <Text style={styles.title}>{item.reserve_time}</Text>
+             <Text style={styles.subtitle}>{item.status}</Text>
+           </View>
+           <View style={styles.right}>
+             <Ionicons name="ios-arrow-forward" color="#666" size={20} />
+           </View>
+         </TouchableOpacity>
+       );
 
 export const Separator = () => <View style={styles.separator} />;

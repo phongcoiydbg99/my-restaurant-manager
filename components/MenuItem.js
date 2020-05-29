@@ -59,13 +59,13 @@ export const MenuItem = ({ item, onPress, width, right }) => (
          <View style={styles.container} onPress={onPress}>
            <View style={styles.content}>
              <View style={{ width: "10%" }}>
-               <Text style={styles.title}>{item.id}</Text>
+               <Text style={styles.title}>{item.name}</Text>
              </View>
              <View style={{ width: "30%" }}>
-               <Text style={styles.title}>{item.Name}</Text>
+               <Text style={styles.title}>{item.pirce}</Text>
              </View>
              <View style={{ width: "15%", paddingHorizontal: "5%" }}>
-               <Text style={styles.title}>{item.Price}</Text>
+               <Text style={styles.title}>{item.description}</Text>
              </View>
              <Animated.View
                style={{

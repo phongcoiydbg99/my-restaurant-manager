@@ -59,13 +59,16 @@ export const TableItem = ({ item, onPress, width, right }) => (
          <View style={styles.container} onPress={onPress}>
            <View style={styles.content}>
              <View style={{ width: "20%" }}>
-               <Text style={styles.title}>{item.id}</Text>
+               <Text style={styles.title}>{item.name}</Text>
              </View>
              <View style={{ width: "25%" }}>
-               <Text style={styles.title}>{item.table}</Text>
+               <Text style={styles.title}>{item.fullName}</Text>
              </View>
              <View style={{ width: "25%", paddingHorizontal: "5%" }}>
-               <Text style={styles.title}>{item.people}</Text>
+               <Text style={styles.title}>{item.chairNum}</Text>
+             </View>
+             <View style={{ width: "20%" }}>
+               <Text style={styles.subtitle}>{item.reserve_time}</Text>
              </View>
              <View style={{ width: "20%" }}>
                <Text style={styles.subtitle}>{item.status}</Text>
