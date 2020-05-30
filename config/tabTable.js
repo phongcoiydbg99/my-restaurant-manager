@@ -97,6 +97,7 @@ export default () => {
               </Text>
             </View>
           ),
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
     </Tab.Navigator>
