@@ -9,12 +9,19 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   FlatList,
+  Picker,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { RowTable, Separator } from "../components/RowTable";
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from "react-native-modal-datetime-picker";
+import { Input } from "react-native-elements";
 import Background from "../assets/Backgr-Login.jpg";
+import icon from "../assets/calendar.png";
+import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
 
@@ -25,7 +32,36 @@ export default ({ navigation }) => {
   const [name, setname] = useState("");
   const [people, setpeople] = useState("");
   const [status, setstatus] = useState("");
+  const [reserved_time, setreserved_time] = useState("");
+  const [time, settime] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); 
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false); 
 
+  const showDatePicker = () => {
+      setDatePickerVisibility(true);
+    };
+  const showTimePicker = () => {
+      setTimePickerVisibility(true);
+    };
+
+  const hideDatePicker = () => {
+      setDatePickerVisibility(false);
+    };
+  const hideTimePicker = () => {
+      setTimePickerVisibility(false);
+    };
+
+  const handleConfirm = (date) => {
+      // console.warn("A date has been picked: ", date);
+      setreserved_time(date.toString());
+      hideDatePicker();
+    };
+  const handleConfirmTime = (time) => {
+      // console.warn("A date has been picked: ", time);
+      settime(time.toString());
+      setTimePickerVisibility(false);
+      hideTimePicker();
+    };
   const editTable = () => {
     const newTable = { ...table, table: name, people: people, status: status };
     settable(newTable); // Now it works
@@ -35,66 +71,97 @@ export default ({ navigation }) => {
   return (
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
-        <TouchableOpacity
-          style={styles.btnBack}
-          onPress={() => navigation.pop()}
+        <View style={{ paddingTop: 15, marginLeft: 10 }}>
+          <TouchableOpacity
+            style={styles.btnBack}
+            onPress={() => navigation.pop()}
+          >
+            <Ionicons name="ios-arrow-back" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
+        <Input placeholder="Name" label="Name" labelStyle={styles.labelStyle} />
+        <Input
+          placeholder="fullName"
+          label="fullName"
+          labelStyle={styles.labelStyle}
+        />
+        <Input
+          placeholder="chairNum"
+          label="chairNum"
+          labelStyle={styles.labelStyle}
+          keyboardType="numeric"
+        />
+        <Text style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}>
+          Status
+        </Text>
+        <Picker
+          mode={"dropdown"}
+          style={{ marginHorizontal: 10, color: "#fff" }}
         >
-          <Ionicons name="ios-arrow-back" size={30} color="white" />
-        </TouchableOpacity>
+          <Picker.Item label="reserved" value="reserved" />
+          <Picker.Item label="full" value="full" />
+          <Picker.Item label="empty" value="empty" />
+        </Picker>
+        <Input
+          placeholder="price"
+          label="price"
+          labelStyle={styles.labelStyle}
+          keyboardType="numeric"
+        />
         <View
           style={{
-            flexDirection: "column",
-            backgroundColor: "#fff",
-            width: "90%",
-            height: "90%",
-            borderRadius: 10,
-            padding: 20,
-            alignItems: "center",
-            marginTop: 30,
+            flexDirection: "row",
           }}
         >
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={'Name'}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(e) => {
-                setname(e);
-              }}
-            />
-          </View>
-
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>People</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={'People'}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(text) => setpeople(text)}
-            />
-          </View>
-
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>Status</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={'status'}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(text) => setstatus(text)}
-            />
-          </View>
-          <View style={styles.elementForm}>
-            <TouchableOpacity
-              style={styles.btnSubmit}
-              onPress={() => editTable()}
-            >
-              <Text>ADD</Text>
-            </TouchableOpacity>
-          </View>
+          <Input
+            inputContainerStyle={{ width: WIDTH - 100 }}
+            placeholder="date"
+            label="reserved_time"
+            value={reserved_time}
+            labelStyle={styles.labelStyle}
+          />
+          <TouchableWithoutFeedback onPress={showDatePicker}>
+            <View style={{ marginLeft: -60, marginTop: 25 }}>
+              <Image source={icon} style={{ width: 30, height: 30 }}></Image>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <Input
+            inputContainerStyle={{ width: WIDTH - 100 }}
+            placeholder="time"
+            value={time}
+            labelStyle={styles.labelStyle}
+          />
+          <TouchableWithoutFeedback onPress={showTimePicker}>
+            <View style={{ marginLeft: -60, marginTop: 10 }}>
+              <Image source={clock} style={{ width: 30, height: 30 }}></Image>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+        <DateTimePickerModal
+          isVisible={isTimePickerVisible}
+          mode="time"
+          onConfirm={handleConfirmTime}
+          onCancel={hideTimePicker}
+        />
+        <View style={styles.elementForm}>
+          <TouchableOpacity
+            style={styles.btnSubmit}
+            onPress={() => editTable()}
+          >
+            <Text>ADD</Text>
+          </TouchableOpacity>
         </View>
         {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
       </View>
@@ -109,8 +176,6 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   contentContainer: {
@@ -126,6 +191,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
   },
+  labelStyle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  inputStyle:{
+
+  },
   title: {
     width: "20%",
     fontSize: 18,
@@ -140,9 +213,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   btnBack: {
-    position: "absolute",
-    top: 16,
-    left: 20,
+    margin: 10,
   },
   input: {
     width: "60%",

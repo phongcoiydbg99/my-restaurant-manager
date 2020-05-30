@@ -11,7 +11,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators
+} from "@react-navigation/stack";
 import Table from "../screens/table";
 import EditTable from "../screens/edit_table";
 import AddTable from "../screens/add_table.js";
@@ -20,7 +23,13 @@ const Tab = createStackNavigator();
 
 export default () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      // initialRouteName= "AddTable"
+      options={{
+        mode: "modal",
+        headerMode: "float",
+      }}
+    >
       <Tab.Screen
         name="Table"
         component={Table}
@@ -64,6 +73,7 @@ export default () => {
               </Text>
             </View>
           ),
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
       <Tab.Screen

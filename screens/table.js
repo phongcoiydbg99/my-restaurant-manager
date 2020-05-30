@@ -68,7 +68,7 @@ export default class Table extends Component {
     } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
   }
 
-  saveNewData() {
+  saveNewData(data) {
     //ham nay se duoc invoke khi save du lieu moi
     axios
       .post(`${SERVER_ID}table/add`, data)
@@ -76,27 +76,6 @@ export default class Table extends Component {
       .then(this.setState({ newTable: data }));
     //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
     //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
-  }
-  // chuyen doi che do nhap
-  toggleInputmode(text) {
-    console.log(text);
-    this.setState({ value: text });
-    if (text) {
-      this.state.toggleInput = true;
-    } else this.state.toggleInput = false;
-    if (this.state.toggleInput) {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 24, duration: 0 }),
-        ]),
-      ]).start();
-    } else {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 0, duration: 0 }),
-        ]),
-      ]).start();
-    }
   }
   // chuyen doi giua cac che do
   toggleEditMode() {
@@ -125,14 +104,18 @@ export default class Table extends Component {
   // doi bang
   changeTable() {
     if (this.state.sort == "all") this.state.table = this.state.result;
-    else if (this.state.sort == "Ready")
-      this.state.table = this.state.result.filter(
-        (table) => table.status == "Ready"
-      );
-    else
-      this.state.table = this.state.result.filter(
-        (table) => table.status == "empty"
-      );
+    else if (this.state.sort == "reserved")
+           this.state.table = this.state.result.filter(
+             (table) => table.status == "reserved"
+           );
+         else if (this.state.sort == "full")
+           this.state.table = this.state.result.filter(
+             (table) => table.status == "full"
+           );
+         else
+           this.state.table = this.state.result.filter(
+             (table) => table.status == "empty"
+           );
   }
   // floating button
   animation = new Animated.Value(0);
@@ -232,12 +215,12 @@ export default class Table extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
-                  this.state.sort = "ready";
+                  this.state.sort = "reserved";
                   this.changeTable();
                 }}
                 style={styles.modalContent}
               >
-                <Text>Ready</Text>
+                <Text>Reserved</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -249,37 +232,30 @@ export default class Table extends Component {
               >
                 <Text>Empty</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ modalVisible: false });
+                  this.state.sort = "full";
+                  this.changeTable();
+                }}
+                style={styles.modalContent}
+              >
+                <Text>Full</Text>
+              </TouchableOpacity>
             </View>
           </TouchableHighlight>
         </Modal>
         <View style={styles.overlayContainer}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder={"Search"}
-              value={this.state.value}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(text) => this.toggleInputmode(text)}
-            />
-            <FontAwesome
-              name="search"
-              size={24}
-              color="black"
-              style={styles.inputIcon}
-            />
-            <Animated.View
-              style={{
-                ...styles.inputClose,
-                width: this.state.btWidth,
-              }}
-            >
-              <TouchableOpacity onPress={() => this.deleteText()}>
-                <AntDesign name="close" size={24} color="black" />
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
-
+          <SearchBar
+            onChangeText={(text) => this.toggleInputmode(text)}
+            placeholder="Search"
+            placeholderTextColor="#86939e"
+            platform="android"
+            containerStyle={styles.searchBarContainer}
+            inputContainerStyle={styles.SearchBar}
+            placeholderTextColor={"#666"}
+            value={this.state.value}
+          />
           <FlatList
             data={this.state.table}
             keyExtractor={(item) => {
@@ -308,10 +284,12 @@ export default class Table extends Component {
             right: 40,
           }}
         >
-          <TouchableWithoutFeedback onPress={() => {
-            this.setState({ modalVisible: true });
-             this.toggleMenu();
-          }}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.setState({ modalVisible: true });
+              this.toggleMenu();
+            }}
+          >
             <Animated.View
               style={[styles.button, styles.floating, sortStyle, opacity]}
             >
@@ -379,37 +357,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 2,
   },
-  inputContainer: {
-    // width: WIDTH - 110,
-    height: 40,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginHorizontal: 10,
-    marginTop: 70,
-  },
   logo: {
     width: 150,
     height: 200,
-  },
-  input: {
-    width: WIDTH - 140,
-    height: 40,
-    borderRadius: 10,
-    fontSize: 16,
-    paddingLeft: 45,
-    backgroundColor: "#fff",
-    color: "rgba(0, 0, 0, 1)",
-  },
-  inputIcon: {
-    position: "absolute",
-    top: 8,
-    left: 15,
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  searchBarContainer: {
+    backgroundColor: "#fff",
+    height: 40,
+    //opacity: .5,
+    borderBottomColor: "#707070",
+    borderBottomWidth: 1,
+    marginTop: 70,
+  },
+  SearchBar: {
+    height: 20,
   },
   modalView: {
     backgroundColor: "white",

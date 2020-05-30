@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { RowTable, Separator } from "../components/RowTable";
-
+import { Input } from "react-native-elements";
 import Background from "../assets/Backgr-Login.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
@@ -36,12 +36,14 @@ export default ({ navigation,route }) => {
   return (
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
-        <TouchableOpacity
-          style={styles.btnBack}
-          onPress={() => navigation.pop()}
-        >
-          <Ionicons name="ios-arrow-back" size={30} color="white" />
-        </TouchableOpacity>
+        <View style = {{paddingTop: 70}}>
+          <TouchableOpacity
+            style={styles.btnBack}
+            onPress={() => navigation.pop()}
+          >
+            <Ionicons name="ios-arrow-back" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flexDirection: "column",
@@ -64,6 +66,11 @@ export default ({ navigation,route }) => {
               onChangeText={(e) => {
                 setname(e);
               }}
+            />
+            <Input
+              placeholder="INPUT WITH ERROR MESSAGE"
+              errorStyle={{ color: "red" }}
+              errorMessage="ENTER A VALID ERROR HERE"
             />
           </View>
 
@@ -150,7 +157,6 @@ const styles = StyleSheet.create({
     height: 45,
     borderBottomWidth: 2,
     fontSize: 16,
-    paddingLeft: 45,
     backgroundColor: "#fff",
     color: "rgba(0, 0, 0, 1)",
     marginHorizontal: 25,
