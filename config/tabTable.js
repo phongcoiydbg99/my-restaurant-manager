@@ -20,7 +20,7 @@ import EditTable from "../screens/edit_table";
 import AddTable from "../screens/add_table.js";
 import Background from "../assets/Backgr-Login.jpg";
 const Tab = createStackNavigator();
-
+import axios from "axios";
 export default () => {
   return (
     <Tab.Navigator

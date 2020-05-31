@@ -21,7 +21,14 @@ import { Row, Separator } from "../components/Row";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import FloatingButton from "../components/FloatingButton";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from "react-native-modal-datetime-picker";
+import { Input } from "react-native-elements";
 
+import icon from "../assets/calendar.png";
+import clock from "../assets/clock.png";
+
+import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -39,6 +46,7 @@ export default class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      addmodalVisible: false,
       modalVisible: false,
       toggleMode: false,
       toggleInput: false,
@@ -50,10 +58,13 @@ export default class Table extends Component {
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
+
     };
   }
 
   componentDidMount() {
+    console.log(this.state.newTable);
+
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ table: res.data });
@@ -105,17 +116,17 @@ export default class Table extends Component {
   changeTable() {
     if (this.state.sort == "all") this.state.table = this.state.result;
     else if (this.state.sort == "reserved")
-           this.state.table = this.state.result.filter(
-             (table) => table.status == "reserved"
-           );
-         else if (this.state.sort == "full")
-           this.state.table = this.state.result.filter(
-             (table) => table.status == "full"
-           );
-         else
-           this.state.table = this.state.result.filter(
-             (table) => table.status == "empty"
-           );
+      this.state.table = this.state.result.filter(
+        (table) => table.status == "reserved"
+      );
+    else if (this.state.sort == "full")
+      this.state.table = this.state.result.filter(
+        (table) => table.status == "full"
+      );
+    else
+      this.state.table = this.state.result.filter(
+        (table) => table.status == "empty"
+      );
   }
   // floating button
   animation = new Animated.Value(0);
@@ -133,7 +144,6 @@ export default class Table extends Component {
 
   render() {
     const { navigation } = this.props;
-
     const sortStyle = {
       transform: [
         {
@@ -428,5 +438,29 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: "#fff",
+  },
+  labelStyle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  inputStyle: {
+    color: "#fff",
+  },
+  btnBack: {
+    margin: 10,
+  },
+  elementForm: {
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  btnSubmit: {
+    marginTop: 10,
+    width: "60%",
+    backgroundColor: "#ff1",
+    height: 40,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

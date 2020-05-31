@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -24,48 +24,94 @@ import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
-
+import axios from "axios";
+import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
 export default ({ navigation }) => {
   const [table, settable] = useState();
   const [name, setname] = useState("");
-  const [people, setpeople] = useState("");
-  const [status, setstatus] = useState("");
-  const [reserved_time, setreserved_time] = useState("");
+  const [chairNum, setchairNum] = useState("");
+  const [status, setstatus] = useState("reserved");
+  const [price, setprice] = useState("");
+  const [fullName, setfullName] = useState("");
+  const [datetime, setdatetime] = useState("");
   const [time, settime] = useState("");
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); 
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false); 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
+  toShortFormat = (date) => {
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    var day = date.getDate();
+    var month_index = date.getMonth();
+    var year = date.getFullYear();
+
+    return "" + day + "-" + month_names[month_index] + "-" + year;
+  };
   const showDatePicker = () => {
-      setDatePickerVisibility(true);
-    };
+    setDatePickerVisibility(true);
+  };
   const showTimePicker = () => {
-      setTimePickerVisibility(true);
-    };
+    setTimePickerVisibility(true);
+  };
 
   const hideDatePicker = () => {
-      setDatePickerVisibility(false);
-    };
+    setDatePickerVisibility(false);
+  };
   const hideTimePicker = () => {
-      setTimePickerVisibility(false);
-    };
-
+    setTimePickerVisibility(false);
+  };
+  useEffect(() => {
+    hideDatePicker();
+    hideTimePicker();
+  }, [isDatePickerVisible,isTimePickerVisible]);
   const handleConfirm = (date) => {
-      // console.warn("A date has been picked: ", date);
-      setreserved_time(date.toString());
-      hideDatePicker();
+    const d = toShortFormat(date);
+    setdatetime(d);
+    setDatePickerVisibility(false);
+    
+  };
+  const handleConfirmTime = (date) => {
+    const t =
+      ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    settime(t);
+    setTimePickerVisibility(false);
+  };
+  const addTable = () => {
+    const reserve = datetime + " " + time;
+    const newTable = {
+      ...table,
+      name: name,
+      chairNum: chairNum,
+      status: status,
+      price: price,
+      fullName: fullName,
+      reserve_time: reserve,
     };
-  const handleConfirmTime = (time) => {
-      // console.warn("A date has been picked: ", time);
-      settime(time.toString());
-      setTimePickerVisibility(false);
-      hideTimePicker();
-    };
-  const editTable = () => {
-    const newTable = { ...table, table: name, people: people, status: status };
-    settable(newTable); // Now it works
-    navigation.pop({ table: newTable });
+    console.log(newTable);
+    // settable(newTable); // Now it works
+    // axios
+    //   .post(`${SERVER_ID}table/add`, newTable)
+    //   .then((res) => console.log(res));
+    navigation.pop({ newTable: newTable });
   };
 
   return (
@@ -79,24 +125,33 @@ export default ({ navigation }) => {
             <Ionicons name="ios-arrow-back" size={30} color="white" />
           </TouchableOpacity>
         </View>
-        <Input placeholder="Name" label="Name" labelStyle={styles.labelStyle} />
+        <Input
+          placeholder="Name"
+          label="Name"
+          labelStyle={styles.labelStyle}
+          onChangeText={(text) => setname(text)}
+        />
         <Input
           placeholder="fullName"
           label="fullName"
           labelStyle={styles.labelStyle}
+          onChangeText={(text) => setfullName(text)}
         />
         <Input
           placeholder="chairNum"
           label="chairNum"
           labelStyle={styles.labelStyle}
           keyboardType="numeric"
+          onChangeText={(text) => setchairNum(text)}
         />
         <Text style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}>
           Status
         </Text>
         <Picker
           mode={"dropdown"}
+          selectedValue={status}
           style={{ marginHorizontal: 10, color: "#fff" }}
+          onValueChange={(text) => setstatus(text)}
         >
           <Picker.Item label="reserved" value="reserved" />
           <Picker.Item label="full" value="full" />
@@ -107,6 +162,7 @@ export default ({ navigation }) => {
           label="price"
           labelStyle={styles.labelStyle}
           keyboardType="numeric"
+          onChangeText={(text) => setprice(text)}
         />
         <View
           style={{
@@ -117,8 +173,9 @@ export default ({ navigation }) => {
             inputContainerStyle={{ width: WIDTH - 100 }}
             placeholder="date"
             label="reserved_time"
-            value={reserved_time}
+            value={datetime}
             labelStyle={styles.labelStyle}
+            inputStyle={styles.inputStyle}
           />
           <TouchableWithoutFeedback onPress={showDatePicker}>
             <View style={{ marginLeft: -60, marginTop: 25 }}>
@@ -136,6 +193,7 @@ export default ({ navigation }) => {
             placeholder="time"
             value={time}
             labelStyle={styles.labelStyle}
+            inputStyle={styles.inputStyle}
           />
           <TouchableWithoutFeedback onPress={showTimePicker}>
             <View style={{ marginLeft: -60, marginTop: 10 }}>
@@ -156,10 +214,7 @@ export default ({ navigation }) => {
           onCancel={hideTimePicker}
         />
         <View style={styles.elementForm}>
-          <TouchableOpacity
-            style={styles.btnSubmit}
-            onPress={() => editTable()}
-          >
+          <TouchableOpacity style={styles.btnSubmit} onPress={() => addTable()}>
             <Text>ADD</Text>
           </TouchableOpacity>
         </View>
@@ -196,8 +251,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  inputStyle:{
-
+  inputStyle: {
+    color: "#fff",
   },
   title: {
     width: "20%",
