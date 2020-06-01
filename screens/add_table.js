@@ -18,6 +18,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { RowTable, Separator } from "../components/RowTable";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-modal-datetime-picker";
+import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
@@ -28,201 +29,227 @@ import axios from "axios";
 import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
-export default ({ navigation }) => {
-  const [table, settable] = useState();
-  const [name, setname] = useState("");
-  const [chairNum, setchairNum] = useState("");
-  const [status, setstatus] = useState("reserved");
-  const [price, setprice] = useState("");
-  const [fullName, setfullName] = useState("");
-  const [datetime, setdatetime] = useState("");
-  const [time, settime] = useState("");
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+export default class AddTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      chairNum: "",
+      status: "reserved",
+      price: "",
+      fullName: "",
+      datetime: "",
+      time: "",
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+    };
+  }
 
   toShortFormat = (date) => {
-    var month_names = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+      var month_names = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      date = new Date(date);
+      var day = date.getDate();
+      var month_index = date.getMonth();
+      var year = date.getFullYear();
 
-    var day = date.getDate();
-    var month_index = date.getMonth();
-    var year = date.getFullYear();
-
-    return "" + day + "-" + month_names[month_index] + "-" + year;
-  };
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-  const hideTimePicker = () => {
-    setTimePickerVisibility(false);
-  };
-  useEffect(() => {
-    hideDatePicker();
-    hideTimePicker();
-  }, [isDatePickerVisible,isTimePickerVisible]);
-  const handleConfirm = (date) => {
-    const d = toShortFormat(date);
-    setdatetime(d);
-    setDatePickerVisibility(false);
-    
-  };
-  const handleConfirmTime = (date) => {
-    const t =
-      ("00" + date.getHours()).slice(-2) +
-      ":" +
-      ("00" + date.getMinutes()).slice(-2) +
-      ":" +
-      ("00" + date.getSeconds()).slice(-2);
-    settime(t);
-    setTimePickerVisibility(false);
-  };
-  const addTable = () => {
-    const reserve = datetime + " " + time;
-    const newTable = {
-      ...table,
-      name: name,
-      chairNum: chairNum,
-      status: status,
-      price: price,
-      fullName: fullName,
-      reserve_time: reserve,
+      return "" + day + "-" + month_names[month_index] + "-" + year;
     };
-    console.log(newTable);
-    // settable(newTable); // Now it works
-    // axios
-    //   .post(`${SERVER_ID}table/add`, newTable)
-    //   .then((res) => console.log(res));
-    navigation.pop({ newTable: newTable });
-  };
+     showDatePicker = () => {
+       this.setState({ isDatePickerVisible : true});
+    };
+     showTimePicker = () => {
+      this.setState({ isTimePickerVisible: true });
+    };
 
-  return (
-    <ImageBackground source={Background} style={styles.container}>
-      <View style={styles.overlayContainer}>
-        <View style={{ paddingTop: 15, marginLeft: 10 }}>
-          <TouchableOpacity
-            style={styles.btnBack}
-            onPress={() => navigation.pop()}
+     hideDatePicker = () => {
+      this.setState({ isDatePickerVisible: false });
+    };
+     hideTimePicker = () => {
+      this.setState({ isTimePickerVisible: false });
+    };
+    // useEffect(() => {
+    //   hideDatePicker();
+    //   hideTimePicker();
+    // }, [isDatePickerVisible, isTimePickerVisible]);
+    handleConfirm = (date) => {
+      const d = this.toShortFormat(date);
+      this.setState({datetime: d});
+      this.setState({ isDatePickerVisible: false });
+    };
+     handleConfirmTime = (date) => {
+       date = new Date(date);
+      const t =
+        ("00" + date.getHours()).slice(-2) +
+        ":" +
+        ("00" + date.getMinutes()).slice(-2) +
+        ":" +
+        ("00" + date.getSeconds()).slice(-2);
+      this.setState({ time: t });
+      this.setState({ isTimePickerVisible: false });
+    };
+    addTable = () => {
+      const reserve = this.state.datetime + " " + this.state.time;
+      const newTable = {
+        ...table,
+        name: this.state.name,
+        chairNum: this.state.chairNum,
+        status: this.state.status,
+        price: this.state.price,
+        fullName: this.state.fullName,
+        reserve_time: reserve,
+      };
+      // console.log(newTable);
+      // settable(newTable); // Now it works
+      // axios
+      //   .post(`${SERVER_ID}table/add`, newTable)
+      //   .then((res) => console.log(res));
+      // navigation.push("Table");
+      // console.log(route.params);
+      // navigation.navigate("Table", { newTable: newTable });
+      // navigation.dispatch(
+      //   CommonActions.navigate({
+      //     name: "Table",
+      //     params: {
+      //       user: "jane",
+      //     },
+      //   })
+      // );
+      const { navigation } = this.props;
+      console.log(navigation.params);
+      // navigation.goBack();
+      // navigation.state.params.newTable({ newTable: newTable });
+    };
+
+  render() {
+     const { navigation } = this.props;
+    return (
+      <ImageBackground source={Background} style={styles.container}>
+        <View style={styles.overlayContainer}>
+          <View style={{ paddingTop: 15, marginLeft: 10 }}>
+            <TouchableOpacity
+              style={styles.btnBack}
+              onPress={() => navigation.pop()}
+            >
+              <Ionicons name="ios-arrow-back" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+          <Input
+            placeholder="Name"
+            label="Name"
+            labelStyle={styles.labelStyle}
+            onChangeText={(text) => this.setState({ name: text })}
+          />
+          <Input
+            placeholder="fullName"
+            label="fullName"
+            labelStyle={styles.labelStyle}
+            onChangeText={(text) => this.setState({ fullName: text })}
+          />
+          <Input
+            placeholder="chairNum"
+            label="chairNum"
+            labelStyle={styles.labelStyle}
+            keyboardType="numeric"
+            onChangeText={(text) => this.setState({ chairNum: text })}
+          />
+          <Text
+            style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}
           >
-            <Ionicons name="ios-arrow-back" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
-        <Input
-          placeholder="Name"
-          label="Name"
-          labelStyle={styles.labelStyle}
-          onChangeText={(text) => setname(text)}
-        />
-        <Input
-          placeholder="fullName"
-          label="fullName"
-          labelStyle={styles.labelStyle}
-          onChangeText={(text) => setfullName(text)}
-        />
-        <Input
-          placeholder="chairNum"
-          label="chairNum"
-          labelStyle={styles.labelStyle}
-          keyboardType="numeric"
-          onChangeText={(text) => setchairNum(text)}
-        />
-        <Text style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}>
-          Status
-        </Text>
-        <Picker
-          mode={"dropdown"}
-          selectedValue={status}
-          style={{ marginHorizontal: 10, color: "#fff" }}
-          onValueChange={(text) => setstatus(text)}
-        >
-          <Picker.Item label="reserved" value="reserved" />
-          <Picker.Item label="full" value="full" />
-          <Picker.Item label="empty" value="empty" />
-        </Picker>
-        <Input
-          placeholder="price"
-          label="price"
-          labelStyle={styles.labelStyle}
-          keyboardType="numeric"
-          onChangeText={(text) => setprice(text)}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
+            Status
+          </Text>
+          <Picker
+            mode={"dropdown"}
+            selectedValue={this.state.status}
+            style={{ marginHorizontal: 10, color: "#fff" }}
+            onValueChange={(text) => this.setState({ status: text })}
+          >
+            <Picker.Item label="reserved" value="reserved" />
+            <Picker.Item label="full" value="full" />
+            <Picker.Item label="empty" value="empty" />
+          </Picker>
           <Input
-            inputContainerStyle={{ width: WIDTH - 100 }}
-            placeholder="date"
-            label="reserved_time"
-            value={datetime}
+            placeholder="price"
+            label="price"
             labelStyle={styles.labelStyle}
-            inputStyle={styles.inputStyle}
+            keyboardType="numeric"
+            onChangeText={(text) => this.setState({price:text})}
           />
-          <TouchableWithoutFeedback onPress={showDatePicker}>
-            <View style={{ marginLeft: -60, marginTop: 25 }}>
-              <Image source={icon} style={{ width: 30, height: 30 }}></Image>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <Input
-            inputContainerStyle={{ width: WIDTH - 100 }}
-            placeholder="time"
-            value={time}
-            labelStyle={styles.labelStyle}
-            inputStyle={styles.inputStyle}
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            <Input
+              inputContainerStyle={{ width: WIDTH - 100 }}
+              placeholder="date"
+              label="reserved_time"
+              value={this.state.datetime}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputStyle}
+            />
+            <TouchableWithoutFeedback onPress={this.showDatePicker}>
+              <View style={{ marginLeft: -60, marginTop: 25 }}>
+                <Image source={icon} style={{ width: 30, height: 30 }}></Image>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            <Input
+              inputContainerStyle={{ width: WIDTH - 100 }}
+              placeholder="time"
+              value={this.state.time}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputStyle}
+            />
+            <TouchableWithoutFeedback onPress={this.showTimePicker}>
+              <View style={{ marginLeft: -60, marginTop: 10 }}>
+                <Image source={clock} style={{ width: 30, height: 30 }}></Image>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <DateTimePickerModal
+            isVisible={this.state.isDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleConfirm}
+            onCancel={this.hideDatePicker}
           />
-          <TouchableWithoutFeedback onPress={showTimePicker}>
-            <View style={{ marginLeft: -60, marginTop: 10 }}>
-              <Image source={clock} style={{ width: 30, height: 30 }}></Image>
-            </View>
-          </TouchableWithoutFeedback>
+          <DateTimePickerModal
+            isVisible={this.state.isTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleConfirmTime}
+            onCancel={this.hideTimePicker}
+          />
+          <View style={styles.elementForm}>
+            <TouchableOpacity
+              style={styles.btnSubmit}
+              onPress={() => this.addTable()}
+            >
+              <Text>ADD</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
         </View>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-        <DateTimePickerModal
-          isVisible={isTimePickerVisible}
-          mode="time"
-          onConfirm={handleConfirmTime}
-          onCancel={hideTimePicker}
-        />
-        <View style={styles.elementForm}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={() => addTable()}>
-            <Text>ADD</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
-      </View>
-    </ImageBackground>
-  );
-};
+      </ImageBackground>
+    );
+  }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
