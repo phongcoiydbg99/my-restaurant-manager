@@ -56,48 +56,58 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Row = ({ image, item, onPress, width, right, index }) => {
-  const deleteTable = (name) => {
-    console.log(`${SERVER_ID}table/delete/` + `${name}`);
-    axios
-      .delete(`${SERVER_ID}table/delete/${name}`);
+export default class Row extends React.Component  {
+  constructor(props) {
+    super(props);
+    this.state = {
+      check: false,
+    };
   }
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <View>
-        <Image source={image} style={styles.image} />
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.title}>{item.fullName}</Text>
-        <Text style={styles.title}>{item.chairNum}</Text>
-        <Text style={styles.title}>{item.reserve_time}</Text>
-        <Text style={styles.subtitle}>{item.status}</Text>
-      </View>
-      <Animated.View
-        style={{
-          width: width,
-          marginRight: right,
-          flexDirection: "row",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-        }}
-      >
-        <TouchableOpacity onPress={onPress}>
-          <MaterialIcons name="edit" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity  onPress={()=>deleteTable(item.name)}>
-          <MaterialCommunityIcons
-            name="delete-forever"
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
-      </Animated.View>
-      <View style={styles.right}>
-        <Ionicons name="ios-arrow-forward" color="#666" size={20} />
-      </View>
-    </TouchableOpacity>
-  );
+  render(){
+    return (
+      <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
+        <View>
+          <Image source={this.props.image} style={styles.image} />
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.title}>{this.props.item.fullName}</Text>
+          <Text style={styles.title}>{this.props.item.chairNum}</Text>
+          <Text style={styles.title}>{this.props.item.reserve_time}</Text>
+          <Text style={styles.subtitle}>{this.props.item.status}</Text>
+        </View>
+        <Animated.View
+          style={{
+            width: this.props.width,
+            marginRight: this.props.right,
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+          }}
+        >
+          <TouchableOpacity onPress={this.props.onPress}>
+            <MaterialIcons name="edit" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={
+              () => {
+                this.setState({check : true});
+                this.props.table.deleteTable(this.props.item.name, !this.state.check);
+              }
+            }
+          >
+            <MaterialCommunityIcons
+              name="delete-forever"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </Animated.View>
+        <View style={styles.right}>
+          <Ionicons name="ios-arrow-forward" color="#666" size={20} />
+        </View>
+      </TouchableOpacity>
+    );
+  }
 };
 
 export const Separator = () => <View style={styles.separator} />;

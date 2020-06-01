@@ -15,17 +15,20 @@ import {
   Picker,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { YellowBox } from "react-native";
 import { RowTable, Separator } from "../components/RowTable";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-modal-datetime-picker";
 import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
+
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
 import axios from "axios";
+
 import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -44,97 +47,85 @@ export default class AddTable extends React.Component {
       isTimePickerVisible: false,
     };
   }
-
+  componentDidMount() {
+    YellowBox.ignoreWarnings([
+      "Non-serializable values were found in the navigation state",
+    ]);
+  }
   toShortFormat = (date) => {
-      var month_names = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      date = new Date(date);
-      var day = date.getDate();
-      var month_index = date.getMonth();
-      var year = date.getFullYear();
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    date = new Date(date);
+    var day = date.getDate();
+    var month_index = date.getMonth();
+    var year = date.getFullYear();
 
-      return "" + day + "-" + month_names[month_index] + "-" + year;
-    };
-     showDatePicker = () => {
-       this.setState({ isDatePickerVisible : true});
-    };
-     showTimePicker = () => {
-      this.setState({ isTimePickerVisible: true });
-    };
+    return "" + day + "-" + month_names[month_index] + "-" + year;
+  };
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: true });
+  };
+  showTimePicker = () => {
+    this.setState({ isTimePickerVisible: true });
+  };
 
-     hideDatePicker = () => {
-      this.setState({ isDatePickerVisible: false });
+  hideDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
+  };
+  hideTimePicker = () => {
+    this.setState({ isTimePickerVisible: false });
+  };
+  // useEffect(() => {
+  //   hideDatePicker();
+  //   hideTimePicker();
+  // }, [isDatePickerVisible, isTimePickerVisible]);
+  handleConfirm = (date) => {
+    const d = this.toShortFormat(date);
+    this.setState({ datetime: d });
+    this.setState({ isDatePickerVisible: false });
+  };
+  handleConfirmTime = (date) => {
+    date = new Date(date);
+    const t =
+      ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    this.setState({ time: t });
+    this.setState({ isTimePickerVisible: false });
+  };
+  addTable = () => {
+    const reserve = this.state.datetime + " " + this.state.time;
+    const newTable = {
+      ...table,
+      name: this.state.name,
+      chairNum: this.state.chairNum,
+      status: this.state.status,
+      price: this.state.price,
+      fullName: this.state.fullName,
+      reserve_time: reserve,
     };
-     hideTimePicker = () => {
-      this.setState({ isTimePickerVisible: false });
-    };
-    // useEffect(() => {
-    //   hideDatePicker();
-    //   hideTimePicker();
-    // }, [isDatePickerVisible, isTimePickerVisible]);
-    handleConfirm = (date) => {
-      const d = this.toShortFormat(date);
-      this.setState({datetime: d});
-      this.setState({ isDatePickerVisible: false });
-    };
-     handleConfirmTime = (date) => {
-       date = new Date(date);
-      const t =
-        ("00" + date.getHours()).slice(-2) +
-        ":" +
-        ("00" + date.getMinutes()).slice(-2) +
-        ":" +
-        ("00" + date.getSeconds()).slice(-2);
-      this.setState({ time: t });
-      this.setState({ isTimePickerVisible: false });
-    };
-    addTable = () => {
-      const reserve = this.state.datetime + " " + this.state.time;
-      const newTable = {
-        ...table,
-        name: this.state.name,
-        chairNum: this.state.chairNum,
-        status: this.state.status,
-        price: this.state.price,
-        fullName: this.state.fullName,
-        reserve_time: reserve,
-      };
-      // console.log(newTable);
-      // settable(newTable); // Now it works
-      // axios
-      //   .post(`${SERVER_ID}table/add`, newTable)
-      //   .then((res) => console.log(res));
-      // navigation.push("Table");
-      // console.log(route.params);
-      // navigation.navigate("Table", { newTable: newTable });
-      // navigation.dispatch(
-      //   CommonActions.navigate({
-      //     name: "Table",
-      //     params: {
-      //       user: "jane",
-      //     },
-      //   })
-      // );
-      const { navigation } = this.props;
-      console.log(navigation.params);
-      // navigation.goBack();
-      // navigation.state.params.newTable({ newTable: newTable });
-    };
+    const { navigation, route } = this.props;
+    console.log(route.params);
+    route.params.table.saveNewData(newTable);
+    navigation.goBack();
+  };
 
   render() {
-     const { navigation } = this.props;
+    const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
@@ -185,7 +176,7 @@ export default class AddTable extends React.Component {
             label="price"
             labelStyle={styles.labelStyle}
             keyboardType="numeric"
-            onChangeText={(text) => this.setState({price:text})}
+            onChangeText={(text) => this.setState({ price: text })}
           />
           <View
             style={{
