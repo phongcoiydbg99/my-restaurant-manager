@@ -137,7 +137,7 @@ export default class Row extends React.Component {
           </View>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.sublabel}>Status: </Text>
-            <Text style={styles.title}>{this.props.item.status}</Text>
+            <Text style={styles.subtitle}>{this.props.item.status}</Text>
           </View>
         </View>
 
