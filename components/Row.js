@@ -20,10 +20,12 @@ import axios from "axios";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
+    borderBottomWidth: 2,
+    borderBottomColor: "#ececec",
     // elevation: 1,
   },
   image: {
@@ -46,9 +48,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 2,
   },
+  label: {
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "#3a3a3a",
+  },
+  sublabel: {
+    fontWeight: "bold",
+    color: "#666",
+    fontSize: 17,
+    marginTop: 2,
+  },
   separator: {
-    backgroundColor: "#ececec",
-    height: 2,
+    backgroundColor: "#fff",
+    height: 4,
   },
   right: {
     alignItems: "flex-end",
@@ -56,58 +69,84 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Row extends React.Component  {
+export default class Row extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       check: false,
     };
   }
-  render(){
+  render() {
     return (
-      <TouchableOpacity onPress={this.props.onPress} style={styles.container}>
-        <View>
-          <Image source={this.props.image} style={styles.image} />
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.title}>{this.props.item.fullName}</Text>
-          <Text style={styles.title}>{this.props.item.chairNum}</Text>
-          <Text style={styles.title}>{this.props.item.reserve_time}</Text>
-          <Text style={styles.subtitle}>{this.props.item.status}</Text>
-        </View>
+      <TouchableOpacity onPress={console.log("h")} style={styles.container}>
         <Animated.View
           style={{
             width: this.props.width,
-            marginRight: this.props.right,
+            // marginLeft: this.props.right,
             flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
+            alignItems: "center",
+            justifyContent: "space-around",
           }}
         >
           <TouchableOpacity onPress={this.props.onPress}>
-            <MaterialIcons name="edit" size={24} color="black" />
+            <MaterialIcons name="edit" size={24} color="orange" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={
-              () => {
-                this.setState({check : true});
-                this.props.table.deleteTable(this.props.item.name, !this.state.check);
-              }
-            }
+            onPress={() => {
+              this.setState({ check: true });
+              this.props.table.deleteTable(
+                this.props.item.name,
+                !this.state.check
+              );
+            }}
+            style={{
+              marginLeft: 20,
+              marginRight: 20,
+            }}
           >
             <MaterialCommunityIcons
               name="delete-forever"
               size={24}
-              color="black"
+              color="red"
             />
           </TouchableOpacity>
         </Animated.View>
+        <View>
+          <Image source={this.props.image} style={styles.image} activeOpacity= '1' />
+        </View>
+        <View style={{ ...styles.content }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={{ flexDirection: "row", width: "60%" }}>
+              <Text style={styles.label}>Name: </Text>
+              <Text style={styles.title}> {this.props.item.fullName}</Text>
+            </View>
+            <View style={{ flexDirection: "row", width: "20%" }}>
+              <Text style={styles.label}>People: </Text>
+              <Text style={styles.title}>{this.props.item.chairNum}</Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>Price: </Text>
+            <Text style={styles.title}>{this.props.item.price}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>Time: </Text>
+            <Text style={styles.title}>{this.props.item.reserve_time}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.sublabel}>Status: </Text>
+            <Text style={styles.title}>{this.props.item.status}</Text>
+          </View>
+        </View>
+
         <View style={styles.right}>
           <Ionicons name="ios-arrow-forward" color="#666" size={20} />
         </View>
       </TouchableOpacity>
     );
   }
-};
+}
 
 export const Separator = () => <View style={styles.separator} />;

@@ -58,24 +58,15 @@ export default class Table extends Component {
       newTable: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
-      right: new Animated.Value(-30),
-      name: "",
-      chairNum: "",
-      status: "reserved",
-      price: "",
-      fullName: "",
-      datetime: "",
-      time: "",
-      isDatePickerVisible: false,
-      isTimePickerVisible: false,
+      right: new Animated.Value(0),
       delete: "",
       add: "",
       edit: "",
     };
   }
-  editTable = data => {
+  editTable = (data) => {
     this.setState(data);
-  }
+  };
   deleteTable(name, check) {
     if (check)
       axios
@@ -103,6 +94,8 @@ export default class Table extends Component {
       "" != this.state.edit
     ) {
       axios.get(`${SERVER_ID}table/all`).then((res) => {
+        if (prevState.delete != this.state.delete || "" != this.state.edit)
+          this.toggleEditMode();
         this.setState({ table: res.data });
         this.setState({ result: res.data });
         this.setState({ add: "" });
@@ -110,10 +103,6 @@ export default class Table extends Component {
       });
     } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
   }
-  // componentWillUnmount() {
-  //   // Remove the event listener before removing the screen from the stack
-  //   this.focusListener;
-  // }
   saveNewData(data) {
     //ham nay se duoc invoke khi save du lieu moi
     axios
@@ -128,7 +117,7 @@ export default class Table extends Component {
     if (!this.state.toggleMode) {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.width, { toValue: 40, duration: 0 }),
+          Animated.timing(this.state.width, { toValue: 70, duration: 0 }),
           Animated.timing(this.state.right, { toValue: 0, duration: 0 }),
         ]),
       ]).start();
@@ -136,16 +125,11 @@ export default class Table extends Component {
       Animated.sequence([
         Animated.parallel([
           Animated.timing(this.state.width, { toValue: 0, duration: 0 }),
-          Animated.timing(this.state.right, { toValue: -30, duration: 0 }),
+          Animated.timing(this.state.right, { toValue: 0, duration: 0 }),
         ]),
       ]).start();
     }
     this.state.toggleMode = !this.state.toggleMode;
-  }
-  // Xoa Text
-  deleteText() {
-    this.setState({ value: "" });
-    this.toggleInputmode("");
   }
   // doi bang
   changeTable() {
@@ -163,7 +147,13 @@ export default class Table extends Component {
         (table) => table.status == "empty"
       );
   }
-
+  // search table
+  searchTable(text) {
+    this.state.table = this.state.result.filter(
+      (table) => table.name.split(text).length > 1
+    );
+    this.setState({ value: text });
+  }
   // floating button
   animation = new Animated.Value(0);
 
@@ -293,7 +283,7 @@ export default class Table extends Component {
         </Modal>
         <View style={styles.overlayContainer}>
           <SearchBar
-            onChangeText={(text) => this.toggleInputmode(text)}
+            onChangeText={(text) => this.searchTable(text)}
             placeholder="Search"
             placeholderTextColor="#86939e"
             platform="android"
@@ -313,7 +303,10 @@ export default class Table extends Component {
                   image={Background}
                   item={item}
                   onPress={() =>
-                    navigation.navigate("EditTable", { editTable: this.editTable, item: item })
+                    navigation.navigate("EditTable", {
+                      editTable: this.editTable,
+                      item: item,
+                    })
                   }
                   width={this.state.width}
                   right={this.state.right}
@@ -323,7 +316,7 @@ export default class Table extends Component {
               );
             }}
             ItemSeparatorComponent={Separator}
-            // ListHeaderComponent={() => <Separator />}
+            ListHeaderComponent={() => <Separator />}
             ListFooterComponent={() => <Separator />}
           />
         </View>
@@ -347,7 +340,12 @@ export default class Table extends Component {
             </Animated.View>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => this.toggleEditMode()}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.toggleEditMode();
+              this.toggleMenu();
+            }}
+          >
             <Animated.View
               style={[styles.button, styles.floating, editStyle, opacity]}
             >
