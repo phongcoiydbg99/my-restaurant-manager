@@ -56,7 +56,7 @@ export default () => {
             headerRight: (props) => <LogoTitle {...props} />,
             headerLeft: () => (
               <TouchableOpacity
-                  //style={styles.btnBack}
+                  style={styles.btnBack}
                   onPress = {() => navigation.pop()}
                 >
                 <Ionicons name="ios-arrow-back" size={30} color="white" />
@@ -93,9 +93,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   btnBack: {
-    position: "absolute",
-    top: 15,
-    left: 20,
+    marginLeft: 15,
   },
 });
 

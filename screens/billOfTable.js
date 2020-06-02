@@ -18,45 +18,86 @@ import { overlay, Dialog } from "react-native-paper";
 import { List, ListItem, SearchBar } from 'react-native-elements';
 import table from "../data/table";
 import { RowTable, Separator } from "../components/RowTable";
+import { and } from "react-native-reanimated";
+import { SERVER_ID } from "../config/properties";
+import axios from "axios";
 
 export default class BillOfTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: table,
+      result: [],
+      table: [],
+      search: '',
+      toggleInput: false,
     };
   }
 
-  toggleInputmode(text) {
-    console.log(text);
-    this.setState({ value: text });
-    if (text) {
-      this.state.toggleInput = true;
-    } else this.state.toggleInput = false;
-    if (this.state.toggleInput) {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 24, duration: 0 }),
-        ]),
-      ]).start();
-    } else {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(this.state.btWidth, { toValue: 0, duration: 0 }),
-        ]),
-      ]).start();
-    }
+  componentDidMount() {
+    const { navigation } = this.props;
+    const { route } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("focus", () => {
+      // if (navigation.params != undefined ) 
+      console.log(route.parmas);
+    });
+    axios.get(`${SERVER_ID}table/all`).then((res) => {
+      this.setState({ result: res.data });
+      this.setState({ table: res.data });
+    });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newTable !== this.state.newTable) {
+      axios.get(`${SERVER_ID}table/all`).then((res) => {
+        this.setState({ table: res.data });
+        this.setState({ result: res.data });
+      });
+    } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
+  }
+  componentWillUnmount() {
+    // Remove the event listener before removing the screen from the stack
+    this.focusListener
+  }
+  saveNewData(data) {
+    //ham nay se duoc invoke khi save du lieu moi
+    axios
+      .post(`${SERVER_ID}table/add`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newTable: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
 
-  render() {
-    const { navigation } = this.props;
-    this.state.result = table.filter((table) => table.status == "Live");
+  updateSearch = search => {
+    const newData = this.state.table.filter((item) => {
+      const itemData = `${item.fullName.toUpperCase()}`;
+      const textData = search.toUpperCase();
 
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      result: newData,
+      search,
+    });
+    if(search == '') this.state.result = this.state.table.filter((item) => item.status == "full");
+    else this.state.result = this.state.data;
+
+  };
+
+
+  render() {
+    const { search } = this.state;
+    const { navigation } = this.props;
+    this.state.result = this.state.result.filter((item) => item.status == "full")
+    console.log(this.state.result.filter((item) => item.status == "full"));
+    console.log(search);
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={{...styles.overlayContainer}}>
           <SearchBar 
-                  onChangeText={() => {}}
+                  onChangeText={this.updateSearch}
+                  value={search}
                   placeholder='Search'
                   placeholderTextColor='#86939e'
                   platform = "android"
@@ -68,16 +109,16 @@ export default class BillOfTable extends Component {
             {/* Danh sách bàn đang live */}
             <View style={styles.contentContainer}>
             <View style={styles.content}>
-            <View style={{ width: "20%" }}>
-                  <Text style={styles.title}>ID</Text>
-                </View>
-                <View style={{ width: "25%" }}>
-                  <Text style={styles.title}>Table</Text>
-                </View>
-                <View style={{ width: "25%" }}>
-                  <Text style={styles.title}>People</Text>
+            <View style={{ width: "25%" }}>
+                  <Text style={styles.title}>Name</Text>
                 </View>
                 <View style={{ width: "20%" }}>
+                  <Text style={styles.title}>Seats</Text>
+                </View>
+                <View style={{ width: "30%" }}>
+                  <Text style={styles.title}>price</Text>
+                </View>
+                <View style={{ width: "15%" }}>
                   <Text style={styles.subtitle}>Status</Text>
                 </View>
               </View>
@@ -85,12 +126,12 @@ export default class BillOfTable extends Component {
               <FlatList
                       data={this.state.result}
                       renderItem={({ item }) =>  <RowTable item={item} 
-                      onPress = {() => navigation.navigate('bill')}/>}
+                      onPress = {() => navigation.navigate('bill', {table: item})}/>}
                       ItemSeparatorComponent={Separator}
                       ListHeaderComponent={() => <Separator />}
                       ListFooterComponent={() => <Separator />}
                       keyExtractor={(item) => {
-                        return `${item.id}`;} }
+                        return `${item.name}`;} }
                     />
 
 

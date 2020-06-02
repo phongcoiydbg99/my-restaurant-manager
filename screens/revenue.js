@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
 import dataBill from "../data/bill"
 import { AntDesign } from '@expo/vector-icons'; 
+import {imgFavoriteFood} from '../assets/eat.png'
 
 export default ({navigation}) => (
   <ImageBackground source={Background} style={styles.container}>
@@ -35,6 +36,9 @@ export default ({navigation}) => (
           <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
             <View>
               <Text style={styles.title}>Favorite Food</Text>
+              <View style={{backgroundColor: '#FF0000', borderWidth:1, borderRadius: 50, width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                <Image source={imgFavoriteFood} style={{size: 24,}}/>
+              </View>
             </View>
           </TouchableOpacity>
         </View>

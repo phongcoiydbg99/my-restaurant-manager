@@ -13,18 +13,72 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import dataBill from "../data/bill"
-import table from "../data/table";
+import { SERVER_ID } from "../config/properties";
+import axios from "axios";
 
 export default class Bill extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: table,
+      result: [],
+      detail: [],
+      table: [],
     };
   }
-  render() {
+
+  componentDidMount() {
     const { navigation } = this.props;
+    const { route } = this.props;
+    const tableInfo = route.params.table;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("focus", () => {
+      // if (navigation.params != undefined ) 
+      console.log(route.parmas);
+    });
+    axios.get(`${SERVER_ID}table_dish/table/${tableInfo.name}`).then((res) => {
+      this.setState({ result: res.data });
+      this.setState({ table: res.data });
+    });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { route } = this.props;
+    const tableInfo = route.params.table;
+    if (prevState.newTable !== this.state.newTable) {
+      axios.get(`${SERVER_ID}table_dish/table/${tableInfo.name}`).then((res) => {
+        this.setState({ table: res.data });
+        this.setState({ result: res.data });
+      });
+    } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
+  }
+  componentWillUnmount() {
+    // Remove the event listener before removing the screen from the stack
+    this.focusListener
+  }
+  saveNewData(data) {
+    //ham nay se duoc invoke khi save du lieu moi
+    const { route } = this.props;
+    const tableInfo = route.params.table;
+    axios
+      .post(`${SERVER_ID}table_dish/table/${tableInfo.name}`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newTable: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
+  }
+
+  render() {
+    const { navigation, route} = this.props;
+    const tableInfo = route.params.table;
+    var total = '';
+    console.log(this.state.result.filter((item) => {
+      total = parseInt(total + item.id.dish.pirce * item.call_number);
+    }));
+
+    // console.log(this.state.table.filter((item) => {
+    //   item.id.table.name == 'ban17'
+    // }));
+    
     return(
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
@@ -34,8 +88,8 @@ export default class Bill extends Component {
               <View style={styles.billTitle}>
                 <Text style={styles.textBillTitle}>GB Restaurant</Text>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.textTableName}>name</Text>
-                  <Text style={styles.textMaHoaDon}>ma hoa don</Text>
+                  <Text style={styles.textTableName}>{JSON.stringify(tableInfo.fullName, null, 2)}</Text>
+                  <Text style={styles.textMaHoaDon}>{JSON.stringify(tableInfo.reserve_time, null, 2)}</Text>
                 </View>       
               </View>
 
@@ -57,15 +111,16 @@ export default class Bill extends Component {
 
                 <View style={{height: ((HIGHT - 280)/2),}}>
                   <FlatList
-                    data={dataBill}
+                    data={this.state.result}
                     renderItem={({ item }) => <Order item={item} />}
                     keyExtractor={(item) => {
-                      return `${item.id}`;} }
+                      return `${item.id.dish.name}`;} }
                   />
                 </View>
 
                 <View style={styles.totalView}>
                   <Text style={{fontSize: 25, color: '#fff'}}>Total</Text>
+                  <Text style={{fontSize: 20, color: '#fff'}}>{total}đ</Text>
                 </View>
               </View>
             </View> 
@@ -181,16 +236,16 @@ const styles = StyleSheet.create({
 export const Order = ({ item }) => (
   <View style={{flexDirection: 'row',}}>
     <View>
-      <Text style={styles.billTable}>{item.name}</Text>
+      <Text style={styles.billTable}>{item.id.dish.fullName}</Text>
     </View>
     <View>
-      <Text style={styles.billTable}>{item.price}$</Text>
+      <Text style={styles.billTable}>{item.id.dish.pirce}đ</Text>
     </View>
     <View>
-      <Text style={styles.billTable}>{item.Amount}</Text>
+      <Text style={styles.billTable}>{item.call_number}</Text>
     </View>
     <View>
-      <Text style={styles.billTable}>{item.Total}$</Text>
+      <Text style={styles.billTable}>{item.id.dish.pirce * item.call_number}đ</Text>
     </View>
   </View>
 
