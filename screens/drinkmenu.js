@@ -53,7 +53,7 @@ export default class drinkmenu extends Component {
   }
   componentDidMount() {
     axios
-      .get(`${SERVER_ID}dish/category/MainCourse`)
+      .get(`${SERVER_ID}dish/category/Drink`)
       .then((res) => {
         this.setState({ result: res.data});
       });
@@ -62,8 +62,8 @@ export default class drinkmenu extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.newDrink !== this.state.newDrink) {
       axios
-        .get(`${SERVER_ID}dish/category/MainCourse`)
-        .then((res) => this.setState({ result: res }));
+        .get(`${SERVER_ID}dish/category/Drink`)
+        .then((res) => this.setState({ result: res.data }));
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 

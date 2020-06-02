@@ -125,7 +125,7 @@ export default class AddTable extends React.Component {
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
-          <View style={{ paddingTop: 15, marginLeft: 10 }}>
+          <View>
             <TouchableOpacity
               style={styles.btnBack}
               onPress={() => navigation.pop()}
@@ -137,6 +137,7 @@ export default class AddTable extends React.Component {
             placeholder="Name"
             label="Name"
             value={this.state.name}
+            inputStyle={styles.inputstyle}
             labelStyle={styles.labelStyle}
             onChangeText={(text) => this.setState({ name: text })}
           />
@@ -145,6 +146,7 @@ export default class AddTable extends React.Component {
             label="fullName"
             value={this.state.fullName}
             labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
             onChangeText={(text) => this.setState({ fullName: text })}
           />
           <Input
@@ -152,6 +154,7 @@ export default class AddTable extends React.Component {
             label="chairNum"
             value={this.state.chairNum.toString()}
             labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
             keyboardType="numeric"
             onChangeText={(text) => this.setState({ chairNum: text })}
           />
@@ -174,6 +177,7 @@ export default class AddTable extends React.Component {
             placeholder="price"
             label="price"
             labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
             keyboardType="numeric"
             onChangeText={(text) => this.setState({ price: text })}
           />
@@ -286,6 +290,8 @@ const styles = StyleSheet.create({
   },
   btnBack: {
     margin: 10,
+    padding: 15,
+    width:50,
   },
   input: {
     width: "60%",

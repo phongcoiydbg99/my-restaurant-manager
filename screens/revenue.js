@@ -15,7 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
 import dataBill from "../data/bill"
 import { AntDesign } from '@expo/vector-icons'; 
-import {imgFavoriteFood} from '../assets/eat.png'
+import { imgFavoriteFood } from "../assets/Backgr-Login.jpg";
 
 export default ({navigation}) => (
   <ImageBackground source={Background} style={styles.container}>

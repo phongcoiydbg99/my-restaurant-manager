@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 5,
     alignItems: "center",
     backgroundColor: "#fff",
     borderBottomWidth: 2,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: "#fff",
-    height: 4,
+    height: 2,
   },
   right: {
     alignItems: "flex-end",
@@ -79,46 +79,14 @@ export default class Row extends React.Component {
   render() {
     return (
       <TouchableOpacity onPress={console.log("h")} style={styles.container}>
-        <Animated.View
-          style={{
-            width: this.props.width,
-            // marginLeft: this.props.right,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-around",
-          }}
-        >
-          <TouchableOpacity onPress={this.props.onPress}>
-            <MaterialIcons name="edit" size={24} color="orange" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({ check: true });
-              this.props.table.deleteTable(
-                this.props.item.name,
-                !this.state.check
-              );
-            }}
-            style={{
-              marginLeft: 20,
-              marginRight: 20,
-            }}
-          >
-            <MaterialCommunityIcons
-              name="delete-forever"
-              size={24}
-              color="red"
-            />
-          </TouchableOpacity>
-        </Animated.View>
         <View>
-          <Image source={this.props.image} style={styles.image} activeOpacity= '1' />
+          <Image source={this.props.image} style={styles.image} />
         </View>
         <View style={{ ...styles.content }}>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <View style={{ flexDirection: "row", width: "60%" }}>
+            <View style={{ flexDirection: "row", width: "55%" }}>
               <Text style={styles.label}>Name: </Text>
               <Text style={styles.title}> {this.props.item.fullName}</Text>
             </View>
@@ -140,7 +108,39 @@ export default class Row extends React.Component {
             <Text style={styles.subtitle}>{this.props.item.status}</Text>
           </View>
         </View>
-
+        <Animated.View
+          style={{
+            width: this.props.width,
+            marginLeft: -20,
+            marginRight: this.props.right,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity onPress={this.props.onPress}>
+            <MaterialIcons name="edit" size={35} color="orange" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ check: true });
+              this.props.table.deleteTable(
+                this.props.item.name,
+                !this.state.check
+              );
+            }}
+            style={{
+              marginLeft: 10,
+              marginRight: 20,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="delete-forever"
+              size={35}
+              color="red"
+            />
+          </TouchableOpacity>
+        </Animated.View>
         <View style={styles.right}>
           <Ionicons name="ios-arrow-forward" color="#666" size={20} />
         </View>

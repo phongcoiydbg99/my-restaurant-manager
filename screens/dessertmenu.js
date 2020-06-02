@@ -29,8 +29,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
+import { SERVER_ID } from "../config/properties";
+import axios from "axios";
 
-import dataMenu from "../data/menu";
 export default class dessertmenu extends Component {
   constructor(props){
     super(props);
@@ -40,12 +41,36 @@ export default class dessertmenu extends Component {
       toggleInput: false,
       value: "",
       sort: "All",
-      result: dataMenu.filter((dataMenu) => dataMenu.Species =="Dessert"),
+      result: [],
+      newDessert: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
       height: new Animated.Value(-30),
     };
+  }
+  componentDidMount() {
+    axios.get(`${SERVER_ID}dish/category/Dessert`).then((res) => {
+      this.setState({ result: res.data });
+    });
+    
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newDessert !== this.state.newDessert) {
+      axios
+        .get(`${SERVER_ID}dish/category/Dessert`)
+        .then((res) => this.setState({ result: res }));
+    } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
+  }
+
+  saveNewData() {
+    //ham nay se duoc invoke khi save du lieu moi
+    axios
+      .post(`${SERVER_ID}dish/add`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newDessert: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewDrink
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
@@ -161,7 +186,7 @@ export default class dessertmenu extends Component {
             <FlatList
               data={this.state.result}
               keyExtractor={(item) => {
-                return `${item.id}`;
+                return `${item.name}`;
               }}
               renderItem={({ item }) => {
                 return (

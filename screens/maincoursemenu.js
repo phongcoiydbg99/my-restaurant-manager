@@ -27,25 +27,54 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
+import { SERVER_ID } from "../config/properties";
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import dataMenu from "../data/menu";
+import axios from "axios";
+
 export default class maincoursemenu extends Component {
   constructor(props){
     super(props);
-    this.state ={
+    this.state = {
       modalVisible: false,
       toggleMode: false,
       toggleInput: false,
       value: "",
       sort: "All",
-      result: dataMenu.filter((dataMenu) => dataMenu.Species =="MainCourse"),
+      result: [],
+      newMain: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(-30),
       height: new Animated.Value(-30),
     };
+  }
+  componentDidMount() {
+    axios
+      .get(`${SERVER_ID}dish/category/MainCourse`)
+      .then((res) => {
+        this.setState({ result: res.data});
+      });
+    
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newMain !== this.state.newMain) {
+      axios
+        .get(`${SERVER_ID}dish/category/MainCourse`)
+        .then((res) => this.setState({ result: res.data }));
+    } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
+  }
+
+  saveNewData(data) {
+    //ham nay se duoc invoke khi save du lieu moi
+    axios
+      .post(`${SERVER_ID}dish/add`, data)
+      .then((res) => console.log(res))
+      .then(this.setState({ newDrink: data }));
+    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewDrink
+    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
   // chuyen doi che do nhap
   toggleInputmode(text) {
@@ -87,21 +116,7 @@ export default class maincoursemenu extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  // Xoa Text
-  deleteText() {
-    this.setState({ value: "" });
-    this.toggleInputmode("");
-  }
-  // doi bang
-  // changeTable() {
-  //   if(this.state.sort == 'All') this.state.result = table
-  //   else if (this.state.sort == 'Ready') this.state.result = table.filter((table) => table.status == "Ready");
-  //   else this.state.result = table.filter((table) => table.status == "Empty");
-  // }
-  // edit
-  edit(){
-    this.state.result.push(route.params.table);
-  }
+  
   render(){
     const { navigation } = this.props;
     return (
@@ -162,7 +177,7 @@ export default class maincoursemenu extends Component {
             <FlatList
               data={this.state.result}
               keyExtractor={(item) => {
-                return `${item.id}`;
+                return `${item.name}`;
               }}
               renderItem={({ item }) => {
                 return (

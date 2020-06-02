@@ -117,8 +117,8 @@ export default class Table extends Component {
     if (!this.state.toggleMode) {
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.width, { toValue: 70, duration: 0 }),
-          Animated.timing(this.state.right, { toValue: 0, duration: 0 }),
+          Animated.timing(this.state.width, { toValue: 60, duration: 0 }),
+          Animated.timing(this.state.right, { toValue: 30, duration: 0 }),
         ]),
       ]).start();
     } else {
@@ -355,9 +355,11 @@ export default class Table extends Component {
 
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("AddTable", { table: this });
-              // this.setState({ addmodalVisible: true });
               this.toggleMenu();
+              navigation.navigate("AddTable", { table: this });
+              this.toggleEditMode();
+              // this.setState({ addmodalVisible: true });
+              
             }}
           >
             <Animated.View
