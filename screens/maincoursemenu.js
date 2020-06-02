@@ -35,7 +35,7 @@ const { height: HEIGHT } = Dimensions.get("window");
 import axios from "axios";
 
 export default class maincoursemenu extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
@@ -52,12 +52,9 @@ export default class maincoursemenu extends Component {
     };
   }
   componentDidMount() {
-    axios
-      .get(`${SERVER_ID}dish/category/MainCourse`)
-      .then((res) => {
-        this.setState({ result: res.data});
-      });
-    
+    axios.get(`${SERVER_ID}dish/category/MainCourse`).then((res) => {
+      this.setState({ result: res.data });
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.newMain !== this.state.newMain) {
@@ -97,7 +94,7 @@ export default class maincoursemenu extends Component {
       ]).start();
     }
   }
-// chuyen doi giua cac che do
+  // chuyen doi giua cac che do
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
@@ -116,13 +113,23 @@ export default class maincoursemenu extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  
-  render(){
+
+  render() {
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={{ ...styles.overlayContainer, marginTop: 130 }}>
-          <View style={{ marginTop: 10 }}>
+          <SearchBar
+            onChangeText={(text) => this.searchTable(text)}
+            placeholder="Search"
+            placeholderTextColor="#86939e"
+            platform="android"
+            containerStyle={styles.searchBarContainer}
+            inputContainerStyle={styles.SearchBar}
+            placeholderTextColor={"#666"}
+            value={this.state.value}
+          />
+          {/* <View style={{ marginTop: 10 }}>
             <TouchableOpacity
               onPress={() => {
                 this.toggleEditMode();
@@ -146,60 +153,33 @@ export default class maincoursemenu extends Component {
                 }}
               />
             </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: 430,
+          </View> */}
+          <FlatList
+            data={this.state.result}
+            keyExtractor={(item) => {
+              return `${item.name}`;
             }}
-          >
-            <View style={{ ...styles.contentContainer, height: 40 }}>
-              <View style={styles.content}>
-                <View style={{ width: "10%" }}>
-                  <Text style={styles.title}>ID</Text>
-                </View>
-                <View style={{ width: "30%" }}>
-                  <Text style={styles.title}>Name</Text>
-                </View>
-                <View style={{ width: "15%" }}>
-                  <Text style={styles.title}>Price</Text>
-                </View>
-                <Animated.View
-                  style={{
-                    width: this.state.width,
-                    marginRight: this.state.right,
-                  }}
-                >
-                  <Text style={styles.subtitle}>Edit</Text>
-                </Animated.View>
-              </View>
-            </View>
-
-            <FlatList
-              data={this.state.result}
-              keyExtractor={(item) => {
-                return `${item.name}`;
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <MenuItem
-                    item={item}
-                    //onPress={() => navigation.push("EditTable", { table: item })}
-                    width={this.state.width}
-                    right={this.state.right}
-                    //height={this.state.height}
-                  />
-                );
-              }}
-              ItemSeparatorComponent={Separator}
-              ListHeaderComponent={() => <Separator />}
-              ListFooterComponent={() => <Separator />}
-            />
-          </View>
+            renderItem={({ item }) => {
+              return (
+                <MenuItem
+                  image={Background}
+                  item={item}
+                  //onPress={() => navigation.push("EditTable", { table: item })}
+                  width={this.state.width}
+                  right={this.state.right}
+                  //height={this.state.height}
+                />
+              );
+            }}
+            ItemSeparatorComponent={Separator}
+            ListHeaderComponent={() => <Separator />}
+            ListFooterComponent={() => <Separator />}
+          />
         </View>
       </ImageBackground>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -213,8 +193,8 @@ const styles = StyleSheet.create({
   overlayContainer: {
     width: WIDTH,
     height: HEIGHT,
-    //justifyContent: "center",
-    //alignItems: "center",
+    // justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   contentContainer: {
@@ -306,5 +286,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 5,
+  },
+  searchBarContainer: {
+    backgroundColor: "#fff",
+    height: 50,
+    borderRadius: 5,
+    //opacity: .5,
+  },
+  SearchBar: {
+    height: 30,
   },
 });

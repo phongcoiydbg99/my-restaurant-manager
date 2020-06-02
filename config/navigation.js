@@ -9,6 +9,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  TouchableHighlight, 
   SafeAreaView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -163,7 +164,7 @@ const AppTabsScreen = () => (
       name="Statistical"
       component={ThongKeStackScreen}
       options={{
-        tabBarLabel: "ThongKe",
+        tabBarLabel: "Revenue",
         tabBarIcon: (props) => (
           <MaterialCommunityIcons
             name="chart-areaspline"
@@ -220,14 +221,16 @@ const CustomDrawerContent = (props) => {
         </View>
       </ImageBackground>
       <DrawerItemList {...props} />
-      <TouchableOpacity
+      <View
+        style={{ backgroundColor: "#ececec", height: 2, marginHorizontal: 10 }}
+      ></View>
+      <TouchableHighlight
         onPress={() => signOut()}
-        style={{ alignItems: "center", justifyContent: "center" }}
+        style={{ marginHorizontal: 10, borderRadius:5, marginTop:5 }}
+        underlayColor={"orange"}
       >
-        <Text style={{ padding: 10, backgroundColor: "#00ccff", borderRadius: 10 }}>
-          Sign Out
-        </Text>
-      </TouchableOpacity>
+        <Text style={{ paddingVertical: 15, paddingHorizontal: 10 }}>Sign Out</Text>
+      </TouchableHighlight>
     </DrawerContentScrollView>
   );
 };

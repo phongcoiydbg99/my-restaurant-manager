@@ -420,14 +420,13 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     backgroundColor: "#fff",
-    height: 40,
+    height: 50,
+    borderRadius: 5,
     //opacity: .5,
-    borderBottomColor: "#707070",
-    borderBottomWidth: 1,
     marginTop: 70,
   },
   SearchBar: {
-    height: 20,
+    height: 30,
   },
   modalView: {
     backgroundColor: "white",
