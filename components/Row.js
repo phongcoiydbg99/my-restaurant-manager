@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: "center",
     backgroundColor: "#fff",
-    borderBottomWidth: 2,
-    borderBottomColor: "#ececec",
+    // borderBottomWidth: 2,
+    // borderBottomColor: "#ececec",
     // elevation: 1,
   },
   image: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   separator: {
-    backgroundColor: "#fff",
+    backgroundColor: "#ececec",
     height: 2,
   },
   right: {

@@ -147,14 +147,19 @@ export default class drinkmenu extends Component {
   render() {
     const { navigation } = this.props;
     return (
-      <ImageBackground
-        source={Background}
-        style={styles.container}
-      >
-        <View
-          style={{ ...styles.overlayContainer, marginTop: 130 }}
-        >
-          <View style={{ marginTop: 10 }}>
+      <ImageBackground source={Background} style={styles.container}>
+        <View style={{ ...styles.overlayContainer, marginTop: 130 }}>
+          <SearchBar
+            onChangeText={(text) => this.searchTable(text)}
+            placeholder="Search"
+            placeholderTextColor="#86939e"
+            platform="android"
+            containerStyle={styles.searchBarContainer}
+            inputContainerStyle={styles.SearchBar}
+            placeholderTextColor={"#666"}
+            value={this.state.value}
+          />
+          {/* <View style={{ marginTop: 10 }}>
             <TouchableOpacity
               onPress={() => {
                 this.toggleEditMode();
@@ -178,56 +183,28 @@ export default class drinkmenu extends Component {
                 }}
               />
             </TouchableOpacity>
-          </View>
-          {/* <View
-            style={{ ...styles.contentContainer, height: 40 }}
-          >
-            <View style={styles.content}>
-              <View style={{ width: "10%" }}>
-                <Text style={styles.title}>Name </Text>
-              </View>
-              <View style={{ width: "30%" }}>
-                <Text style={styles.title}>Gia</Text>
-              </View>
-              <View style={{ width: "15%" }}>
-                <Text style={styles.title}>ta</Text>
-              </View>
-              <Animated.View
-                style={{
-                  width: this.state.width,
-                  marginRight: this.state.right,
-                }}
-              >
-                <Text style={styles.subtitle}>Edit</Text>
-              </Animated.View>
-            </View>
           </View> */}
-          <View
-            style={{
-              height: 400,
+          <FlatList
+            data={this.state.result}
+            keyExtractor={(item) => {
+              return `${item.name}`;
             }}
-          >
-            <FlatList
-              data={this.state.result}
-              keyExtractor={(item) => {
-                return `${item.name}`;
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <MenuItem
-                    item={item}
-                    //onPress={() => navigation.push("EditTable", { table: item })}
-                    width={this.state.width}
-                    right={this.state.right}
-                    //height={this.state.height}
-                  />
-                );
-              }}
-              ItemSeparatorComponent={Separator}
-              ListHeaderComponent={() => <Separator />}
-              ListFooterComponent={() => <Separator />}
-            />
-          </View>
+            renderItem={({ item }) => {
+              return (
+                <MenuItem
+                  image={Background}
+                  item={item}
+                  //onPress={() => navigation.push("EditTable", { table: item })}
+                  width={this.state.width}
+                  right={this.state.right}
+                  //height={this.state.height}
+                />
+              );
+            }}
+            ItemSeparatorComponent={Separator}
+            ListHeaderComponent={() => <Separator />}
+            ListFooterComponent={() => <Separator />}
+          />
         </View>
       </ImageBackground>
     );
@@ -339,5 +316,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 5,
+  },
+  searchBarContainer: {
+    backgroundColor: "#fff",
+    height: 50,
+    borderRadius: 5,
+    //opacity: .5,
+  },
+  SearchBar: {
+    height: 30,
   },
 });

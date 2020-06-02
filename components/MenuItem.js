@@ -22,12 +22,23 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
+    width: 400,
+    height: 300,
+    borderRadius: 15,
+    shadowColor: "red",
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 3.84,
+    elevation: 9,
   },
   image: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+    width: 350,
+    height: 200,
+    borderRadius: 10,
+    margin: 10,
   },
   content: {
     width: WIDTH - 40,
@@ -46,49 +57,41 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   separator: {
-    backgroundColor: "#ececec",
-    height: 1,
+    // backgroundColor: "#ececec",
+    // height: 1,
+    padding: 5,
   },
   right: {
     alignItems: "flex-end",
     flex: 1,
   },
+  label: {
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "#3a3a3a",
+  },
+  sublabel: {
+    fontWeight: "bold",
+    color: "#666",
+    fontSize: 17,
+    marginTop: 2,
+  },
 });
 
-export const MenuItem = ({ item, onPress, width, right }) => (
-         <View style={styles.container} onPress={onPress}>
-           <View style={styles.content}>
-             <View style={{ width: "10%" }}>
-               <Text style={styles.title}>{item.name}</Text>
-             </View>
-             <View style={{ width: "30%" }}>
-               <Text style={styles.title}>{item.pirce}</Text>
-             </View>
-             <View style={{ width: "15%", paddingHorizontal: "5%" }}>
-               <Text style={styles.title}>{item.description}</Text>
-             </View>
-             <Animated.View
-               style={{
-                 width: width,
-                 marginRight: right,
-                 flexDirection: "row",
-                 alignItems: "flex-start",
-                 justifyContent: "space-between",
-               }}
-             >
-               <TouchableOpacity onPress={onPress}>
-                 <MaterialIcons name="edit" size={24} color="black" />
-               </TouchableOpacity>
-               <TouchableOpacity>
-                 <MaterialCommunityIcons
-                   name="delete-forever"
-                   size={24}
-                   color="black"
-                 />
-               </TouchableOpacity>
-             </Animated.View>
+export const MenuItem = ({ image, item, onPress, width, right }) => (
+         <TouchableOpacity style={styles.container} onPress={onPress}>
+           <View>
+             <Image source={image} style={styles.image} />
            </View>
-         </View>
+           <View style={{ flexDirection: "row" }}>
+             <Text style={styles.label}>Name: </Text>
+             <Text style={styles.title}>{item.fullName}</Text>
+           </View>
+           <View style={{ flexDirection: "row" }}>
+             <Text style={styles.label}>Price: </Text>
+             <Text style={styles.title}>{item.price}</Text>
+           </View>
+         </TouchableOpacity>
        );
 
 export const Separator = () => <View style={styles.separator} />;
