@@ -95,7 +95,7 @@ export default class Table extends Component {
       //chi update neu params thay doi
     ) {
        
-      
+      console.log('act:' + JSON.stringify(this.props.route.params.action));
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         
         //  this.toggleEditMode();
@@ -219,7 +219,7 @@ export default class Table extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <Response action={JSON.stringify(route.params.action)} />
+        
         <Modal
           animationType="fade"
           transparent={true}
@@ -276,6 +276,7 @@ export default class Table extends Component {
           </TouchableHighlight>
         </Modal>
         <View style={styles.overlayContainer}>
+           <Response action={route.params.action} />
           <SearchBar
             onChangeText={(text) => this.searchTable(text)}
             placeholder="Search"

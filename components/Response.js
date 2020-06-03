@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, StyleSheet} from 'react-native'
+import {View, Text, Animated, StyleSheet, Modal} from 'react-native'
 import {Icon} from 'react-native-elements'
 import * as Animatable from 'react-native-animatable'
 
@@ -14,14 +14,15 @@ export default class Response extends Component{
     }
     componentDidUpdate(prevProps, prevState){
         if(prevProps.action !== this.props.action){
-            console.log(this.props.action.name);
-            this.setState({show:true});
-            switch(this.props.action.name){
+            console.log("hahahaah: " + JSON.stringify(this.props.action));
+            let act = JSON.stringify(this.props.action)
+            
+            switch(act.name){
                 case 'formError':
-                    this.setState({msg: "Field must not be null !"});
+                    this.setState({msg: "Field must not be null !", show: true});
                     break;
                 case 'postTable' :
-                    this.setState({msg: "Add table successful !"});
+                    this.setState({msg: "Add table successful !", show: true});
                     break;
                 default:
                     break;
@@ -31,27 +32,29 @@ export default class Response extends Component{
     }
     render(){
         return(
-            <View style={styles.container}>
-                {this.state.show &&
-                    <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate'
+            
+                <Modal visible={this.state.show} transparent={true}>
+                    <View style={styles.modalView}>
+                    <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate' onAnimationBegin={()=> console.log('started')} 
                             iterationCount={2} duration={1500} onAnimationEnd={()=> this.setState({show:false})}> 
                              <Text style={styles.text}>{this.state.msg}</Text>
                              <Icon reverse type='font-awesome' name='check-circle-o' color='gold' size={10} containerStyle={{marginLeft:-10}}/>
                     </Animatable.View>
-                }
-                 
-            </View>
+                    </View>
+                </Modal>
+            
             
         )
     }
 }
 const styles = StyleSheet.create({
-    container: {
+    modalView: {
         position: 'absolute',
-        width:150,
+        width:250,
         height: 50,
         bottom:100,
-        right:200
+        right:100,
+        borderRadius:10
     },
     animation:{
         height:'100%',
