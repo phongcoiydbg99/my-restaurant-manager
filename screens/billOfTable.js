@@ -17,7 +17,8 @@ import Background from "../assets/Backgr-Login.jpg";
 import { overlay, Dialog } from "react-native-paper";
 import { List, ListItem, SearchBar } from 'react-native-elements';
 import table from "../data/table";
-import { RowTable, Separator } from "../components/RowTable";
+import { RowTable } from "../components/RowTable";
+import { RowBill, Separator } from "../components/RowBill";
 import { and } from "react-native-reanimated";
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
@@ -28,8 +29,10 @@ export default class BillOfTable extends Component {
     this.state = {
       result: [],
       table: [],
+      totalPrice: [],
+      newTable: [],
+      onUpdate: false,
       search: '',
-      toggleInput: false,
     };
   }
 
@@ -39,16 +42,20 @@ export default class BillOfTable extends Component {
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
-      // if (navigation.params != undefined ) 
+      if (navigation.params != undefined ) 
       console.log(route.parmas);
     });
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ table: res.data });
     });
+    axios.get(`${SERVER_ID}table_dish/all`).then((res) => {
+      this.setState({ totalPrice: res.data });
+    });
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.newTable !== this.state.newTable) {
+    this.state.newTable = this.state.table;
+    if (prevState.newTable !== this.state.newTable && this.state.onUpdate) {
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         this.setState({ table: res.data });
         this.setState({ result: res.data });
@@ -73,7 +80,7 @@ export default class BillOfTable extends Component {
     const newData = this.state.table.filter((item) => {
       const itemData = `${item.fullName.toUpperCase()}`;
       const textData = search.toUpperCase();
-
+      
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
@@ -90,8 +97,19 @@ export default class BillOfTable extends Component {
     const { search } = this.state;
     const { navigation } = this.props;
     this.state.result = this.state.result.filter((item) => item.status == "full")
-    console.log(this.state.result.filter((item) => item.status == "full"));
-    console.log(search);
+    this.state.result.filter((item) => {
+      const temp = item.name;
+      var t_price = 0;
+      this.state.totalPrice.filter((item1) => {
+        //console.log(item1.id.table.name == temp);
+        if(item1.id.table.name == temp){
+          t_price = t_price + item1.id.dish.pirce * item1.call_number;
+          //console.log(t_price);
+        }
+      });
+      item.price = t_price;
+    })
+    
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={{...styles.overlayContainer}}>
@@ -103,11 +121,11 @@ export default class BillOfTable extends Component {
                   platform = "android"
                   containerStyle={styles.searchBarContainer}
                   inputContainerStyle={styles.SearchBar}
-                  placeholderTextColor={'#000'}
+                  placeholderTextColor={"#666"}
                   />
 
             {/* Danh sách bàn đang live */}
-            <View style={styles.contentContainer}>
+            {/* <View style={styles.contentContainer}>
             <View style={styles.content}>
             <View style={{ width: "25%" }}>
                   <Text style={styles.title}>Name</Text>
@@ -122,10 +140,10 @@ export default class BillOfTable extends Component {
                   <Text style={styles.subtitle}>Status</Text>
                 </View>
               </View>
-              </View>
+              </View> */}
               <FlatList
                       data={this.state.result}
-                      renderItem={({ item }) =>  <RowTable item={item} 
+                      renderItem={({ item }) =>  <RowBill item={item} 
                       onPress = {() => navigation.navigate('bill', {table: item})}/>}
                       ItemSeparatorComponent={Separator}
                       ListHeaderComponent={() => <Separator />}
@@ -171,12 +189,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: 40,
     //opacity: .5,
-    borderColor: "#707070",
-    borderWidth: 1,
-    borderRadius: 10,
-    marginLeft: 40,
-    marginRight: 40,
-    marginTop: 85,
+    borderBottomColor: "#707070",
+    borderBottomWidth: 1,
+    marginTop: 70,
   },
   SearchBar: {
     height: 20,
