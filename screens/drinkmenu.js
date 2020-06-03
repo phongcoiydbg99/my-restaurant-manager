@@ -60,23 +60,14 @@ export default class drinkmenu extends Component {
     
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.newDrink !== this.state.newDrink) {
+    if (prevProps.route.params !== this.props.route.params) {
       axios
         .get(`${SERVER_ID}dish/category/Drink`)
         .then((res) => this.setState({ result: res.data }));
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 
-  saveNewData() {
-    //ham nay se duoc invoke khi save du lieu moi
-    axios
-      .post(`${SERVER_ID}dish/add`, data)
-      .then((res) => console.log(res))
-      .then(this.setState({ newDrink: data }));
-    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewDrink
-    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
-  }
-  // chuyen doi che do nhap
+  
   toggleInputmode(text) {
     console.log(text);
     this.setState({ value: text });
@@ -186,9 +177,7 @@ export default class drinkmenu extends Component {
           </View> */}
           <FlatList
             data={this.state.result}
-            keyExtractor={(item) => {
-              return `${item.name}`;
-            }}
+            keyExtractor={item=> item.name}
             renderItem={({ item }) => {
               return (
                 <MenuItem
