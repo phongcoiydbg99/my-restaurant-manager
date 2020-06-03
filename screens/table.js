@@ -28,13 +28,13 @@ import { Input } from "react-native-elements";
 
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-
+import Response from "../components/Response"
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-
+import {getCurrentDateTime} from "../config/util"
 import { SERVER_ID } from "../config/properties";
 
 import Background from "../assets/Backgr-Login.jpg";
@@ -59,13 +59,11 @@ export default class Table extends Component {
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(0),
-      delete: "",
-      add: "",
-      edit: "",
+      
     };
   }
   editTable = (data) => {
-    this.setState(data);
+    
   };
   deleteTable(name, check) {
     if (check)
@@ -85,34 +83,25 @@ export default class Table extends Component {
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ table: res.data });
+      console.log(res.data);
     });
   }
   componentDidUpdate(prevProps, prevState) {
     if (
-      "" != this.state.add ||
-      prevState.delete != this.state.delete ||
-      "" != this.state.edit
+      prevProps.route.params !== this.props.route.params
+      //param nay chua thong tin table moi tu add_table
     ) {
       axios.get(`${SERVER_ID}table/all`).then((res) => {
-        if (prevState.delete != this.state.delete || "" != this.state.edit)
-          this.toggleEditMode();
+        
+        //  this.toggleEditMode();
         this.setState({ table: res.data });
         this.setState({ result: res.data });
         this.setState({ add: "" });
         this.setState({ edit: "" });
       });
-    } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
+    } //chi  update lai UI khi props.route.param nhan value moi (sau moi lan them do an moi)
   }
-  saveNewData(data) {
-    //ham nay se duoc invoke khi save du lieu moi
-    axios
-      .post(`${SERVER_ID}table/add`, data)
-      // .then((res) => console.log(res))
-      .then(this.setState({ add: data.name }));
-    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
-    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
-  }
-  // chuyen doi giua cac che do
+ 
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
@@ -167,9 +156,9 @@ export default class Table extends Component {
 
     this.open = !this.open;
   };
-
+  
   render() {
-    const { navigation } = this.props;
+    const { navigation,route } = this.props;
     const sortStyle = {
       transform: [
         {
@@ -226,6 +215,7 @@ export default class Table extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
+        <Response action={route.params.action} />
         <Modal
           animationType="fade"
           transparent={true}
@@ -294,9 +284,7 @@ export default class Table extends Component {
           />
           <FlatList
             data={this.state.table}
-            keyExtractor={(item) => {
-              return `${item.name}`;
-            }}
+            keyExtractor={item=> item.name}
             renderItem={({ item, index }) => {
               return (
                 <Row
