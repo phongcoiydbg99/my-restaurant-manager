@@ -33,7 +33,6 @@ export default () => {
       <Tab.Screen
         name="Table"
         component={Table}
-        initialParams= {{action:""}}
         options={{
           // headerShown: false,
           headerTitle: false,
