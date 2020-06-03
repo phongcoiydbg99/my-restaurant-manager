@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: "center",
     backgroundColor: "#fff",
-    // borderBottomWidth: 2,
-    // borderBottomColor: "#ececec",
     // elevation: 1,
   },
   image: {
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: "#ececec",
-    height: 2,
+    paddingVertical:2,
   },
   right: {
     alignItems: "flex-end",
