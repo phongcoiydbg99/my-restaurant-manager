@@ -67,13 +67,18 @@ export default class Bill extends Component {
     //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
   }
 
+  //thanh toan
+  paid(){
+    
+  }
+
   render() {
     const { navigation, route} = this.props;
     const tableInfo = route.params.table;
     var total = '';
-    console.log(this.state.result.filter((item) => {
+    this.state.result.filter((item) => {
       total = parseInt(total + item.id.dish.pirce * item.call_number);
-    }));
+    });
 
     // console.log(this.state.table.filter((item) => {
     //   item.id.table.name == 'ban17'
@@ -88,8 +93,8 @@ export default class Bill extends Component {
               <View style={styles.billTitle}>
                 <Text style={styles.textBillTitle}>GB Restaurant</Text>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.textTableName}>{JSON.stringify(tableInfo.fullName, null, 2)}</Text>
-                  <Text style={styles.textMaHoaDon}>{JSON.stringify(tableInfo.reserve_time, null, 2)}</Text>
+                  <Text style={styles.textTableName}>{tableInfo.fullName}</Text>
+                  <Text style={styles.textMaHoaDon}>{tableInfo.reserve_time}</Text>
                 </View>       
               </View>
 
@@ -121,6 +126,10 @@ export default class Bill extends Component {
                 <View style={styles.totalView}>
                   <Text style={{fontSize: 25, color: '#fff'}}>Total</Text>
                   <Text style={{fontSize: 20, color: '#fff'}}>{total}đ</Text>
+                  <TouchableOpacity
+                    onPress={() => alert('done!')}
+                  >
+                    <Text style={{fontSize: 25, color: '#fff'}}>Done!</Text></TouchableOpacity>
                 </View>
               </View>
             </View> 
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center', 
-    marginTop: 40,
+    // marginTop: 40,
   },
 });
 
