@@ -14,16 +14,17 @@ export default class Response extends Component{
     }
     componentDidUpdate(prevProps, prevState){
         if(prevProps.action !== this.props.action){
-            console.log("hahahaah: " + JSON.stringify(this.props.action));
-            let act = JSON.stringify(this.props.action)
-            
+            let act=this.props.action;
             switch(act.name){
                 case 'formError':
                     this.setState({msg: "Field must not be null !", show: true});
                     break;
                 case 'postTable' :
-                    this.setState({msg: "Add table successful !", show: true});
+                    this.setState({msg: act.msg, show: true});
                     break;
+                case 'putTable':
+                    this.setState({msg:act.msg, show: true});
+                     break;
                 default:
                     break;
             }
@@ -35,7 +36,7 @@ export default class Response extends Component{
             
                 <Modal visible={this.state.show} transparent={true}>
                     <View style={styles.modalView}>
-                    <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate' onAnimationBegin={()=> console.log('started')} 
+                    <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate'
                             iterationCount={2} duration={1500} onAnimationEnd={()=> this.setState({show:false})}> 
                              <Text style={styles.text}>{this.state.msg}</Text>
                              <Icon reverse type='font-awesome' name='check-circle-o' color='gold' size={10} containerStyle={{marginLeft:-10}}/>

@@ -47,7 +47,7 @@ export default class AddTable extends React.Component {
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       action:{},
-      
+      mode:""
       
     };
   }
@@ -55,7 +55,30 @@ export default class AddTable extends React.Component {
     YellowBox.ignoreWarnings([
       "Non-serializable values were found in the navigation state",
     ]);
+    console.log(this.props.route.params.action);
+    let act = this.props.route.params.action
+    let item = this.props.route.params.item
+    //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
+    console.log(item);console.log(act);
+      this.setState({mode:act.name,
+                     name:item.name, fullName:item.fullName,chairNum:item.chairNum,
+                     status: item.status, price: item.price, reserve_time:item.reserve_time,
+                   
+      },()=> console.log(this.state));
   }
+  // componentDidUpdate(prevProps,prevState){
+  //   if(prevProps.route.params !== this.props.route.params){
+  //     let act = JSON.stringify(this.props.route.params.action);
+  //     let item = JSON.stringify(this.props.route.params.item);
+      
+  //     this.setState({mode:act.name,
+  //                    name:item.name, fullName:item.fullName,chairNum:item.chairNum,
+  //                    status: item.status, price: item.price, reserve_time:item.reserve_time,
+                     
+  //     });
+  //     console.log(item);
+  //   }
+  // }
   toShortFormat = (date) => {
     var month_names = [
       "Jan",
@@ -138,21 +161,35 @@ export default class AddTable extends React.Component {
       };
       let newData = {}
       const { navigation, route } = this.props;
+      if(this.state.mode == 'addTable'){
+         //thuc hien post data
+        axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
+        console.log(res.data);
+        newData = {...newTable, action:{
+           name:'postTable',
+           date: getCurrentDateTime(),
+           msg:res.data
+        }}
+         }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+       navigation.navigate("Table",newData);//navigate ve table voi param
+        }).catch(err => console.log(err));
+      }else if(this.state.mode == "editTable"){//modify data
+        axios.put(`${SERVER_ID}table/modify/${this.state.name}`,newTable).then(res=>{
+          console.log(res.data);
+          newData = {...newTable, action:{
+             name:'putTable',
+             date: getCurrentDateTime(),
+             msg:res.data
+          }}
+           }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+         navigation.navigate("Table",newData);//navigate ve table voi param
+          }).catch(err => console.log(err));
+      }
       
-      //thuc hien post data
-      axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
-         console.log(res.data);
-         newData = {...newTable, action:{
-            name:'postTable',
-            date: getCurrentDateTime()
-         }}
-      }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
-        console.log(newData);
-        navigation.navigate("Table",newData);//navigate ve table voi param
-      }).catch(err => console.log(err));
     }
     
   };
+  
 
   render() {
     const { navigation } = this.props;
@@ -174,6 +211,7 @@ export default class AddTable extends React.Component {
             label="Name"
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
+            value={this.state.name}
             onChangeText={(text) => this.setState({ name: text })}
           />
           <Input
@@ -181,6 +219,7 @@ export default class AddTable extends React.Component {
             label="fullName"
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
+            value={this.state.fullName}
             onChangeText={(text) => this.setState({ fullName: text })}
           />
           <Input
@@ -261,7 +300,8 @@ export default class AddTable extends React.Component {
             isVisible={this.state.isTimePickerVisible}
             mode="time"
             onConfirm={this.handleConfirmTime}
-            onCancel={this.hideTimePicker}
+            onCancel={this.hideTimePicker
+            }
           />
           <View style={styles.elementForm}>
             <TouchableOpacity

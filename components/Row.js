@@ -16,7 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
-
+import {useNavigation} from "@react-navigation/native"
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -77,8 +77,9 @@ export default class Row extends React.Component {
     };
   }
   render() {
+    const {navigation} = this.props;
     return (
-      <TouchableOpacity onPress={console.log("h")} style={styles.container}>
+      <TouchableOpacity  style={styles.container}>
         <View>
           <Image source={this.props.image} style={styles.image} />
         </View>
@@ -124,10 +125,11 @@ export default class Row extends React.Component {
           <TouchableOpacity
             onPress={() => {
               this.setState({ check: true });
-              this.props.table.deleteTable(
-                this.props.item.name,
-                !this.state.check
-              );
+              axios.delete(`${SERVER_ID}table/delete/${this.props.item.name}`).then(res=>{
+                navigation.setParams(prevParams => ({...prevParams, action:{
+                  ...prevParams.action,msg:res.data
+                }}))
+              })//delete table
             }}
             style={{
               marginLeft: 10,

@@ -296,15 +296,18 @@ export default class Table extends Component {
                   image={Background}
                   item={item}
                   onPress={() =>
-                    navigation.navigate("EditTable", {
-                      editTable: this.editTable,
+                    navigation.navigate("AddTable", {
+                      action: {
+                        name: 'editTable',
+                        time: getCurrentDateTime()
+                      },
                       item: item,
                     })
                   }
                   width={this.state.width}
                   right={this.state.right}
                   index={index}
-                  table={this}
+                  navigation={this.props.navigation}
                 />
               );
             }}
@@ -336,6 +339,8 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleEditMode();
+              
+              
               this.toggleMenu();
             }}
           >
@@ -349,7 +354,9 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleMenu();
-              navigation.navigate("AddTable", { table: this });
+              navigation.navigate("AddTable", { item:{
+                name:"", fullName:"", chairNum: "", status: "", price: "", reserve_time: ""
+              }, action:{name:'addTable' ,time: getCurrentDateTime()}});
               this.toggleEditMode();
               // this.setState({ addmodalVisible: true });
               
