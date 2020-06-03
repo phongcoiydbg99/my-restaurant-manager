@@ -61,8 +61,8 @@ export default class AddTable extends React.Component {
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
     console.log(item);console.log(act);
       this.setState({mode:act.name,
-                     name:item.name, fullName:item.fullName,chairNum:item.chairNum,
-                     status: item.status, price: item.price, reserve_time:item.reserve_time,
+                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
+                     status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
                    
       },()=> console.log(this.state));
   }
@@ -164,7 +164,7 @@ export default class AddTable extends React.Component {
       if(this.state.mode == 'addTable'){
          //thuc hien post data
         axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
-        console.log(res.data);
+        
         newData = {...newTable, action:{
            name:'postTable',
            date: getCurrentDateTime(),
@@ -175,7 +175,7 @@ export default class AddTable extends React.Component {
         }).catch(err => console.log(err));
       }else if(this.state.mode == "editTable"){//modify data
         axios.put(`${SERVER_ID}table/modify/${this.state.name}`,newTable).then(res=>{
-          console.log(res.data);
+          
           newData = {...newTable, action:{
              name:'putTable',
              date: getCurrentDateTime(),
@@ -225,6 +225,7 @@ export default class AddTable extends React.Component {
           <Input
             placeholder="chairNum"
             label="chairNum"
+            value={this.state.chairNum}
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
             keyboardType="numeric"
@@ -248,6 +249,7 @@ export default class AddTable extends React.Component {
           <Input
             placeholder="price"
             label="price"
+            value={this.state.price}
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
             keyboardType="numeric"

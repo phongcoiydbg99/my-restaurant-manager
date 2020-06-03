@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
 import {useNavigation} from "@react-navigation/native"
+import { getCurrentDateTime } from "../config/util";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -126,9 +127,7 @@ export default class Row extends React.Component {
             onPress={() => {
               this.setState({ check: true });
               axios.delete(`${SERVER_ID}table/delete/${this.props.item.name}`).then(res=>{
-                navigation.setParams(prevParams => ({...prevParams, action:{
-                  ...prevParams.action,msg:res.data
-                }}))
+                navigation.setParams({action:{name: 'deleteTable',msg:res.data,time:getCurrentDateTime() }});
               })//delete table
             }}
             style={{

@@ -19,12 +19,10 @@ export default class Response extends Component{
                 case 'formError':
                     this.setState({msg: "Field must not be null !", show: true});
                     break;
-                case 'postTable' :
+                case 'postTable' : case 'putTable': case 'deleteTable':
                     this.setState({msg: act.msg, show: true});
                     break;
-                case 'putTable':
-                    this.setState({msg:act.msg, show: true});
-                     break;
+                
                 default:
                     break;
             }

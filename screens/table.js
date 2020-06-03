@@ -62,16 +62,7 @@ export default class Table extends Component {
       
     };
   }
-  editTable = (data) => {
-    
-  };
-  deleteTable(name, check) {
-    if (check)
-      axios
-        .delete(`${SERVER_ID}table/delete/${name}`)
-        .then(this.setState({ delete: name }))
-        .then(console.log(name));
-  }
+  
   componentDidMount() {
     const { navigation, route } = this.props;
     //Adding an event listner om focus
