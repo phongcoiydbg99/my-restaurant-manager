@@ -21,14 +21,14 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-modal-datetime-picker";
 import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
-import Response from "../components/Response"
+
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
 import axios from "axios";
-import {getCurrentDateTime} from "../config/util"
+
 import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -45,11 +45,6 @@ export default class AddTable extends React.Component {
       time: "",
       isDatePickerVisible: false,
       isTimePickerVisible: false,
-      action:{
-        name:"",
-        date:""
-      },
-      
     };
   }
   componentDidMount() {
@@ -113,47 +108,26 @@ export default class AddTable extends React.Component {
     this.setState({ isTimePickerVisible: false });
   };
   addTable = () => {
-    //kiem tra xem cac input co null hay k, neu k null thi moi post data
-    if(this.state.name == "" || this.state.fullName == ""  || this.state.price == "" || this.state.status == ""
-       || this.state.chairNum == "" || this.state.time == "" || this.state.datetime == ""){
-      this.setState({action: {
-        name:'formError',
-        date: getCurrentDateTime()
-      }});//thong bao loi neu khong dien day du
-      console.log(getCurrentDateTime());
-    }else{
-      const reserve = this.state.datetime + " " + this.state.time;
-      const newTable = {
-        
-        name: this.state.name,
-        chairNum: this.state.chairNum,
-        status: this.state.status,
-        price: this.state.price,
-        fullName: this.state.fullName,
-        reserve_time: reserve,
-      };
-      const newData = {}
-      const { navigation, route } = this.props;
-      console.log(newTable);
-      //thuc hien post data
-      axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
-         console.log(res);
-         newData = {...newTable, action:{
-            name:'postTable',
-            date: getCurrentDateTime()
-         }}
-      }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
-        navigation.navigate("Table",newData);//navigate ve table voi param
-      }).catch(err => console.log(err));
-    }
-    
+    const reserve = this.state.datetime + " " + this.state.time;
+    const newTable = {
+      ...table,
+      name: this.state.name,
+      chairNum: this.state.chairNum,
+      status: this.state.status,
+      price: this.state.price,
+      fullName: this.state.fullName,
+      reserve_time: reserve,
+    };
+    const { navigation, route } = this.props;
+    console.log(route.params);
+    route.params.table.saveNewData(newTable);
+    navigation.goBack();
   };
 
   render() {
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <Response action={this.state.action}/>
         <View style={styles.overlayContainer}>
           <View>
             <TouchableOpacity
