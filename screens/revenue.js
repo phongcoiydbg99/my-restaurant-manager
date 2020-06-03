@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -11,56 +11,97 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import dataBill from "../data/bill"
 import { AntDesign } from '@expo/vector-icons'; 
 import { imgFavoriteFood } from "../assets/Backgr-Login.jpg";
+import avatar from '../assets/avatar.png'
+import Group from '../assets/Group.png'
+import outline from '../assets/outline.png'
+import saved from '../assets/saved.png'
+import { SERVER_ID } from "../config/properties";
+import axios from "axios";
 
-export default ({navigation}) => (
-  <ImageBackground source={Background} style={styles.container}>
-    <View style={styles.overlayContainer}>
-      <View style={styles.content}>
-        <View style={styles.subContentLeft}>
-            {/* custommer */}
-          <View style={styles.custommer}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.title}>Custommer</Text>
-              <View style={{backgroundColor: '#FF0000', borderWidth:1, borderRadius: 50, width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
-                <AntDesign name="user" size={24} color="black" />
+
+export default class revenue extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      result: [],
+      table: [],
+      revenueDay: [],
+    };
+  }
+  componentDidMount() {
+    const { navigation} = this.props;
+    const { route } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("focus", () => {
+      // if (navigation.params != undefined ) 
+      console.log(route.parmas);
+    });
+    axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
+      this.setState({ revenueDay: res.data });
+    });
+  }
+
+  render(){
+    const {navigation} = this.props;
+    console.log(this.state.revenueDay);
+    return(
+    <ImageBackground source={Background} style={styles.container}>
+      <View style={styles.overlayContainer}>
+        <View style={styles.content}>
+          <View style={styles.subContentLeft}>
+              {/* custommer */}
+            <View style={styles.custommer}>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Text style={styles.title}>Custommer</Text>
+                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#F20000', borderWidth:1, borderRadius: 50, borderColor: '#F20000', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                  <Image source={avatar} style={{width: 16, height: 16,}} />
+                </View>
+                
               </View>
-              
             </View>
+              {/* favoriteFood */}
+            <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Text style={styles.title}>Favorite Food</Text>
+                  <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#3BAA9E', borderWidth:1, borderRadius: 50, borderColor: '#3BAA9E', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                    <Image source={outline} style={{width: 16, height: 16,}} />
+                  </View>
+              </View>
+            </TouchableOpacity>
           </View>
-            {/* favoriteFood */}
-          <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
-            <View>
-              <Text style={styles.title}>Favorite Food</Text>
-              <View style={{backgroundColor: '#FF0000', borderWidth:1, borderRadius: 50, width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
-                <Image source={imgFavoriteFood} style={{size: 24,}}/>
+          <View style={styles.subContentRight}> 
+            {/* revenueStatistics */}
+            <TouchableOpacity activeOpacity={0.6} style={styles.revenueStatistics} onPress={() => navigation.navigate('revenueStatistics')}>
+              <View  style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Text style={styles.title}>One month</Text>
+                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#3F3CB4', borderWidth:1, borderRadius: 50, borderColor: '#3F3CB4', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                  <Image source={saved} style={{width: 16, height: 16,}} />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.subContentRight}> 
-          {/* revenueStatistics */}
-          <TouchableOpacity activeOpacity={0.6} style={styles.revenueStatistics} onPress={() => navigation.navigate('revenueStatistics')}>
-            <View>
-              <Text style={styles.title}>One month</Text>
               <Text style={styles.subTitle}>Revenue statistics</Text>
-            </View>
-          </TouchableOpacity>
-          {/* revenueInDay */}
-          <View style={styles.revenueInDay}>
-            <View>
-              <Text style={styles.title}>Revenue in day</Text>
+            </TouchableOpacity>
+            {/* revenueInDay */}
+            <View style={styles.revenueInDay}>
+              <View  style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Text style={styles.title}>Revenue in day</Text>
+                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#C26900', borderWidth:1, borderRadius: 50, borderColor: '#C26900', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                  <Image source={Group} style={{width: 16, height: 16,}} />
+                </View>
+              </View>
+                <Text>{JSON.stringify(this.state.revenueDay)}</Text>
             </View>
           </View>
-        </View>
-      </View> 
-    </View>
-  </ImageBackground>
-);
+        </View> 
+      </View>
+    </ImageBackground>
+)}};
 
 
 const { width: WIDTH} = Dimensions.get('window');
@@ -96,7 +137,7 @@ const styles = StyleSheet.create({
   },
   custommer: {
     position: 'relative',
-    backgroundColor: '#FF2C55',
+    backgroundColor: 'rgba(253, 57, 96, 0.82)',
     width: (WIDTH - 80)/2,
     height: 2*(HEIGHT - 325)/5,
     marginBottom: 25,
@@ -132,14 +173,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    fontSize: 20, 
+    fontSize: 18, 
     color: '#fff',
     marginTop: 40,
     marginLeft: 15,
     marginBottom: 5,
   },
   subTitle: {
-    fontSize: 20, 
+    fontSize: 18, 
     color: '#fff',
     marginLeft: 15,
   },

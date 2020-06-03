@@ -13,6 +13,7 @@ import {
   Keyboard,
   FlatList,
   Picker,
+  ScrollView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { YellowBox } from "react-native";
@@ -157,6 +158,7 @@ export default class AddTable extends React.Component {
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
+        <ScrollView>
         <Response action={this.state.action}/>
         <View style={styles.overlayContainer}>
           <View>
@@ -271,6 +273,7 @@ export default class AddTable extends React.Component {
           </View>
           {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
         </View>
+        </ScrollView>
       </ImageBackground>
     );
   }

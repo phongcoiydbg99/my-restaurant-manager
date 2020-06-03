@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -13,23 +13,35 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import dataBill from "../data/bill"
 
-export default () => (
-  <ImageBackground source={Background} style={styles.container}>
-    <View style={styles.overlayContainer}>
 
-        {/* hóa đơn */}
-        <View style={styles.billContainer}>
-          <View style={styles.billTitle}>
-            <Text style={styles.textBillTitle}>Favorite Food</Text>
-            
-          </View>
-         
-        </View> 
-    </View>
-  </ImageBackground>
-);
+export default class favoriteFood extends Component  {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      result: [],
+      table: [],
+      
+    };
+  }
+  render(){
+    const { navigation,route } = this.props;
+    return(
+      <ImageBackground source={Background} style={styles.container}>
+      <View style={styles.overlayContainer}>
+  
+          {/* hóa đơn */}
+          <View style={styles.billContainer}>
+            <View style={styles.billTitle}>
+              <Text style={styles.textBillTitle}>Favorite Food</Text>
+              
+            </View>
+           
+          </View> 
+      </View>
+    </ImageBackground>
+)}};
 
 
 const { width: WIDTH} = Dimensions.get('window');
