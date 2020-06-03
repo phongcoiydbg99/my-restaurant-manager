@@ -80,24 +80,28 @@ export default class Table extends Component {
     //   // if (navigation.params != undefined )
     //   console.log(route.parmas);
     // });
+    
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ table: res.data });
-      console.log(res.data);
+    
     });
   }
   componentDidUpdate(prevProps, prevState) {
+    
     if (
       prevProps.route.params !== this.props.route.params
       //param nay chua thong tin table moi tu add_table
+      //chi update neu params thay doi
     ) {
+       
+      
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         
         //  this.toggleEditMode();
         this.setState({ table: res.data });
         this.setState({ result: res.data });
-        this.setState({ add: "" });
-        this.setState({ edit: "" });
+        
       });
     } //chi  update lai UI khi props.route.param nhan value moi (sau moi lan them do an moi)
   }
@@ -215,7 +219,7 @@ export default class Table extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <Response action={route.params.action} />
+        <Response action={JSON.stringify(route.params.action)} />
         <Modal
           animationType="fade"
           transparent={true}

@@ -1,4 +1,5 @@
 export const getCurrentDateTime = ()=>{
+    //lay gio hien tai
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var today = new Date();
     var date = today.getDate()+ '-' + months[today.getMonth()] + '-' + today.getFullYear();

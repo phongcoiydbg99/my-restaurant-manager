@@ -45,10 +45,8 @@ export default class AddTable extends React.Component {
       time: "",
       isDatePickerVisible: false,
       isTimePickerVisible: false,
-      action:{
-        name:"",
-        date:""
-      },
+      action:{},
+      
       
     };
   }
@@ -115,15 +113,20 @@ export default class AddTable extends React.Component {
   addTable = () => {
     //kiem tra xem cac input co null hay k, neu k null thi moi post data
     if(this.state.name == "" || this.state.fullName == ""  || this.state.price == "" || this.state.status == ""
-       || this.state.chairNum == "" || this.state.time == "" || this.state.datetime == ""){
-      this.setState({action: {
-        name:'formError',
-        date: getCurrentDateTime()
-      }});//thong bao loi neu khong dien day du
-      console.log(getCurrentDateTime());
+       || this.state.chairNum == ""){
+      this.setState(prevState=>({
+          ...prevState,
+          action:{
+            ...prevState.action,
+            name:'formError',
+            date: getCurrentDateTime()
+          }
+      }),()=>console.log(this.state));
+      //this.setState({action:'formError',actionTime:getCurrentDateTime()});
+      
     }else{
       const reserve = this.state.datetime + " " + this.state.time;
-      const newTable = {
+      let newTable = {
         
         name: this.state.name,
         chairNum: this.state.chairNum,
@@ -132,17 +135,18 @@ export default class AddTable extends React.Component {
         fullName: this.state.fullName,
         reserve_time: reserve,
       };
-      const newData = {}
+      let newData = {}
       const { navigation, route } = this.props;
-      console.log(newTable);
+      
       //thuc hien post data
       axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
-         console.log(res);
+         console.log(res.data);
          newData = {...newTable, action:{
             name:'postTable',
             date: getCurrentDateTime()
          }}
       }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+        console.log(newData);
         navigation.navigate("Table",newData);//navigate ve table voi param
       }).catch(err => console.log(err));
     }
@@ -158,7 +162,7 @@ export default class AddTable extends React.Component {
           <View>
             <TouchableOpacity
               style={styles.btnBack}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Table")}
             >
               <Ionicons name="ios-arrow-back" size={30} color="white" />
             </TouchableOpacity>

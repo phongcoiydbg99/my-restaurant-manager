@@ -14,15 +14,19 @@ export default class Response extends Component{
     }
     componentDidUpdate(prevProps, prevState){
         if(prevProps.action !== this.props.action){
+            console.log(this.props.action.name);
             this.setState({show:true});
             switch(this.props.action.name){
-                case "formError":
+                case 'formError':
                     this.setState({msg: "Field must not be null !"});
-                case "postTable" :
+                    break;
+                case 'postTable' :
                     this.setState({msg: "Add table successful !"});
+                    break;
                 default:
                     break;
             }
+            
         }
     }
     render(){
@@ -30,7 +34,7 @@ export default class Response extends Component{
             <View style={styles.container}>
                 {this.state.show &&
                     <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate'
-                            iterationCount={2} duration={1000} onAnimationEnd={()=> this.setState({show:false})}> 
+                            iterationCount={2} duration={1500} onAnimationEnd={()=> this.setState({show:false})}> 
                              <Text style={styles.text}>{this.state.msg}</Text>
                              <Icon reverse type='font-awesome' name='check-circle-o' color='gold' size={10} containerStyle={{marginLeft:-10}}/>
                     </Animatable.View>
