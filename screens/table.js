@@ -154,7 +154,19 @@ export default class Table extends Component {
   
   render() {
     const { navigation,route } = this.props;
-    const sortStyle = {
+    const orderStyle = {
+      transform: [
+        {
+          scale: this.animation,
+        },
+        {
+          translateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -260],
+          }),
+        },
+      ],
+    };const sortStyle = {
       transform: [
         {
           scale: this.animation,
@@ -319,6 +331,19 @@ export default class Table extends Component {
               
               this.toggleMenu();
               navigation.navigate("Orders");
+            }}
+          >
+            <Animated.View
+              style={[styles.button, styles.floating, orderStyle, opacity]}
+            >
+              <FontAwesome name="reorder" size={20} color="#f02a4b" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              
+              this.toggleMenu();
+              this.setState({ modalVisible: true });
             }}
           >
             <Animated.View

@@ -106,7 +106,6 @@ export default () => {
         name="Orders"
         component={Order}
         options={{
-          headerShown: false,
           headerTitle: false,
           headerTransparent: true,
           headerStyle: {

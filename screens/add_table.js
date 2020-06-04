@@ -193,7 +193,7 @@ export default class AddTable extends React.Component {
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <ScrollView>
+        
         <Response action={this.state.action}/>
         <View style={styles.overlayContainer}>
           <View>
@@ -313,7 +313,7 @@ export default class AddTable extends React.Component {
           </View>
           {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
         </View>
-        </ScrollView>
+        
       </ImageBackground>
     );
   }

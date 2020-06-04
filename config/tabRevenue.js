@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   },
   btnBack: {
     marginLeft: 15,
+    padding: 10,
   },
 });
 
