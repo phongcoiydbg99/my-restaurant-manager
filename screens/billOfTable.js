@@ -56,6 +56,7 @@ export default class BillOfTable extends Component {
     });
   }
   componentDidUpdate(prevProps, prevState) {
+    this.state.totalBill = [];
     if (
       prevProps.route.params !== this.props.route.params
       //param nay chua thong tin table moi tu add_table
@@ -66,14 +67,7 @@ export default class BillOfTable extends Component {
         this.setState({ table: res.data });
         this.setState({ result: res.data });
       });
-      this.setState({
-        totalBill: [],
-        onUpdate: true,
-      })
     } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
-    // else this.setState({
-    //   onUpdate: false,
-    // })
   }
 
 
@@ -106,7 +100,6 @@ export default class BillOfTable extends Component {
           t_price = t_price + item1.id.dish.pirce * item1.call_number;
         }
       });
-      //item.price = t_price;
       // let dem = {
       //   name: item.name,
       //   chairNum: item.chairNum,

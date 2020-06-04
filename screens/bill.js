@@ -49,9 +49,9 @@ export default class Bill extends Component {
     const { navigation, route } = this.props;
     const tableInfo = route.params.table;
     const newTable = tableInfo;
-    // newTable.status = 'empty'
-    // axios
-    //   .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
+    newTable.status = 'empty'
+    axios
+      .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
 
     navigation.navigate('billOfTable', newTable);
 
