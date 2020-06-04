@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
     content: {
       alignItems: "flex-start",
       justifyContent: "center",
-      borderColor:'red',
-      borderWidth:3
+      
     },
     title: {
       fontSize: 18,

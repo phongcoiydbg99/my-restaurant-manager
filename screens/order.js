@@ -19,7 +19,7 @@ import {
 } from "react-native";
 
 import { MenuItem, Separator } from "../components/MenuItem";
-import { List, ListItem, SearchBar } from "react-native-elements";
+import { List, ListItem, SearchBar,Overlay } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { FontAwesome } from "@expo/vector-icons";
@@ -44,7 +44,11 @@ export default class order extends Component{
             btWidth: new Animated.Value(0),
             width: new Animated.Value(0),
             right: new Animated.Value(0),
-            
+            overlay:false,
+            dishName:"",
+            tableName:"",
+            call_time:"",
+            call_number:""
         }
     }
     componentDidMount(){
@@ -53,7 +57,7 @@ export default class order extends Component{
         .catch(err=> console.log(err));
     }
     componentDidUpdate(){
-
+       
     }
     animation = new Animated.Value(0);
     toggleMenu = () => {
@@ -140,6 +144,37 @@ export default class order extends Component{
           });
         return(
             <ImageBackground source={Background} style={styles.container}>
+              <Overlay isVisible={this.state.overlay}>
+                   <View style={styles.modalView}>
+                       <Input
+                           placeholder="TableName"
+                           label="TableName"
+                           labelStyle={styles.labelStyle}
+                             inputStyle={styles.inputstyle}
+                         value={this.state.tableName}
+                        onChangeText={(text) => this.setState({ tableName: text })}
+                        />
+                     <Input
+                        placeholder="DishName"
+                        label="DishName"
+                        labelStyle={styles.labelStyle}
+                        inputStyle={styles.inputstyle}
+                        value={this.state.dishName}
+                        onChangeText={(text) => this.setState({ dishName: text })}
+                      />
+                        
+                       <Input
+                            placeholder="chairNum"
+                             label="chairNum"
+                            value={this.state.chairNum}
+                             labelStyle={styles.labelStyle}
+                            inputStyle={styles.inputstyle}
+                             keyboardType="numeric"
+                            onChangeText={(text) => this.setState({ chairNum: text })}
+                        />
+                   </View>
+              </Overlay>
+                 <View style={{flex:1}}></View>
                  <View style={styles.overlayContainer}>
                      <FlatList data={this.state.order}
                                keyExtractor={item=>item.call_time}
@@ -222,7 +257,7 @@ const styles = StyleSheet.create({
         height: "100%",
       },
       overlayContainer: {
-        flex: 1,
+        flex: 5,
         backgroundColor: "rgba(60,50,41,0.59)",
       },
       label: {
@@ -265,6 +300,8 @@ const styles = StyleSheet.create({
         height: 30,
       },
       modalView: {
+        width:250, height:400,
+        position:'absolute',right:50, bottom:50,
         backgroundColor: "white",
         alignItems: "center",
         shadowColor: "#000",
