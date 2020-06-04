@@ -64,7 +64,7 @@ export default class AddTable extends React.Component {
                      name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
                      status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
                    
-      },()=> console.log(this.state));
+      });
   }
   // componentDidUpdate(prevProps,prevState){
   //   if(prevProps.route.params !== this.props.route.params){

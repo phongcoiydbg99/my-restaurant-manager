@@ -16,7 +16,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
-import {useNavigation} from "@react-navigation/native"
 import { getCurrentDateTime } from "../config/util";
 const styles = StyleSheet.create({
   container: {

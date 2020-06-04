@@ -316,8 +316,9 @@ export default class Table extends Component {
         >
           <TouchableWithoutFeedback
             onPress={() => {
-              this.setState({ modalVisible: true });
+              
               this.toggleMenu();
+              navigation.navigate("Orders");
             }}
           >
             <Animated.View
