@@ -55,7 +55,7 @@ export default class AddTable extends React.Component {
     YellowBox.ignoreWarnings([
       "Non-serializable values were found in the navigation state",
     ]);
-    console.log(this.props.route.params.action);
+    
     let act = this.props.route.params.action
     let item = this.props.route.params.item
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
