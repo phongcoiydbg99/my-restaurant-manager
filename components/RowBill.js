@@ -88,7 +88,7 @@ export const RowBill = ({ item , onPress}) => (
             <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>Price</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.title}>{item.price}đ</Text>
+            <Text style={styles.title}>{item.totalPrice}đ</Text>
           </View>
           {/* <View style={{ flexDirection: "row" }}>
             <Text style={styles.sublabel}>Status: </Text>

@@ -22,14 +22,14 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-modal-datetime-picker";
 import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
-import Response from "../components/Response"
+import Response from "../components/Response";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
 import table from "../data/table";
 import axios from "axios";
-import {getCurrentDateTime} from "../config/util"
+import {getCurrentDateTime} from "../config/util";
 import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -185,9 +185,7 @@ export default class AddTable extends React.Component {
          navigation.navigate("Table",newData);//navigate ve table voi param
           }).catch(err => console.log(err));
       }
-      
     }
-    
   };
   
 

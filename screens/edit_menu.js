@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+           
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,98 +10,346 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   FlatList,
+  Picker,
+  ScrollView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { YellowBox } from "react-native";
 import { RowTable, Separator } from "../components/RowTable";
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from "react-native-modal-datetime-picker";
+import { CommonActions } from "@react-navigation/native";
+import { Input } from "react-native-elements";
+import Response from "../components/Response";
 import Background from "../assets/Backgr-Login.jpg";
+import icon from "../assets/calendar.png";
+import clock from "../assets/clock.png";
 import { Ionicons } from "@expo/vector-icons";
-import menu from "../data/menu";
-
+import table from "../data/table";
+import axios from "axios";
+import { getCurrentDateTime } from "../config/util";
+import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
-export default ({ navigation,route }) => {
-  const menuInfo = route.params.menu;
-  //const [menu, setMenu] = useState(menuInfo);
-  const [Name, setName] = useState('');
-  const [Price, setPrice] = useState('');
-  const [Species, setSpecies] = useState('');
-  
-  const editMenu = () => {
-    const newMenu = { ...menu, menu: Name,Price:Price,Species:Species };
-    settable(newMenu); // Now it works
-    navigation.pop({ datamenu: newmenu });
+export default class AddTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      chairNum: "",
+      status: "reserved",
+      price: "",
+      fullName: "",
+      datetime: "",
+      time: "",
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      action: {},
+      mode: "",
+    };
+  }
+  componentDidMount() {
+    YellowBox.ignoreWarnings([
+      "Non-serializable values were found in the navigation state",
+    ]);
+    console.log(this.props.route.params.action);
+    let act = this.props.route.params.action;
+    let item = this.props.route.params.item;
+    //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
+    console.log(item);
+    console.log(act);
+    this.setState(
+      {
+        mode: act.name,
+        name: item.name,
+        fullName: item.fullName,
+        chairNum: item.chairNum.toString(),
+        status: item.status,
+        price: item.price.toString(),
+        reserve_time: item.reserve_time,
+      },
+      () => console.log(this.state)
+    );
+  }
+  // componentDidUpdate(prevProps,prevState){
+  //   if(prevProps.route.params !== this.props.route.params){
+  //     let act = JSON.stringify(this.props.route.params.action);
+  //     let item = JSON.stringify(this.props.route.params.item);
+
+  //     this.setState({mode:act.name,
+  //                    name:item.name, fullName:item.fullName,chairNum:item.chairNum,
+  //                    status: item.status, price: item.price, reserve_time:item.reserve_time,
+
+  //     });
+  //     console.log(item);
+  //   }
+  // }
+  toShortFormat = (date) => {
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    date = new Date(date);
+    var day = date.getDate();
+    var month_index = date.getMonth();
+    var year = date.getFullYear();
+
+    return "" + day + "-" + month_names[month_index] + "-" + year;
+  };
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: true });
+  };
+  showTimePicker = () => {
+    this.setState({ isTimePickerVisible: true });
   };
 
-  return (
-    <ImageBackground source={Background} style={styles.container}>
-      <View style={styles.overlayContainer}>
-        <TouchableOpacity
-          style={styles.btnBack}
-          onPress={() => navigation.pop()}
-        >
-          <Ionicons name="ios-arrow-back" size={30} color="white" />
-        </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "column",
-            backgroundColor: "#fff",
-            width: "90%",
-            height: "90%",
-            borderRadius: 10,
-            padding: 20,
-            alignItems: "center",
-            marginTop: 25,
-          }}
-        >
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={tableInfo.table}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(e) => {
-                setname(e);
-              }}
-            />
-          </View>
+  hideDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
+  };
+  hideTimePicker = () => {
+    this.setState({ isTimePickerVisible: false });
+  };
+  // useEffect(() => {
+  //   hideDatePicker();
+  //   hideTimePicker();
+  // }, [isDatePickerVisible, isTimePickerVisible]);
+  handleConfirm = (date) => {
+    const d = this.toShortFormat(date);
+    this.setState({ datetime: d });
+    this.setState({ isDatePickerVisible: false });
+  };
+  handleConfirmTime = (date) => {
+    date = new Date(date);
+    const t =
+      ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    this.setState({ time: t });
+    this.setState({ isTimePickerVisible: false });
+  };
+  addTable = () => {
+    //kiem tra xem cac input co null hay k, neu k null thi moi post data
+    if (
+      this.state.name == "" ||
+      this.state.fullName == "" ||
+      this.state.price == "" ||
+      this.state.status == "" ||
+      this.state.chairNum == ""
+    ) {
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          action: {
+            ...prevState.action,
+            name: "formError",
+            date: getCurrentDateTime(),
+          },
+        }),
+        () => console.log(this.state)
+      );
+      //this.setState({action:'formError',actionTime:getCurrentDateTime()});
+    } else {
+      const reserve = this.state.datetime + " " + this.state.time;
+      let newTable = {
+        name: this.state.name,
+        chairNum: this.state.chairNum,
+        status: this.state.status,
+        price: this.state.price,
+        fullName: this.state.fullName,
+        reserve_time: reserve,
+      };
+      let newData = {};
+      const { navigation, route } = this.props;
+      if (this.state.mode == "addTable") {
+        //thuc hien post data
+        axios
+          .post(`${SERVER_ID}table/add`, newTable)
+          .then((res) => {
+            newData = {
+              ...newTable,
+              action: {
+                name: "postTable",
+                date: getCurrentDateTime(),
+                msg: res.data,
+              },
+            };
+          })
+          .then(() => {
+            //post xong data ms navigate ve table , mang theo 1 param
+            navigation.navigate("Table", newData); //navigate ve table voi param
+          })
+          .catch((err) => console.log(err));
+      } else if (this.state.mode == "editTable") {
+        //modify data
+        axios
+          .put(`${SERVER_ID}table/modify/${this.state.name}`, newTable)
+          .then((res) => {
+            newData = {
+              ...newTable,
+              action: {
+                name: "putTable",
+                date: getCurrentDateTime(),
+                msg: res.data,
+              },
+            };
+          })
+          .then(() => {
+            //post xong data ms navigate ve table , mang theo 1 param
+            navigation.navigate("Table", newData); //navigate ve table voi param
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+  };
 
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>Price</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={tableInfo.people}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(text) => setpeople(text)}
+  render() {
+    const { navigation } = this.props;
+    return (
+      <ImageBackground source={Background} style={styles.container}>
+        <ScrollView>
+          <Response action={this.state.action} />
+          <View style={styles.overlayContainer}>
+            <View>
+              <TouchableOpacity
+                style={styles.btnBack}
+                onPress={() => navigation.navigate("Table")}
+              >
+                <Ionicons name="ios-arrow-back" size={30} color="white" />
+              </TouchableOpacity>
+            </View>
+            <Input
+              placeholder="Name"
+              label="Name"
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputstyle}
+              value={this.state.name}
+              onChangeText={(text) => this.setState({ name: text })}
             />
-          </View>
-
-          <View style={styles.elementForm}>
-            <Text style={styles.title}>Species</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={tableInfo.status}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underLineColorAndroid="transparent"
-              onChangeText={(text) => setstatus(text)}
+            <Input
+              placeholder="fullName"
+              label="fullName"
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputstyle}
+              value={this.state.fullName}
+              onChangeText={(text) => this.setState({ fullName: text })}
             />
-          </View>
-          <View style={styles.elementForm}>
-            <TouchableOpacity
-              style={styles.btnSubmit}
-              onPress={() => editTable()}
+            <Input
+              placeholder="chairNum"
+              label="chairNum"
+              value={this.state.chairNum}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputstyle}
+              keyboardType="numeric"
+              onChangeText={(text) => this.setState({ chairNum: text })}
+            />
+            <Text
+              style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}
             >
-              <Text>Submit</Text>
-            </TouchableOpacity>
+              Status
+            </Text>
+            <Picker
+              mode={"dropdown"}
+              selectedValue={this.state.status}
+              style={{ marginHorizontal: 10, color: "#fff" }}
+              onValueChange={(text) => this.setState({ status: text })}
+            >
+              <Picker.Item label="reserved" value="reserved" />
+              <Picker.Item label="full" value="full" />
+              <Picker.Item label="empty" value="empty" />
+            </Picker>
+            <Input
+              placeholder="price"
+              label="price"
+              value={this.state.price}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputstyle}
+              keyboardType="numeric"
+              onChangeText={(text) => this.setState({ price: text })}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Input
+                inputContainerStyle={{ width: WIDTH - 100 }}
+                placeholder="date"
+                label="reserved_time"
+                value={this.state.datetime}
+                labelStyle={styles.labelStyle}
+                inputStyle={styles.inputStyle}
+              />
+              <TouchableWithoutFeedback onPress={this.showDatePicker}>
+                <View style={{ marginLeft: -60, marginTop: 25 }}>
+                  <Image
+                    source={icon}
+                    style={{ width: 30, height: 30 }}
+                  ></Image>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Input
+                inputContainerStyle={{ width: WIDTH - 100 }}
+                placeholder="time"
+                value={this.state.time}
+                labelStyle={styles.labelStyle}
+                inputStyle={styles.inputStyle}
+              />
+              <TouchableWithoutFeedback onPress={this.showTimePicker}>
+                <View style={{ marginLeft: -60, marginTop: 10 }}>
+                  <Image
+                    source={clock}
+                    style={{ width: 30, height: 30 }}
+                  ></Image>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <DateTimePickerModal
+              isVisible={this.state.isDatePickerVisible}
+              mode="date"
+              onConfirm={this.handleConfirm}
+              onCancel={this.hideDatePicker}
+            />
+            <DateTimePickerModal
+              isVisible={this.state.isTimePickerVisible}
+              mode="time"
+              onConfirm={this.handleConfirmTime}
+              onCancel={this.hideTimePicker}
+            />
+            <View style={styles.elementForm}>
+              <TouchableOpacity
+                style={styles.btnSubmit}
+                onPress={() => this.addTable()}
+              >
+                <Text>ADD</Text>
+              </TouchableOpacity>
+            </View>
+            {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
           </View>
-        </View>
-        {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
-      </View>
-    </ImageBackground>
-  );
+        </ScrollView>
+      </ImageBackground>
+    );
+  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -110,8 +359,6 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "rgba(60,50,41,0.59)",
   },
   contentContainer: {
@@ -127,6 +374,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
   },
+  labelStyle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  inputStyle: {
+    color: "#fff",
+  },
   title: {
     width: "20%",
     fontSize: 18,
@@ -141,9 +396,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   btnBack: {
-    position: "absolute",
-    top: 16,
-    left: 20,
+    margin: 10,
+    padding: 15,
+    width: 50,
   },
   input: {
     width: "60%",

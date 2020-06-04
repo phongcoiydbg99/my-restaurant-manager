@@ -31,10 +31,12 @@ export default class BillOfTable extends Component {
       table: [],
       totalPrice: [],
       newTable: [],
+      totalBill: [],
       onUpdate: false,
       search: '',
     };
   }
+
 
   componentDidMount() {
     const { navigation } = this.props;
@@ -54,27 +56,20 @@ export default class BillOfTable extends Component {
     });
   }
   componentDidUpdate(prevProps, prevState) {
-    this.state.newTable = this.state.table;
-    if (prevState.newTable !== this.state.newTable && this.state.onUpdate) {
+    this.state.totalBill = [];
+    if (
+      prevProps.route.params !== this.props.route.params
+      //param nay chua thong tin table moi tu add_table
+      //chi update neu params thay doi
+    )
+    {
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         this.setState({ table: res.data });
         this.setState({ result: res.data });
       });
     } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
   }
-  componentWillUnmount() {
-    // Remove the event listener before removing the screen from the stack
-    this.focusListener
-  }
-  saveNewData(data) {
-    //ham nay se duoc invoke khi save du lieu moi
-    axios
-      .post(`${SERVER_ID}table/add`, data)
-      .then((res) => console.log(res))
-      .then(this.setState({ newTable: data }));
-    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
-    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
-  }
+
 
   updateSearch = search => {
     const newData = this.state.table.filter((item) => {
@@ -99,15 +94,33 @@ export default class BillOfTable extends Component {
     this.state.result = this.state.result.filter((item) => item.status == "full")
     this.state.result.filter((item) => {
       const temp = item.name;
-      var t_price = 0;
+      var t_price = item.price;
       this.state.totalPrice.filter((item1) => {
-        //console.log(item1.id.table.name == temp);
         if(item1.id.table.name == temp){
           t_price = t_price + item1.id.dish.pirce * item1.call_number;
-          //console.log(t_price);
         }
       });
-      item.price = t_price;
+      // let dem = {
+      //   name: item.name,
+      //   chairNum: item.chairNum,
+      //   status: item.status,
+      //   price: item.price,
+      //   fullName: item.fullName,
+      //   reserve_time: item.reserve_time,
+      //   totalPrice: t_price,
+      // };
+      // console.log(dem);
+      if(t_price > item.price)
+        this.state.totalBill.push({
+          name: item.name,
+          chairNum: item.chairNum,
+          status: item.status,
+          price: item.price,
+          fullName: item.fullName,
+          reserve_time: item.reserve_time,
+          totalPrice: t_price,
+        });
+        console.log(this.state.totalBill);
     })
     
     return (
@@ -142,7 +155,7 @@ export default class BillOfTable extends Component {
               </View>
               </View> */}
               <FlatList
-                      data={this.state.result}
+                      data={this.state.totalBill}
                       renderItem={({ item }) =>  <RowBill item={item} 
                       onPress = {() => navigation.navigate('bill', {table: item})}/>}
                       ItemSeparatorComponent={Separator}
@@ -187,14 +200,14 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     backgroundColor: "#fff",
-    height: 40,
+    height: 50,
     //opacity: .5,
     borderBottomColor: "#707070",
     borderBottomWidth: 1,
     marginTop: 70,
   },
   SearchBar: {
-    height: 20,
+    height: 27,
   },
   contentContainer: {
     paddingHorizontal: 20,

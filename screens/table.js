@@ -303,7 +303,7 @@ export default class Table extends Component {
               );
             }}
             ItemSeparatorComponent={Separator}
-            ListHeaderComponent={() => <Separator />}
+            // ListHeaderComponent={() => <Separator />}
             ListFooterComponent={() => <Separator />}
           />
         </View>
@@ -311,7 +311,7 @@ export default class Table extends Component {
           style={{
             ...styles.floatinContainer,
             bottom: 70,
-            right: 40,
+            right: WIDTH/2,
           }}
         >
           <TouchableWithoutFeedback
@@ -416,6 +416,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     //opacity: .5,
     marginTop: 70,
+    marginBottom:10,
   },
   SearchBar: {
     height: 30,

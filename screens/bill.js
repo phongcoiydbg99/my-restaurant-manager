@@ -41,49 +41,31 @@ export default class Bill extends Component {
       this.setState({ table: res.data });
     });
   }
-  componentDidUpdate(prevProps, prevState) {
-    const { route } = this.props;
-    const tableInfo = route.params.table;
-    if (prevState.newTable !== this.state.newTable) {
-      axios.get(`${SERVER_ID}table_dish/table/${tableInfo.name}`).then((res) => {
-        this.setState({ table: res.data });
-        this.setState({ result: res.data });
-      });
-    } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
-  }
-  componentWillUnmount() {
-    // Remove the event listener before removing the screen from the stack
-    this.focusListener
-  }
-  saveNewData(data) {
-    //ham nay se duoc invoke khi save du lieu moi
-    const { route } = this.props;
-    const tableInfo = route.params.table;
-    axios
-      .post(`${SERVER_ID}table_dish/table/${tableInfo.name}`, data)
-      .then((res) => console.log(res))
-      .then(this.setState({ newTable: data }));
-    //sau khi thuc hien post thanh cong va tra ve response, set lai state cua NewTable
-    //luc nay componentDidUpdate se so sanh state moi va state cu, dong thoi thuc hien call api nhu tren
-  }
+  
+  
 
   //thanh toan
-  paid(){
-    
+  paid = () =>{
+    const { navigation, route } = this.props;
+    const tableInfo = route.params.table;
+    const newTable = tableInfo;
+    newTable.status = 'empty'
+    axios
+      .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
+
+    navigation.navigate('billOfTable', newTable);
+
   }
 
   render() {
     const { navigation, route} = this.props;
     const tableInfo = route.params.table;
-    var total = '';
-    this.state.result.filter((item) => {
-      total = parseInt(total + item.id.dish.pirce * item.call_number);
-    });
+    // var total = '';
+    // this.state.result.filter((item) => {
+    //   total = parseInt(total + item.id.dish.pirce * item.call_number);
+    // });
 
-    // console.log(this.state.table.filter((item) => {
-    //   item.id.table.name == 'ban17'
-    // }));
-    
+   
     return(
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
@@ -114,7 +96,7 @@ export default class Bill extends Component {
                   </View>
                 </View>
 
-                <View style={{height: ((HIGHT - 280)/2),}}>
+                <View style={{height: ((HIGHT - 280)/2), borderBottomColor: 'rgba(243, 242, 242, 0.60)', borderBottomWidth: 3, }}>
                   <FlatList
                     data={this.state.result}
                     renderItem={({ item }) => <Order item={item} />}
@@ -123,14 +105,18 @@ export default class Bill extends Component {
                   />
                 </View>
 
-                <View style={styles.totalView}>
-                  <Text style={{fontSize: 25, color: '#fff'}}>Total</Text>
-                  <Text style={{fontSize: 20, color: '#fff'}}>{total}đ</Text>
-                  <TouchableOpacity
-                    onPress={() => alert('done!')}
-                  >
-                    <Text style={{fontSize: 25, color: '#fff'}}>Done!</Text></TouchableOpacity>
+                <View style={{paddingTop: 15, height: ((HIGHT - 280)/6 ), flexDirection: 'row', borderBottomColor: 'rgba(243, 242, 242, 0.60)', borderBottomWidth: 3,}}>
+                  <Text style={{marginLeft: 10, fontSize: 20, color: '#fff', flex: 1, textAlign: 'left',}}>Price Table</Text>
+                  <Text style={{marginRight: 30, fontSize: 20, color: '#fff', flex: 1, textAlign: 'right',}}>{tableInfo.price}đ</Text>
                 </View>
+
+                <View style={styles.totalView}>
+                  <Text style={{fontSize: 25, color: '#fff', paddingBottom: 10,}}>Total Bill: {tableInfo.totalPrice}đ</Text>
+                  <TouchableOpacity onPress={() => this.paid()}>
+                    <Text style={{fontSize: 25, color: '#fff'}}>Done!</Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
             </View> 
         </View>
@@ -189,7 +175,7 @@ const styles = StyleSheet.create({
     // display: 'none'
   },
   billTitle: {
-    height: (HIGHT - 260)/8,
+    height: (HIGHT - 280)/6,
     borderBottomColor: 'rgba(243, 242, 242, 0.60)',
     borderBottomWidth: 3,
     
@@ -235,10 +221,11 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   totalView: {
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    // marginTop: 40,
+    //flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: (HIGHT - 280)/6,
+    paddingTop: 20,
   },
 });
 

@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, StyleSheet, Modal} from 'react-native'
+import {
+  View,
+  Text,
+  Animated,
+  StyleSheet,
+  Modal,
+  Dimensions,
+} from "react-native";
 import {Icon} from 'react-native-elements'
 import * as Animatable from 'react-native-animatable'
-
+const { width: WIDTH } = Dimensions.get("window");
+const { width: HEIGHT } = Dimensions.get("window");
 //response nay la notify tra ve khi thuc hien xong add, modify hay delete
 export default class Response extends Component{
     constructor(props){
@@ -37,7 +45,7 @@ export default class Response extends Component{
                     <Animatable.View style={styles.animation} animation='fadeIn' direction='alternate'
                             iterationCount={2} duration={1500} onAnimationEnd={()=> this.setState({show:false})}> 
                              <Text style={styles.text}>{this.state.msg}</Text>
-                             <Icon reverse type='font-awesome' name='check-circle-o' color='gold' size={10} containerStyle={{marginLeft:-10}}/>
+                             <Icon reverse type='font-awesome' name='check-circle-o' color='gold' size={10} />
                     </Animatable.View>
                     </View>
                 </Modal>
@@ -51,8 +59,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width:250,
         height: 50,
-        bottom:100,
-        right:100,
+        top:120,
+        right:(WIDTH-250)/2,
         borderRadius:10
     },
     animation:{
@@ -64,6 +72,8 @@ const styles = StyleSheet.create({
         borderRadius:10
     },
     text:{
-        fontSize:11
+        fontSize:15,
+        marginLeft:10,
+        color: "#fff",
     }
 })

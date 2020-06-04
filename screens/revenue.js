@@ -31,7 +31,8 @@ export default class revenue extends Component {
       value: "",
       result: [],
       table: [],
-      revenueDay: [],
+      dataRevenueDay: [],
+      revenueDay: '',
     };
   }
   componentDidMount() {
@@ -44,13 +45,21 @@ export default class revenue extends Component {
       console.log(route.parmas);
     });
     axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
-      this.setState({ revenueDay: res.data });
+      this.setState({ dataRevenueDay: res.data });
     });
   }
 
+  
+
   render(){
     const {navigation} = this.props;
-    console.log(this.state.revenueDay);
+    //console.log(this.state.revenueDay)
+    this.state.dataRevenueDay.filter((item) => {
+      if(item.dayNum == 4){
+        this.state.revenueDay = item.revenue;
+      }
+    });
+    //console.log(this.state.result);
     return(
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
@@ -89,13 +98,14 @@ export default class revenue extends Component {
             </TouchableOpacity>
             {/* revenueInDay */}
             <View style={styles.revenueInDay}>
-              <View  style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View  style={{flexDirection: 'row', marginBottom: 20,}}>
                 <Text style={styles.title}>Revenue in day</Text>
                 <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#C26900', borderWidth:1, borderRadius: 50, borderColor: '#C26900', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
                   <Image source={Group} style={{width: 16, height: 16,}} />
                 </View>
               </View>
-                <Text>{JSON.stringify(this.state.revenueDay)}</Text>
+                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff',}}>{JSON.stringify(this.state.revenueDay)}</Text>
+                <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
             </View>
           </View>
         </View> 
@@ -176,7 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     color: '#fff',
     marginTop: 40,
-    marginLeft: 15,
+    marginLeft: 20,
     marginBottom: 5,
   },
   subTitle: {

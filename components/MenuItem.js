@@ -78,20 +78,52 @@ const styles = StyleSheet.create({
   },
 });
 
-export const MenuItem = ({ image, item, onPress, width, right }) => (
-         <TouchableOpacity style={styles.container} onPress={onPress}>
-           <View>
-             <Image source={image} style={styles.image} />
-           </View>
-           <View style={{ flexDirection: "row" }}>
-             <Text style={styles.label}>Name: </Text>
-             <Text style={styles.title}>{item.fullName}</Text>
-           </View>
-           <View style={{ flexDirection: "row" }}>
-             <Text style={styles.label}>Price: </Text>
-             <Text style={styles.title}>{item.price}</Text>
-           </View>
-         </TouchableOpacity>
-       );
+export default class MenuItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <TouchableOpacity style={styles.container}>
+        <View>
+          <Image source={this.props.image} style={styles.image} />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>Name: </Text>
+          <Text style={styles.title}>{this.props.item.fullName}</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>Price: </Text>
+          <Text style={styles.title}>{this.props.item.pirce}</Text>
+        </View>
+        <Animated.View
+          style={{
+            position: "absolute",
+            width: this.props.width,
+            right: 0,
+            marginRight: this.props.right,
+            paddingHorizontal: 20,
+            backgroundColor: "rgba(60,50,41,0.59)",
+            borderRadius: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity onPress={this.props.onPress}>
+            <MaterialIcons name="edit" size={35} color="orange" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.props.delete}>
+            <MaterialCommunityIcons
+              name="delete-forever"
+              size={35}
+              color="red"
+            />
+          </TouchableOpacity>
+        </Animated.View>
+      </TouchableOpacity>
+    );
+  }
+}
 
-export const Separator = () => <View style={styles.separator} />;
+export const SeparatorMenu = () => <View style={styles.separator} />;
