@@ -48,8 +48,8 @@ export default class order extends Component{
         }
     }
     componentDidMount(){
-        axios.get(`${SERVER_ID}table_dish/all`).then(res=> {this.setState({order:res.data});
-                                                            console.log(res.data);})
+        axios.get(`${SERVER_ID}table_dish/all`).then(res=> {this.setState({order:res.data},()=>console.log(this.state));
+                                                        })
         .catch(err=> console.log(err));
     }
     componentDidUpdate(){
@@ -143,9 +143,9 @@ export default class order extends Component{
                  <View style={styles.overlayContainer}>
                      <FlatList data={this.state.order}
                                keyExtractor={item=>item.call_time}
-                               renderItem={({item, index}) =>{
+                               renderItem={({item, index}) =>{return(
                                   <RowOrder item={item} width={this.state.width}
-                                  right={this.state.right} index={index} navigation={this.props.navigation}/>
+                                  right={this.state.right} index={index} navigation={this.props.navigation}/>);
                                }} />
                  </View>
         <View

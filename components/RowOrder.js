@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
     content: {
       alignItems: "flex-start",
       justifyContent: "center",
+      borderColor:'red',
+      borderWidth:3
     },
     title: {
       fontSize: 18,
@@ -75,6 +77,9 @@ const styles = StyleSheet.create({
       this.state = {
         check: false,
       };
+    }
+    componentDidMount(){
+        console.log('haha');
     }
     render() {
       const {navigation} = this.props;
