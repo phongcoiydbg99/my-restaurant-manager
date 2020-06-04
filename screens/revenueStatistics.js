@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -14,25 +14,67 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
 import dataBill from "../data/bill"
+import { SERVER_ID } from "../config/properties";
+import axios from "axios";
+import { RowRevenue, Separator } from '../components/RowRevenue';
 
-export default () => (
-  <ImageBackground source={Background} style={styles.container}>
-    <View style={styles.overlayContainer}>
+export default class revenueStatistics extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      result: [],
+      table: [],
+      revenueMonth: '',
+      dataRevenueMonth: [],
+    };
+  }
 
-        {/* hóa đơn */}
-        <View style={styles.billContainer}>
-          <View style={styles.billTitle}>
-            <Text style={styles.textBillTitle}>One month</Text>
-            <Text style={styles.textBillTitle}>Revennue Statistics</Text>
+  componentDidMount() {
+    const { navigation} = this.props;
+    const { route } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("focus", () => {
+      // if (navigation.params != undefined ) 
+      console.log(route.parmas);
+    });
+    axios.get(`${SERVER_ID}revenue/all`).then((res) => {
+      this.setState({ dataRevenueMonth: res.data });
+    });
+  }
+
+  render(){
+    const {navigation} = this.props;
+    console.log(this.state.dataRevenueMonth)
+    return(
+      <ImageBackground source={Background} style={styles.container}>
+        <View style={styles.overlayContainer}>
+
+            {/* hóa đơn */}
+            <View style={styles.billContainer}>
+              <View style={styles.billTitle}>
+                <Text style={styles.textBillTitle}>One month</Text>
+                <Text style={styles.textBillTitle}>Revennue Statistics</Text>
+                
+              </View>
+              <FlatList
+                      data={this.state.dataRevenueMonth}
+                      renderItem={({ item }) =>  <RowRevenue item={item} 
+                      />}
+                      ItemSeparatorComponent={Separator}
+                      ListHeaderComponent={() => <Separator />}
+                      ListFooterComponent={() => <Separator />}
+                      keyExtractor={(item) => {
+                        return `${item.month}`;} }
+                    />
             
-          </View>
-
-         
-        </View> 
-    </View>
-  </ImageBackground>
-);
-
+            </View> 
+        </View>
+      </ImageBackground>
+    )
+  }
+}
+  
 
 const { width: WIDTH} = Dimensions.get('window');
 const { height: HIGHT} = Dimensions.get('window');
