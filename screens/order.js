@@ -48,6 +48,7 @@ export default class order extends Component {
     super(props);
     this.state = {
       order: [],
+      clone_order: [],
       table_dish: [],
       result: [],
       list_order: [],
@@ -65,10 +66,10 @@ export default class order extends Component {
       time: "",
       call_number: "",
       update: "notDone",
+      value: '',
     };
   }
   componentDidMount() {
-    console.log('ss');
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.state.result = res.data.filter(
         (item) => item.status == "full"
@@ -102,7 +103,11 @@ export default class order extends Component {
               totalPrice: t_price,
             });
         });
-        this.setState({ order: this.state.order });
+        this.state.clone_order = this.state.order;
+        this.setState({
+          order: this.state.order
+        });
+        // this.setState({ clone_order: this.state.order });
       });
     });
     // console.log(this.state.order);
@@ -141,7 +146,9 @@ export default class order extends Component {
                 totalPrice: t_price,
               });
           });
-          this.setState({ order: this.state.order });
+          this.state.clone_order = this.state.order;
+          this.setState({ order: this.state.order});
+          // this.setState({ clone_order: this.state.order });
         });
       });
     }
@@ -175,7 +182,14 @@ export default class order extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
+  searchTable(text) {
+    this.state.order = this.state.clone_order.filter(
+      (table) => table.name.split(text).length > 1
+    );
+    this.setState({ value: text });
+  }
   render() {
+    
     
     const sortStyle = {
       transform: [
@@ -307,7 +321,10 @@ export default class order extends Component {
               this.toggleMenu();
               // this.setState({ overlay: true });
               this.toggleEditMode();
-              navigation.navigate("AddOrder");
+              navigation.navigate("AddOrder", {
+                list_order: [],
+                name: [],
+              });
               // this.setState({ addmodalVisible: true });
             }}
           >

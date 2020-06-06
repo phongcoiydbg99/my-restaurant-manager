@@ -33,6 +33,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { SERVER_ID } from "../config/properties";
 import Background from "../assets/Backgr-Login.jpg";
@@ -53,7 +54,7 @@ export default class AddOrder extends Component {
     this.state = {
       order: {},
       list_order:
-        this.props.route.params.list_order.length > 0
+        this.props.route.params.list_order != undefined
           ? this.props.route.params.list_order
           : [],
       table_dish: [],
@@ -61,6 +62,9 @@ export default class AddOrder extends Component {
       maincoursemenu: [],
       drinkmenu: [],
       dessertmenu: [],
+      cmaincoursemenu: [],
+      cdrinkmenu: [],
+      cdessertmenu: [],
       menu: [],
       toogleMode: false,
       overlay: false,
@@ -82,12 +86,15 @@ export default class AddOrder extends Component {
     });
     axios.get(`${SERVER_ID}dish/category/MainCourse`).then((res) => {
       this.setState({ maincoursemenu: res.data });
+      this.setState({ cmaincoursemenu: res.data });
     });
     axios.get(`${SERVER_ID}dish/category/Drink`).then((res) => {
       this.setState({ drinkmenu: res.data });
+      this.setState({ cdrinkmenu: res.data });
     });
     axios.get(`${SERVER_ID}dish/category/Dessert`).then((res) => {
       this.setState({ dessertmenu: res.data });
+      this.setState({ cdessertmenu: res.data });
     });
   }
   // componentDidUpdate(prevProps, prevState) {
@@ -141,15 +148,23 @@ export default class AddOrder extends Component {
           }),
           () => console.log(this.state)
         );
-    var cloneTable = {};
-    axios.get(`${SERVER_ID}table/${this.state.tableName}`).then((res) => {
-      cloneTable = res.data;
-      cloneTable.status = "full";
-      if (cloneTable.reserve_time == null)
-        cloneTable.reserve_time = getCurrentDateTime();
-      console.log(cloneTable);
-      axios.put(`${SERVER_ID}table/modify/${this.state.tableName}`, cloneTable);
-    }).then(() => navigation.navigate("Orders", "hello"));
+        var cloneTable = {};
+        axios
+          .get(`${SERVER_ID}table/${this.state.tableName}`)
+          .then((res) => {
+            cloneTable = res.data;
+            console.log(res.data);
+            cloneTable.status = "full";
+            if (cloneTable.reserve_time == null)
+              cloneTable.reserve_time = getCurrentDateTime();
+            console.log(cloneTable);
+            console.log(cloneTable);
+            axios.put(
+              `${SERVER_ID}table/modify/${this.state.tableName}`,
+              cloneTable
+            );
+          })
+          .then(() => navigation.navigate("Orders", check));
       }
     }
   };
@@ -178,6 +193,18 @@ export default class AddOrder extends Component {
   togglePicker = () => {
     this.setState({ pickerVisible: !this.state.pickerVisible });
   };
+  searchTable(text) {
+    this.state.maincoursemenu = this.state.cmaincoursemenu.filter(
+      (table) => table.name.split(text).length > 1
+    );
+    this.state.drinkmenu = this.state.cdrinkmenu.filter(
+      (table) => table.name.split(text).length > 1
+    );
+    this.state.dessertmenu = this.state.cdessertmenu.filter(
+      (table) => table.name.split(text).length > 1
+    );
+    this.setState({ value: text });
+  }
   render() {
     const { navigation, route } = this.props;
     console.log(this.props.route.params.list_order.length);
@@ -263,7 +290,11 @@ export default class AddOrder extends Component {
                 justifyContent: "center",
               }}
             >
-              <AntDesign name="plus" size={24} color="#f02a4b" />
+              <MaterialCommunityIcons
+                name="table-plus"
+                size={24}
+                color="#f02a4b"
+              />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={this.toggleOverlay}
@@ -277,7 +308,7 @@ export default class AddOrder extends Component {
                 justifyContent: "center",
               }}
             >
-              <AntDesign name="plus" size={24} color="#f02a4b" />
+              <MaterialIcons name="border-color" size={24} color="#f02a4b" />
             </TouchableOpacity>
           </View>
           {/* // Chon ban */}
