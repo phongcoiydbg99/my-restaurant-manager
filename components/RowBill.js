@@ -71,40 +71,82 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RowBill = ({ item , onPress}) => (
-  
-      <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.container}>
-        <View style={{ ...styles.content }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ flexDirection: "row", width: "82%" }}>
-              <Text style={{fontSize: 24, fontWeight: 'bold', color: '#808080'}}> {item.fullName}</Text>
-            </View>
-            
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.title}>{item.reserve_time}</Text>
-          </View>
-          <View style={{flex: 1, alignContent: 'center', justifyContent: 'center', backgroundColor: '#9966FF', width: 60, height: 22,}}>
-            <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>Price</Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.title}>{item.totalPrice}đ</Text>
-          </View>
-          {/* <View style={{ flexDirection: "row" }}>
+export const RowBill = ({ item, onEdit }) => (
+         <TouchableOpacity
+           activeOpacity={0.7}
+           onPress={onEdit}
+           style={styles.container}
+         >
+           <View style={{ ...styles.content }}>
+             <View
+               style={{ flexDirection: "row", justifyContent: "space-between" }}
+             >
+               <View style={{ flexDirection: "row", width: "82%" }}>
+                 <Text
+                   style={{
+                     fontSize: 24,
+                     fontWeight: "bold",
+                     color: "#808080",
+                   }}
+                 >
+                   {" "}
+                   {item.fullName}
+                 </Text>
+               </View>
+             </View>
+             <View style={{ flexDirection: "row" }}>
+               <Text style={styles.title}>{item.reserve_time}</Text>
+             </View>
+             <View
+               style={{
+                 flex: 1,
+                 alignContent: "center",
+                 justifyContent: "center",
+                 backgroundColor: "#9966FF",
+                 width: 60,
+                 height: 22,
+               }}
+             >
+               <Text
+                 style={{ color: "#fff", fontSize: 16, textAlign: "center" }}
+               >
+                 Price
+               </Text>
+             </View>
+             <View style={{ flexDirection: "row" }}>
+               <Text style={styles.title}>{item.totalPrice}đ</Text>
+             </View>
+             {/* <View style={{ flexDirection: "row" }}>
             <Text style={styles.sublabel}>Status: </Text>
             <Text style={styles.subtitle}>{item.status}</Text>
           </View> */}
-        </View>
-        <View style={{ flexDirection: "row", width: "18%", }}>
-                <View style={{flex: 1, alignContent: 'center', justifyContent: 'center', backgroundColor: '#00CC33', width: 60, height: 22, borderRadius: 10, borderWidth: 1, borderColor: '#00CC33'}}>
-                    <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>Detail</Text>
-                </View>
-                <Entypo name="chevron-thin-right" size={24} color="#BBBBBB" />
-            </View>
-        <View style={styles.right}>
-          <Ionicons name="ios-arrow-forward" color="#666" size={20} />
-        </View>
-      </TouchableOpacity>
-);
+           </View>
+           <View style={{ flexDirection: "row", width: "18%" }}>
+             <View
+               style={{
+                 flex: 1,
+                 alignContent: "center",
+                 justifyContent: "center",
+                 backgroundColor: "#00CC33",
+                 width: 60,
+                 height: 22,
+                 borderRadius: 10,
+                 borderWidth: 1,
+                 borderColor: "#00CC33",
+               }}
+             >
+               <Text
+                 style={{ color: "#fff", fontSize: 16, textAlign: "center" }}
+               >
+                 Detail
+               </Text>
+             </View>
+             <Entypo name="chevron-thin-right" size={24} color="#BBBBBB" />
+           </View>
+           <View style={styles.right}>
+             <Ionicons name="ios-arrow-forward" color="#666" size={20} />
+           </View>
+         </TouchableOpacity>
+       );
 
 export const Separator = () => <View style={styles.separator} />;

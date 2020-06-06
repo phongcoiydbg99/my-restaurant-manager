@@ -154,19 +154,7 @@ export default class Table extends Component {
   
   render() {
     const { navigation,route } = this.props;
-    const orderStyle = {
-      transform: [
-        {
-          scale: this.animation,
-        },
-        {
-          translateY: this.animation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, -260],
-          }),
-        },
-      ],
-    };const sortStyle = {
+    const sortStyle = {
       transform: [
         {
           scale: this.animation,
@@ -330,19 +318,6 @@ export default class Table extends Component {
             onPress={() => {
               
               this.toggleMenu();
-              navigation.navigate("Orders");
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, orderStyle, opacity]}
-            >
-              <FontAwesome name="reorder" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              
-              this.toggleMenu();
               this.setState({ modalVisible: true });
             }}
           >
@@ -438,10 +413,10 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     backgroundColor: "#fff",
     height: 50,
-    borderRadius: 5,
     //opacity: .5,
     marginTop: 70,
-    marginBottom:10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ececec",
   },
   SearchBar: {
     height: 30,

@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Background from "../assets/Backgr-Login.jpg";
 import { overlay, Dialog } from "react-native-paper";
-import { List, ListItem, SearchBar } from 'react-native-elements';
+import { List, ListItem, SearchBar } from "react-native-elements";
 import table from "../data/table";
 import { RowTable } from "../components/RowTable";
 import { RowBill, Separator } from "../components/RowBill";
@@ -33,10 +33,9 @@ export default class BillOfTable extends Component {
       newTable: [],
       totalBill: [],
       onUpdate: false,
-      search: '',
+      search: "",
     };
   }
-
 
   componentDidMount() {
     const { navigation } = this.props;
@@ -44,8 +43,7 @@ export default class BillOfTable extends Component {
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
-      if (navigation.params != undefined ) 
-      console.log(route.parmas);
+      if (navigation.params != undefined) console.log(route.parmas);
     });
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
@@ -61,8 +59,7 @@ export default class BillOfTable extends Component {
       prevProps.route.params !== this.props.route.params
       //param nay chua thong tin table moi tu add_table
       //chi update neu params thay doi
-    )
-    {
+    ) {
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         this.setState({ table: res.data });
         this.setState({ result: res.data });
@@ -70,33 +67,35 @@ export default class BillOfTable extends Component {
     } //chi  update lai UI khi newTable nhan value moi (sau moi lan them do an moi)
   }
 
-
-  updateSearch = search => {
+  updateSearch = (search) => {
     const newData = this.state.table.filter((item) => {
       const itemData = `${item.fullName.toUpperCase()}`;
       const textData = search.toUpperCase();
-      
+
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
       result: newData,
       search,
     });
-    if(search == '') this.state.result = this.state.table.filter((item) => item.status == "full");
+    if (search == "")
+      this.state.result = this.state.table.filter(
+        (item) => item.status == "full"
+      );
     else this.state.result = this.state.data;
-
   };
-
 
   render() {
     const { search } = this.state;
     const { navigation } = this.props;
-    this.state.result = this.state.result.filter((item) => item.status == "full")
+    this.state.result = this.state.result.filter(
+      (item) => item.status == "full"
+    );
     this.state.result.filter((item) => {
       const temp = item.name;
       var t_price = item.price;
       this.state.totalPrice.filter((item1) => {
-        if(item1.id.table.name == temp){
+        if (item1.id.table.name == temp) {
           t_price = t_price + item1.id.dish.pirce * item1.call_number;
         }
       });
@@ -110,7 +109,7 @@ export default class BillOfTable extends Component {
       //   totalPrice: t_price,
       // };
       // console.log(dem);
-      if(t_price > item.price)
+      if (t_price > item.price)
         this.state.totalBill.push({
           name: item.name,
           chairNum: item.chairNum,
@@ -120,61 +119,46 @@ export default class BillOfTable extends Component {
           reserve_time: item.reserve_time,
           totalPrice: t_price,
         });
-        console.log(this.state.totalBill);
-    })
-    
+      console.log(this.state.totalBill);
+    });
+
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <View style={{...styles.overlayContainer}}>
-          <SearchBar 
-                  onChangeText={this.updateSearch}
-                  value={search}
-                  placeholder='Search'
-                  placeholderTextColor='#86939e'
-                  platform = "android"
-                  containerStyle={styles.searchBarContainer}
-                  inputContainerStyle={styles.SearchBar}
-                  placeholderTextColor={"#666"}
-                  />
+        <View style={{ ...styles.overlayContainer }}>
+          <SearchBar
+            onChangeText={this.updateSearch}
+            value={search}
+            placeholder="Search"
+            placeholderTextColor="#86939e"
+            platform="android"
+            containerStyle={styles.searchBarContainer}
+            inputContainerStyle={styles.SearchBar}
+            placeholderTextColor={"#666"}
+          />
 
-            {/* Danh sách bàn đang live */}
-            {/* <View style={styles.contentContainer}>
-            <View style={styles.content}>
-            <View style={{ width: "25%" }}>
-                  <Text style={styles.title}>Name</Text>
-                </View>
-                <View style={{ width: "20%" }}>
-                  <Text style={styles.title}>Seats</Text>
-                </View>
-                <View style={{ width: "30%" }}>
-                  <Text style={styles.title}>price</Text>
-                </View>
-                <View style={{ width: "15%" }}>
-                  <Text style={styles.subtitle}>Status</Text>
-                </View>
-              </View>
-              </View> */}
-              <FlatList
-                      data={this.state.totalBill}
-                      renderItem={({ item }) =>  <RowBill item={item} 
-                      onPress = {() => navigation.navigate('bill', {table: item})}/>}
-                      ItemSeparatorComponent={Separator}
-                      ListHeaderComponent={() => <Separator />}
-                      ListFooterComponent={() => <Separator />}
-                      keyExtractor={(item) => {
-                        return `${item.name}`;} }
-                    />
-
-
+          <FlatList
+            data={this.state.totalBill}
+            renderItem={({ item }) => (
+              <RowBill
+                item={item}
+                onPress={() => navigation.navigate("bill", { table: item })}
+              />
+            )}
+            ItemSeparatorComponent={Separator}
+            ListHeaderComponent={() => <Separator />}
+            ListFooterComponent={() => <Separator />}
+            keyExtractor={(item) => {
+              return `${item.name}`;
+            }}
+          />
         </View>
       </ImageBackground>
     );
   }
-};
+}
 
-
-const { width: WIDTH} = Dimensions.get('window');
-const { height: HEIGHT} = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get("window");
+const { height: HEIGHT } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
