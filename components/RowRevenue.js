@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#fff",
+    color: "#000",
     marginBottom: 5,
   },
   subtitle: {
@@ -77,7 +77,7 @@ export const RowRevenue = ({ item , onPress}) => (
         <View style={{ ...styles.content }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", width: "82%" }}>
-              <Text style={{fontSize: 24, fontWeight: 'bold', color: '#fff'}}> {item.month}</Text>
+              <Text style={{fontSize: 24, fontWeight: 'bold', color: '#000'}}> {item.month}</Text>
             </View>
             
           </View>
