@@ -17,16 +17,34 @@ import dataBill from "../data/bill"
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
 import { RowRevenue, Separator } from '../components/RowRevenue';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
 
 export default class revenueStatistics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: [],
-      table: [],
+      labels: [' '],
+      data: [0],
       revenueMonth: '',
       dataRevenueMonth: [],
+      revenueStatistics: {},
     };
+    this.data ={
+      labels: this.state.labels,
+      datasets: [
+        {
+          data: this.state.data,
+        },
+      ], 
+    }
   }
 
   componentDidMount() {
@@ -45,31 +63,68 @@ export default class revenueStatistics extends Component {
 
   render(){
     const {navigation} = this.props;
-    console.log(this.state.dataRevenueMonth)
+    this.state.dataRevenueMonth.filter((item) => {
+      this.state.labels.push(item.month.toString().substr(0, 3));
+      this.state.data.push(item.money/1000000);
+    });
+    console.log(this.state.labels);
     return(
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
 
-            {/* hóa đơn */}
-            <View style={styles.billContainer}>
               <View style={styles.billTitle}>
-                <Text style={styles.textBillTitle}>One month</Text>
-                <Text style={styles.textBillTitle}>Revennue Statistics</Text>
-                
+                <Text style={styles.textBillTitle}>Overview</Text>
               </View>
-              <FlatList
-                      data={this.state.dataRevenueMonth}
-                      renderItem={({ item }) =>  <RowRevenue item={item} 
-                      />}
-                      ItemSeparatorComponent={Separator}
-                      ListHeaderComponent={() => <Separator />}
-                      ListFooterComponent={() => <Separator />}
-                      keyExtractor={(item) => {
-                        return `${item.month}`;} }
-                    />
+              <LineChart
+                data={this.data}
+                width={WIDTH} // from react-native
+                height={220}
+              //yAxisLabel={'Rs'}
+                chartConfig={{
+                  backgroundColor: '#1cc910',
+                  backgroundGradientFrom: '#fff',
+                  backgroundGradientTo: '#fff',
+                  decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 255) => `rgba(0, 62, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  barPercentage: 0.9,
+                  propsForDots: {
+                    r: "6",
+                    // strokeWidth: "2",
+                    // stroke: "#ffa726",
+                    fill:  `rgba(0, 62, 255, 1)`,
+                  },
+                  propsForBackgroundLines: {
+                    stroke: "#000",
+                    strokeLinejoin: 'bevel',
+                    fillRule: 'evenodd',
+                    strokeDasharray: [0, WIDTH],
+                  },
+                }}
+                // verticalLabelRotation={30}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 0,
+                }}
+              />
+              <View style={{ width: WIDTH, height: HEIGHT - 420, marginTop: 10}}>
+              <Text style={styles.textBillTitle}>Revennue Statistics</Text>
+                <FlatList
+                        data={this.state.dataRevenueMonth}
+                        renderItem={({ item }) =>  <RowRevenue item={item} 
+                        />}
+                        ItemSeparatorComponent={Separator}
+                        ListHeaderComponent={() => <Separator />}
+                        ListFooterComponent={() => <Separator />}
+                        keyExtractor={(item) => {
+                          return `${item.month}`;} }
+                      />
+              </View>
             
             </View> 
-        </View>
       </ImageBackground>
     )
   }
@@ -77,21 +132,20 @@ export default class revenueStatistics extends Component {
   
 
 const { width: WIDTH} = Dimensions.get('window');
-const { height: HIGHT} = Dimensions.get('window');
+const { height: HEIGHT} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
     height: "100%",
-    opacity: 0.9,
+    //opacity: 0.9,
   },
   overlayContainer: {
     flex: 1,
-    borderColor: "#707070",
-    borderWidth: 1,
     marginTop: 70,
-    backgroundColor: "rgba(60,50,41,0.59)",
+    // backgroundColor: "rgba(60,50,41,0.59)",
+    backgroundColor: '#fff',
   },
   tableContainer: {
     flexDirection:'row',
@@ -116,66 +170,12 @@ const styles = StyleSheet.create({
   SearchBar: {
     height: 10,
   },
-  billContainer: {
-    borderColor: 'rgba(243, 242, 242, 0.60)',
-    borderWidth: 3,
-    borderRadius: 25,
-    //height: HIGHT - 240,
-    height: HIGHT - 200,
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 20,
-    // display: 'none'
-  },
-  billTitle: {
-    height: (HIGHT - 260)/8,
-    
-  },
-  billContent: {
-    marginTop: 5,
-    marginLeft: 20,
-    marginRight: 20,
-  },
-  billContentTitle: {
-    flexDirection: 'row',
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-  },
   textBillTitle: {
-    color: '#ffffff', 
+    color: '#000', 
     fontSize: 22, 
-    fontStyle: 'italic',
-    textAlign: 'center',
+    textAlign: 'left',
     marginTop: 5,
-  },
-  textTableName: {
-    position: "relative", 
-    flex: 1, 
-    textAlign: "left", 
-    marginTop: 5, 
-    marginLeft: 30,
-    color: '#fff',
-  },
-  textMaHoaDon: {
-    position:"relative", 
-    flex: 1, 
-    textAlign: 'right', 
-    marginTop: 5, 
-    marginRight: 30,
-    color: '#fff'
-  },
-  billTable: {
-    fontSize: 16, 
-    position: 'relative', 
-    textAlign:'center', 
-    width: (WIDTH-120)/4, 
-    color: '#fff',
-  },
-  totalView: {
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    marginTop: 40,
+    paddingLeft: 10,
   },
 });
 

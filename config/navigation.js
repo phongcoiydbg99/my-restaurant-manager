@@ -26,6 +26,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Splash } from "../components/Splash";
 
 import DangNhap from "../screens/dang_nhap";
@@ -36,6 +37,7 @@ import QuanLyMenu from "../screens/quan_ly_menu";
 import ThongKe from "../screens/thong_ke";
 import HoaDon from "../screens/hoa_don";
 import ThongTin from "../screens/thong_tin";
+import Order from "../screens/quan_ly_order";
 import Logo from "../assets/gb2.png";
 import BackAv from "../assets/Backgr-Login.jpg";
 import Avatar from "../assets/avatar.jpg";
@@ -127,6 +129,19 @@ const ThongTinStackScreen = () => (
     />
   </ThongTinStack.Navigator>
 );
+const OrderStack = createStackNavigator();
+const OrderStackScreen = () => (
+  <OrderStack.Navigator>
+    <OrderStack.Screen
+      name="Order"
+      component={Order}
+      options={{
+        headerTitle: false,
+        headerTransparent: true,
+      }}
+    />
+  </OrderStack.Navigator>
+);
 
 const AppTabs = createBottomTabNavigator();
 const AppTabsScreen = () => (
@@ -143,6 +158,16 @@ const AppTabsScreen = () => (
             size={props.size}
             color={props.color}
           />
+        ),
+      }}
+    />
+    <AppTabs.Screen
+      name="Orders"
+      component={OrderStackScreen}
+      options={{
+        tabBarLabel: "Orders",
+        tabBarIcon: (props) => (
+          <FontAwesome name="reorder" size={props.size} color={props.color} />
         ),
       }}
     />

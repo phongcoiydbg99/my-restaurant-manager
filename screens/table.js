@@ -318,7 +318,7 @@ export default class Table extends Component {
             onPress={() => {
               
               this.toggleMenu();
-              navigation.navigate("Orders");
+              this.setState({ modalVisible: true });
             }}
           >
             <Animated.View
@@ -413,10 +413,10 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     backgroundColor: "#fff",
     height: 50,
-    borderRadius: 5,
     //opacity: .5,
     marginTop: 70,
-    marginBottom:10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ececec",
   },
   SearchBar: {
     height: 30,
