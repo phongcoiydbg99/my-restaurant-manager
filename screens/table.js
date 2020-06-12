@@ -86,7 +86,7 @@ export default class Table extends Component {
       //chi update neu params thay doi
     ) {
        
-      console.log('act:' + JSON.stringify(this.props.route.params.action));
+      // console.log('act:' + JSON.stringify(this.props.route.params.action));
       axios.get(`${SERVER_ID}table/all`).then((res) => {
         
         //  this.toggleEditMode();

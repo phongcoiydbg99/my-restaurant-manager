@@ -59,7 +59,7 @@ export default class AddTable extends React.Component {
     let act = this.props.route.params.action
     let item = this.props.route.params.item
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
-    console.log(item);console.log(act);
+    
       this.setState({mode:act.name,
                      name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
                      status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
@@ -145,7 +145,7 @@ export default class AddTable extends React.Component {
             name:'formError',
             date: getCurrentDateTime()
           }
-      }),()=>console.log(this.state));
+      }));
       //this.setState({action:'formError',actionTime:getCurrentDateTime()});
       
     }else{

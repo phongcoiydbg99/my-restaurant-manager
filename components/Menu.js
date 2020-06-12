@@ -63,7 +63,7 @@ export default class Menu extends Component {
     axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ menu: res.data });
-    });
+    }).catch(err => console.log('Dish error : ' + err));
   }
   componentDidUpdate(prevProps, prevState) {
     if ("" != this.state.model) {
@@ -72,7 +72,7 @@ export default class Menu extends Component {
         this.setState({ menu: res.data });
         this.setState({ model: "" });
         this.setState({ modalHeader: "" });
-      });
+      }).catch(err => console.log('Dish error : ' + err));
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 
