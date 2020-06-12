@@ -10,7 +10,7 @@ public class BANAN_MONAN {
 	@EmbeddedId
 	private Table_Dish_ID id;
 	
-	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm")
+	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm:ss")
 	@Column(name = "tg_goi")
 	private Date call_time;
 	

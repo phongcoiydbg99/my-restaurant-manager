@@ -31,7 +31,7 @@ public class BAN_AN {
 		this.fullName = fullName;
 	}
 
-	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm")
+	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm:ss")
      @Column(name = "reserved_time" , nullable = true)
      private Date reserve_time;
 
