@@ -66,26 +66,20 @@ export default class Menu extends Component {
     };
   }
   componentDidMount() {
-    axios
-      .get(`${SERVER_ID}dish/category/${this.props.category}`)
-      .then((res) => {
-        // this.setState({ result: res.data });
-        // this.setState({ menu: res.data });
-        this.setState(
+    axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
+      this.setState(
         (prevState) => ({
           ...prevState,
           result: res.data ,
           menu: res.data,
         }));
-      });
+    }).catch(err => console.log('Dish error : ' + err));
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.model);
     if ("" != this.state.model) {
-      axios
-        .get(`${SERVER_ID}dish/category/${this.props.category}`)
-        .then((res) => {
-          this.setState(
+      axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
+        this.setState(
         (prevState) => ({
           ...prevState,
           result: res.data ,
@@ -93,11 +87,7 @@ export default class Menu extends Component {
            model: "",
            modalHeader: "" ,
         }));
-          // this.setState({ result: res.data });
-          // this.setState({ menu: res.data });
-          // this.setState({ model: "" });
-          // this.setState({ modalHeader: "" });
-        });
+      }).catch(err => console.log('Dish error : ' + err));
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 

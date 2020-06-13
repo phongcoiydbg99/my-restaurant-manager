@@ -10,7 +10,7 @@ public class MON_AN {
     private String name;
 	
 	@Column(name = "gia")
-	private Long pirce;
+	private Long price;
 	
 	@Column(name = "mo_ta" , nullable = true)
 	private String description;
@@ -42,12 +42,12 @@ public class MON_AN {
 		this.name = name;
 	}
 
-	public Long getPirce() {
-		return pirce;
+	public Long getprice() {
+		return price;
 	}
 
-	public void setPirce(Long pirce) {
-		this.pirce = pirce;
+	public void setprice(Long price) {
+		this.price = price;
 	}
 
 	public String getDescription() {

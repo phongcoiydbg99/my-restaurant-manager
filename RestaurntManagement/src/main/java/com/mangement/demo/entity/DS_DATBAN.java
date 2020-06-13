@@ -11,7 +11,7 @@ public class DS_DATBAN {
 	@Column(name = "ma_datban")
     private Long orderId;
 	
-	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm")
+	@JsonFormat(pattern = "dd-MMM-YYYY HH:mm:ss")
 	@Column(name = "reserved_time")
 	private Date reservedTime;
 	
