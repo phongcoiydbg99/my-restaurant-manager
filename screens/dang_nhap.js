@@ -99,7 +99,7 @@ export default ({ navigation }) => {
   };
 
   const checkLogin = () => {
-    if (username == 'abc' && password == 'abc') signIn()
+    if (username == 'Abc' && password == 'Abc') signIn()
     else alert("Sai");
   };
 
