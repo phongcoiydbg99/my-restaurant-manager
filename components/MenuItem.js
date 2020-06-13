@@ -13,9 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Asset } from 'expo-asset';
-import * as FileSystem from "expo-file-system";
-import { SERVER_IMAGE_ID } from "../config/properties";
+
 const { width: WIDTH } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -85,29 +83,10 @@ export default class MenuItem extends React.Component {
     super(props);
   }
   render() {
-    //  var assortedComponents = require("../public");
-    // var path = `../public/${this.props.item.name}.png`;
-    // var images = (path);
-    const imageURI =
-      `${SERVER_IMAGE_ID}` +
-      "public/" +
-      this.props.item.name +
-      ".png" +
-      "?random_number="+
-      new Date().getTime();
-      console.log(this.props.image);
     return (
       <TouchableOpacity style={styles.container}>
         <View>
-          <Image
-            source={{
-              uri:this.props.image,
-                
-            }}
-            // source={images}
-            //  source={require(`../public/${this.props.item.name}.png`)}
-            style={styles.image}
-          />
+          <Image source={this.props.image} style={styles.image} />
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.label}>Name: </Text>
