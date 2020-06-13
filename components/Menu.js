@@ -30,8 +30,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import Response from "../components/Response";
 import { getCurrentDateTime } from "../config/util";
-import { SERVER_ID } from "../config/properties";
 
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+
+import { SERVER_ID } from "../config/properties";
+import { SERVER_IMAGE_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
@@ -57,22 +61,43 @@ export default class Menu extends Component {
       price: "",
       action: {},
       model: "",
+      image: null,
+      randNum: new Date().getTime(),
     };
   }
   componentDidMount() {
-    axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
-      this.setState({ result: res.data });
-      this.setState({ menu: res.data });
-    });
+    axios
+      .get(`${SERVER_ID}dish/category/${this.props.category}`)
+      .then((res) => {
+        // this.setState({ result: res.data });
+        // this.setState({ menu: res.data });
+        this.setState(
+        (prevState) => ({
+          ...prevState,
+          result: res.data ,
+          menu: res.data,
+        }));
+      });
   }
   componentDidUpdate(prevProps, prevState) {
+    console.log(this.state.model);
     if ("" != this.state.model) {
-      axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
-        this.setState({ result: res.data });
-        this.setState({ menu: res.data });
-        this.setState({ model: "" });
-        this.setState({ modalHeader: "" });
-      });
+      axios
+        .get(`${SERVER_ID}dish/category/${this.props.category}`)
+        .then((res) => {
+          this.setState(
+        (prevState) => ({
+          ...prevState,
+          result: res.data ,
+          menu: res.data ,
+           model: "",
+           modalHeader: "" ,
+        }));
+          // this.setState({ result: res.data });
+          // this.setState({ menu: res.data });
+          // this.setState({ model: "" });
+          // this.setState({ modalHeader: "" });
+        });
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 
@@ -148,6 +173,7 @@ export default class Menu extends Component {
         fullName: this.state.fullName,
         foodCategory: this.props.category,
       };
+      
       let newData = {};
       if (this.state.modalHeader == "ADD") {
         //thuc hien post data
@@ -170,6 +196,18 @@ export default class Menu extends Component {
           })
           .then(() => {
             //post xong data
+            fetch(`${SERVER_IMAGE_ID}`, {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              // send our base64 string as POST request
+              body: JSON.stringify({
+                imgsource: this.state.image.base64,
+                name: newMenu.name,
+              }),
+            });
             this.setState({ modalVisible: false });
           })
           .catch((err) => console.log(err));
@@ -194,13 +232,68 @@ export default class Menu extends Component {
           })
           .then(() => {
             //post xong data
-            this.setState({ modalVisible: false });
+            fetch(`${SERVER_IMAGE_ID}`, {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              // send our base64 string as POST request
+              body: JSON.stringify({
+                imgsource: this.state.image.base64,
+                name: newMenu.name,
+              }),
+            });
+            this.setState({ modalVisible: false , randNum: new Date().getTime()});
           })
           .catch((err) => console.log(err));
       }
     }
     // this.setState({ modalVisible: false });
   }
+
+  pickImageLibrary = async () => {
+    let results = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true,
+    });
+
+    if (!results.cancelled) {
+      this.setState({ image: results });
+    }
+  };
+  askForPermission = async () => {
+    const permissionResult = await Permissions.askAsync(Permissions.CAMERA);
+    if (permissionResult.status !== "granted") {
+      Alert.alert("no permissions to access camera!", [{ text: "ok" }]);
+      return false;
+    }
+    return true;
+  };
+  pickImageCamera = async () => {
+    // make sure that we have the permission
+    const hasPermission = await this.askForPermission();
+    if (!hasPermission) {
+      return;
+    } else {
+      // launch the camera with the following settings
+      let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      });
+      // make sure a image was taken:
+      if (!image.cancelled) {
+        this.setState({ image: image });
+      }
+    }
+  };
+
   render() {
     const { navigation } = this.props;
     return (
@@ -259,6 +352,68 @@ export default class Menu extends Component {
                     keyboardType="numeric"
                     onChangeText={(text) => this.setState({ price: text })}
                   />
+                  <View style={{ flexDirection: "row", marginLeft: 10 }}>
+                    <View
+                      style={{
+                        width: 200,
+                        height: 200,
+                        backgroundColor: "#ececec",
+                      }}
+                    >
+                      {this.state.image && (
+                        <Image
+                          source={{ uri: this.state.image.uri }}
+                          style={{ width: 200, height: 200 }}
+                        />
+                      )}
+                      {!this.state.image && this.state.modalHeader == "EDIT" && (
+                        <Image
+                          source={{
+                            uri:
+                              `${SERVER_IMAGE_ID}` +
+                              "public/" +
+                              this.state.name +
+                              ".png",
+                          }}
+                          style={{ width: 200, height: 200 }}
+                        />
+                      )}
+                    </View>
+                    <View style={{ flexDirection: "column" }}>
+                      <TouchableOpacity
+                        onPress={this.pickImageCamera}
+                        style={{
+                          height: 40,
+                          borderRadius: 10,
+                          width: 40,
+                          marginLeft: 10,
+                          backgroundColor: "#fff",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <AntDesign name="camera" size={24} color="red" />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={this.pickImageLibrary}
+                        style={{
+                          height: 40,
+                          borderRadius: 10,
+                          width: 40,
+                          marginLeft: 10,
+                          backgroundColor: "#fff",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <MaterialIcons
+                          name="photo-library"
+                          size={24}
+                          color="red"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                   <View style={styles.elementForm}>
                     <TouchableOpacity
                       style={styles.btnSubmit}
@@ -329,16 +484,30 @@ export default class Menu extends Component {
                 return `${item.name}`;
               }}
               renderItem={({ item }) => {
+                const imageURI =
+                  `${SERVER_IMAGE_ID}` +
+                  "public/" +
+                  item.name +
+                  ".png" +
+                  "?random_number=" +
+                  this.state.randNum;
                 return (
                   <MenuItem
-                    image={Background}
+                    image={imageURI}
                     item={item}
+                    base64={this.state.base64}
                     onPress={() => {
-                      this.setState({ modalVisible: true });
-                      this.setState({ modalHeader: "EDIT" });
-                      this.setState({ name: item.name });
-                      this.setState({ fullName: item.fullName });
-                      this.setState({ price: item.pirce.toString() });
+                      this.setState({
+                        modalVisible: true,
+                        modalHeader: "EDIT",
+                        name: item.name,
+                        fullName: item.fullName,
+                        price: item.pirce.toString(),
+                      });
+                      // this.setState({ modalHeader: "EDIT" });
+                      // this.setState({ name: item.name });
+                      // this.setState({ fullName: item.fullName });
+                      // this.setState({ price: item.pirce.toString() });
                     }}
                     delete={() => {
                       axios
@@ -347,7 +516,7 @@ export default class Menu extends Component {
                           this.setState(
                             (prevState) => ({
                               ...prevState,
-                              model: "change",
+                              model: "delete",
                               action: {
                                 ...prevState.action,
                                 name: "deleteTable",
@@ -468,7 +637,7 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
