@@ -90,7 +90,7 @@ export const RowBill = ({ item, onEdit }) => (
                    }}
                  >
                    {" "}
-                   {item.fullName}
+                   {item.id.table.fullName}
                  </Text>
                </View>
              </View>
@@ -114,7 +114,7 @@ export const RowBill = ({ item, onEdit }) => (
                </Text>
              </View>
              <View style={{ flexDirection: "row" }}>
-               <Text style={styles.title}>{item.totalPrice}đ</Text>
+               <Text style={styles.title}></Text>
              </View>
              {/* <View style={{ flexDirection: "row" }}>
             <Text style={styles.sublabel}>Status: </Text>

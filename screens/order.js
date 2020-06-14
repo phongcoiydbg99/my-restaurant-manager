@@ -27,7 +27,7 @@ import {
   Input,
 } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
+import _ from "lodash"
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -70,88 +70,16 @@ export default class order extends Component {
     };
   }
   componentDidMount() {
-    axios.get(`${SERVER_ID}table/all`).then((res) => {
-      this.state.result = res.data.filter(
-        (item) => item.status == "full"
-      );
-      axios.get(`${SERVER_ID}table_dish/all`).then((res) => {
-        this.state.table_dish = res.data;
-        this.state.result.filter((item) => {
-          const temp = item.name;
-          var t_price = item.price;
-          this.state.table_dish.filter((item1) => {
-            if (item1.id.table.name == temp) {
-              t_price = t_price + item1.id.dish.pirce * item1.call_number;
-              this.state.list_order.push({
-                name: item1.id.dish.name,
-                call_number: item1.call_number,
-                pirce: item1.id.dish.pirce,
-              });
-            }
-          });
-          let test = this.state.list;
-          this.state.list = { ...test, [temp] : this.state.list_order};
-          this.state.list_order = [];
-          if (t_price > item.price)
-            this.state.order.push({
-              name: item.name,
-              chairNum: item.chairNum,
-              status: item.status,
-              price: item.price,
-              fullName: item.fullName,
-              reserve_time: item.reserve_time,
-              totalPrice: t_price,
-            });
-        });
-        this.state.clone_order = this.state.order;
-        this.setState({
-          order: this.state.order
-        });
-        // this.setState({ clone_order: this.state.order });
-      });
-    });
-    // console.log(this.state.order);
-  }
+   axios.get(`${SERVER_ID}table_dish/all`).then(res=>{this.setState({result:res.data})}).
+   then(()=> {
+     
+     let temp = _.groupBy(this.state.result, item => item.id.table.name);
+     let temp1 = Object.values(temp); console.log(temp1);
+     this.setState({order:temp1, clone_order:temp1},()=>console.log('Hello' + JSON.stringify(this.state.order)));
+   }).catch(err=>console.log(err));
+  };
   componentDidUpdate(prevProps, prevState) {
-    this.state.order = [];
-    if (prevProps.route.params !== this.props.route.params) {
-      axios.get(`${SERVER_ID}table/all`).then((res) => {
-        this.state.result = res.data.filter((item) => item.status == "full");
-        axios.get(`${SERVER_ID}table_dish/all`).then((res) => {
-          this.state.table_dish = res.data;
-          this.state.result.filter((item) => {
-            const temp = item.name;
-            var t_price = item.price;
-            this.state.table_dish.filter((item1) => {
-              if (item1.id.table.name == temp) {
-                t_price = t_price + item1.id.dish.pirce * item1.call_number;
-                this.state.list_order.push({
-                  name: item1.id.dish.name,
-                  call_number: item1.call_number,
-                  pirce: item1.id.dish.pirce,
-                });
-              }
-            });
-            let test = this.state.list;
-            this.state.list = { ...test, [temp]: this.state.list_order};
-            this.state.list_order = [];
-            if (t_price > item.price)
-              this.state.order.push({
-                name: item.name,
-                chairNum: item.chairNum,
-                status: item.status,
-                price: item.price,
-                fullName: item.fullName,
-                reserve_time: item.reserve_time,
-                totalPrice: t_price,
-              });
-          });
-          this.state.clone_order = this.state.order;
-          this.setState({ order: this.state.order});
-          // this.setState({ clone_order: this.state.order });
-        });
-      });
-    }
+   
   }
   animation = new Animated.Value(0);
   toggleMenu = () => {
@@ -188,9 +116,8 @@ export default class order extends Component {
     );
     this.setState({ value: text });
   }
+
   render() {
-    
-    
     const sortStyle = {
       transform: [
         {
@@ -261,7 +188,7 @@ export default class order extends Component {
           <FlatList
             data={this.state.order}
             keyExtractor={(item) => {
-              return `${item.name}`;
+              return `${item.id.table.name}+${item.id.dish.name}`;
             }}
             renderItem={({ item, index }) => {
               return (
