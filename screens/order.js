@@ -70,16 +70,16 @@ export default class order extends Component {
     };
   }
   componentDidMount() {
-   axios.get(`${SERVER_ID}table_dish/all`).then(res=>{this.setState({result:res.data})}).
-   then(()=> {
+     axios.get(`${SERVER_ID}table/all`).then(res=>{
+       
+       let temp = res.data.filter(item=>item.orderList.length > 0);
+       this.setState({order:temp,clone_order:temp},()=>console.log(JSON.stringify(this.state.order)))
+     })
      
-     let temp = _.groupBy(this.state.result, item => item.id.table.name);
-     let temp1 = Object.values(temp); console.log(temp1);
-     this.setState({order:temp1, clone_order:temp1},()=>console.log('Hello' + JSON.stringify(this.state.order)));
-   }).catch(err=>console.log(err));
-  };
+     .catch(err=>console.log(err))
+  }
   componentDidUpdate(prevProps, prevState) {
-   
+      
   }
   animation = new Animated.Value(0);
   toggleMenu = () => {
@@ -188,7 +188,7 @@ export default class order extends Component {
           <FlatList
             data={this.state.order}
             keyExtractor={(item) => {
-              return `${item.id.table.name}+${item.id.dish.name}`;
+              return `${item.name}`;
             }}
             renderItem={({ item, index }) => {
               return (
@@ -200,7 +200,7 @@ export default class order extends Component {
                   navigation={this.props.navigation}
                   onEdit={() =>
                     navigation.navigate("AddOrder", {
-                      list_order: this.state.list[item.name],
+                      list_order: this.state.order.find(x => x.name == item.name).orderList,
                       name: item.name,
                     })
                   }

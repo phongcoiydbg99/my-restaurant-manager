@@ -89,13 +89,13 @@ export const RowBill = ({ item, onEdit }) => (
                      color: "#808080",
                    }}
                  >
-                   {" "}
-                   {item.id.table.fullName}
+                   
+                   {item.fullName}
                  </Text>
                </View>
              </View>
              <View style={{ flexDirection: "row" }}>
-               <Text style={styles.title}>{item.reserve_time}</Text>
+                  <Text style={styles.title}>{item.orderList[0].call_time}</Text>
              </View>
              <View
                style={{
