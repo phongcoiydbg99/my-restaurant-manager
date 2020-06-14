@@ -18,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { SERVER_ID } from "../config/properties";
+import { SERVER_IMAGE_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 import axios from "axios";
 import { getCurrentDateTime } from "../config/util";
@@ -78,7 +79,7 @@ export default class RowOrder extends React.Component {
         >
           <TouchableHighlight style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Image source={this.props.image} style={styles.image1} />
+              <Image source={{uri: this.props.image}} style={styles.image1} />
               <View style={{ ...styles.content, alignItems: "center" }}>
                 <Text
                   style={{ fontSize: 25, fontWeight: "bold", color: "#3a3a3a" }}
@@ -194,7 +195,7 @@ export default class RowOrder extends React.Component {
       <TouchableOpacity onPress={this.toggleOverlay} style={styles.container}>
         {modalview}
         <View>
-          <Image source={this.props.image} style={styles.image} />
+          <Image source={{ uri: this.props.image }} style={styles.image} />
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>{this.props.item.name}</Text>

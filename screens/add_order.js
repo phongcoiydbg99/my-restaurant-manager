@@ -36,6 +36,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { SERVER_ID } from "../config/properties";
+import { SERVER_IMAGE_ID } from "../config/properties";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
@@ -78,6 +79,7 @@ export default class AddOrder extends Component {
       update: "notDone",
       refresh: false,
       action: {},
+      randNum: new Date().getTime(),
     };
   }
   componentDidMount() {
@@ -427,9 +429,16 @@ export default class AddOrder extends Component {
                         number = order.call_number;
                       }
                     });
+                    const imageURI =
+                      `${SERVER_IMAGE_ID}` +
+                      "public/" +
+                      item.name +
+                      ".png" +
+                      "?random_number=" +
+                      this.state.randNum;
                     return (
                       <RowOrder
-                        image={Background}
+                        image={imageURI}
                         item={item}
                         addOrder={this.addOrder}
                         deleteOrder={this.deleteOrder}
@@ -459,9 +468,16 @@ export default class AddOrder extends Component {
                 return `${item.name}` + `${item.call_number}`;
               }}
               renderItem={({ item, index }) => {
+                const imageURI =
+                  `${SERVER_IMAGE_ID}` +
+                  "public/" +
+                  item.name +
+                  ".png" +
+                  "?random_number=" +
+                  this.state.randNum;
                 return (
                   <RowOrder
-                    image={Background}
+                    image={imageURI}
                     item={item}
                     addOrder={this.addOrder}
                     deleteOrder={this.deleteOrder}
