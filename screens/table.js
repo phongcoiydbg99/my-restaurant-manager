@@ -291,6 +291,9 @@ export default class Table extends Component {
                       action: {
                         name: 'editTable',
                         time: getCurrentDateTime()
+                      }, action: {
+                        name: 'editTable',
+                        time: getCurrentDateTime()
                       },
                       item: item,
                     })

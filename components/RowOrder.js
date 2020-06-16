@@ -38,33 +38,31 @@ export default class RowOrder extends React.Component {
     };
   }
   componentDidMount() {
-    // console.log("haha");
+   
   }
   toggleOverlay = () => {
     this.setState({ visible: !this.state.visible });
   };
   upCount = () => {
-    this.setState({ count: this.state.count + 1 });
-    this.props.addOrder({
+    this.setState({ count: this.state.count + 1 }, ()=> this.props.addOrder({
       name: this.props.item.name,
-      call_number: this.state.count + 1,
-      pirce: this.props.item.pirce,
-    });
+      call_number: this.state.count,
+     
+    }));
+   
   };
   downCount = () => {
-    if (this.state.count == 0) {
-      this.props.deleteOrder(0);
-      this.setState({ count: 0 });
-    } else {
-      this.setState({ count: this.state.count - 1 });
-      if (this.state.count == 1) this.props.deleteOrder(1);
-      else
-        this.props.addOrder({
-          name: this.props.item.name,
-          call_number: this.state.count - 1,
-          pirce: this.props.item.name.pirce,
-        });
-    }
+    this.setState({count: this.state.count -1}, ()=>{
+      this.props.addOrder({
+        name: this.props.item.name,
+        call_number: this.state.count
+        
+      });
+      if(this.state.count == 0){
+        this.props.deleteOrder(0);
+      } 
+    });
+   
   };
   render() {
     const { navigation } = this.props;

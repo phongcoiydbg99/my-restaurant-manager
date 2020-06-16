@@ -5,8 +5,10 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+
 @Entity
 public class BANAN_MONAN {
+	
 	@EmbeddedId
 	private Table_Dish_ID id;
 	

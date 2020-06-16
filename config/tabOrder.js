@@ -31,6 +31,7 @@ export default () => {
       <Tab.Screen
         name="Orders"
         component={Order}
+        initialParams= {{action:""}}
         options={{
           headerTitle: false,
           headerTransparent: true,
@@ -53,6 +54,7 @@ export default () => {
       <Tab.Screen
         name="AddOrder"
         component={AddOrder}
+        initialParams= {{action:""}}
         options={{
           headerShown: false,
           headerTitle: false,

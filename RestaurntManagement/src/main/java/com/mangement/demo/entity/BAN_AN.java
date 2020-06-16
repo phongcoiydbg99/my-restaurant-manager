@@ -10,7 +10,6 @@ public class BAN_AN {
      @Column(name = "ten_ban")
      private String name;
      
-     
      @Column(name = "soluong_ghe")
      private int chairNum;
      
@@ -23,7 +22,18 @@ public class BAN_AN {
      @Column(name = "ten_day_du")
      private String fullName;
      
-     public String getFullName() {
+     @OneToMany(mappedBy = "id.table", fetch = FetchType.EAGER)
+     private List<BANAN_MONAN> orderList;
+     
+    public List<BANAN_MONAN> getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(List<BANAN_MONAN> orderList) {
+		this.orderList = orderList;
+	}
+
+	public String getFullName() {
 		return fullName;
 	}
 

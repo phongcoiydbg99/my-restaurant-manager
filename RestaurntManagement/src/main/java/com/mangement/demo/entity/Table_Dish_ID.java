@@ -3,10 +3,12 @@ package com.mangement.demo.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mangement.demo.entity.*;
 import javax.persistence.*;
 @Embeddable
 public class Table_Dish_ID implements Serializable {
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "ten_ban")
     private BAN_AN table;

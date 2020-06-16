@@ -53,7 +53,7 @@ export default class AddOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: {},
+      
       list_order:
         this.props.route.params.list_order != undefined
           ? this.props.route.params.list_order
@@ -83,6 +83,7 @@ export default class AddOrder extends Component {
     };
   }
   componentDidMount() {
+    
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
     });
@@ -99,12 +100,10 @@ export default class AddOrder extends Component {
       this.setState({ cdessertmenu: res.data });
     });
   }
-  // componentDidUpdate(prevProps, prevState) {
-  //   // this.state.list_order = this.state.list_order.filter(
-  //   //   (item) => item.call_number > 0
-  //   // );
-  //   // console.log(this.state.list_order);
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    
+    
+  }
   onRefresh = () => {
     this.setState({ refresh: !this.state.refresh });
   };
@@ -120,13 +119,12 @@ export default class AddOrder extends Component {
             name: "formError",
             date: getCurrentDateTime(),
           },
-        }),
-        () => console.log(this.state)
+        })
       );
     } else {
       this.state.list_order.forEach((item) => {
         let newOrder = {
-          call_time: getCurrentDateTime(),
+          call_time: item.call_time != undefined ? item.call_time : getCurrentDateTime(),
           call_number: item.call_number,
         };
         axios
@@ -138,35 +136,29 @@ export default class AddOrder extends Component {
           .catch((err) => console.log(err));
       });
       if (check == this.state.list_order.length) {
-        this.setState(
-          (prevState) => ({
-            ...prevState,
-            action: {
-              ...prevState.action,
-              name: "postTable",
-              date: getCurrentDateTime(),
-              msg: "Complete",
-            },
-          }),
-          () => console.log(this.state)
-        );
-        var cloneTable = {};
-        axios
-          .get(`${SERVER_ID}table/${this.state.tableName}`)
-          .then((res) => {
-            cloneTable = res.data;
-            console.log(res.data);
-            cloneTable.status = "full";
-            if (cloneTable.reserve_time == null)
-              cloneTable.reserve_time = getCurrentDateTime();
-            console.log(cloneTable);
-            console.log(cloneTable);
-            axios.put(
-              `${SERVER_ID}table/modify/${this.state.tableName}`,
-              cloneTable
-            );
-          })
-          .then(() => navigation.navigate("Orders", check));
+        navigation.navigate("Orders",{action:{
+          name: "postTable",
+          date: getCurrentDateTime(),
+          msg: "Order successful!",}})
+       
+        
+        // var cloneTable = {};
+        // axios
+        //   .get(`${SERVER_ID}table/${this.state.tableName}`)
+        //   .then((res) => {
+        //     cloneTable = res.data;
+        //     console.log(res.data);
+        //     cloneTable.status = "full";
+        //     if (cloneTable.reserve_time == null)
+        //       cloneTable.reserve_time = getCurrentDateTime();
+        //     console.log(cloneTable);
+        //     console.log(cloneTable);
+        //     axios.put(
+        //       `${SERVER_ID}table/modify/${this.state.tableName}`,
+        //       cloneTable
+        //     );
+        //   })
+        //   .then(() => navigation.navigate("Orders", check));
       }
     }
   };
@@ -176,6 +168,7 @@ export default class AddOrder extends Component {
       if (item.name == data.name) {
         check = true;
         item.call_number = data.call_number;
+        console.log(this.state.list_order);
       }
     });
     if (!check) {
@@ -209,7 +202,7 @@ export default class AddOrder extends Component {
   }
   render() {
     const { navigation, route } = this.props;
-    console.log(this.props.route.params.list_order.length);
+    
     this.state.menu = [
       {
         title: "Maincoure",

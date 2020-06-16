@@ -43,6 +43,7 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import RowOrder from "../components/RowOrder";
 import { RowBill } from "../components/RowBill";
+import {getCurrentDateTime} from "../config/util";
 export default class order extends Component {
   constructor(props) {
     super(props);
@@ -73,13 +74,21 @@ export default class order extends Component {
      axios.get(`${SERVER_ID}table/all`).then(res=>{
        
        let temp = res.data.filter(item=>item.orderList.length > 0);
-       this.setState({order:temp,clone_order:temp},()=>console.log(JSON.stringify(this.state.order)))
+       this.setState({order:temp,clone_order:temp})
      })
      
      .catch(err=>console.log(err))
   }
   componentDidUpdate(prevProps, prevState) {
-      
+      if(prevProps.route.params.action !== this.props.route.params.action) {
+        console.log('Updated')
+        axios.get(`${SERVER_ID}table/all`).then(res=>{
+       
+          let temp = res.data.filter(item=>item.orderList.length > 0);
+          console.log(temp);
+          this.setState({order:temp,clone_order:temp})
+        })
+      }
   }
   animation = new Animated.Value(0);
   toggleMenu = () => {
@@ -198,12 +207,23 @@ export default class order extends Component {
                   right={this.state.right}
                   index={index}
                   navigation={this.props.navigation}
-                  onEdit={() =>
+                  onEdit={() =>{
+                    let list=[];
+                    list = this.state.order.find(x => x.name == item.name).orderList;
+                    
+                    let newList = list.map(item => Object.assign({},item,{
+                       name:item.id.dish.name,fullName:item.id.dish.fullName,
+                    }));
+                    
                     navigation.navigate("AddOrder", {
-                      list_order: this.state.order.find(x => x.name == item.name).orderList,
+                      list_order: newList,
                       name: item.name,
+                      action: {
+                        name: 'editOrder',
+                        time: getCurrentDateTime()
+                      }
                     })
-                  }
+                  }}
                 />
               );
             }}
