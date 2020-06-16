@@ -74,6 +74,10 @@ export default class AddOrder extends Component {
         this.props.route.params.name != undefined
           ? this.props.route.params.name
           : "",
+      add:
+        this.props.route.params.name != undefined
+          ? this.props.route.params.name
+          : "",
       visible: false,
       pickerVisible: false,
       update: "notDone",
@@ -136,29 +140,28 @@ export default class AddOrder extends Component {
           .catch((err) => console.log(err));
       });
       if (check == this.state.list_order.length) {
-        navigation.navigate("Orders",{action:{
-          name: "postTable",
-          date: getCurrentDateTime(),
-          msg: "Order successful!",}})
-       
-        
-        // var cloneTable = {};
-        // axios
-        //   .get(`${SERVER_ID}table/${this.state.tableName}`)
-        //   .then((res) => {
-        //     cloneTable = res.data;
-        //     console.log(res.data);
-        //     cloneTable.status = "full";
-        //     if (cloneTable.reserve_time == null)
-        //       cloneTable.reserve_time = getCurrentDateTime();
-        //     console.log(cloneTable);
-        //     console.log(cloneTable);
-        //     axios.put(
-        //       `${SERVER_ID}table/modify/${this.state.tableName}`,
-        //       cloneTable
-        //     );
-        //   })
-        //   .then(() => navigation.navigate("Orders", check));
+        var cloneTable = {};
+        axios
+          .get(`${SERVER_ID}table/${this.state.tableName}`)
+          .then((res) => {
+            cloneTable = res.data;
+            cloneTable.status = "full";
+            if (cloneTable.reserve_time == null)
+              cloneTable.reserve_time = getCurrentDateTime();
+            axios.put(
+              `${SERVER_ID}table/modify/${this.state.tableName}`,
+              cloneTable
+            );
+          })
+          .then(() =>
+            navigation.navigate("Orders", {
+              action: {
+                name: "postTable",
+                date: getCurrentDateTime(),
+                msg: "Order successful!",
+              },
+            })
+          );
       }
     }
   };
@@ -220,9 +223,28 @@ export default class AddOrder extends Component {
     this.state.result = this.state.result.filter(
       (item) => item.status != "full"
     );
+    let add;
+    if (this.state.add == "") {
+      add = (
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity onPress={this.order} style={styles.btnSubmit}>
+            <Text>ADD</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else
+      add = (
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={this.order}
+            style={styles.btnSubmit}
+          >
+            <Text>ADD</Text>
+          </TouchableOpacity>
+        </View>
+      );
     return (
       <ImageBackground source={Background} style={styles.container}>
-        <Response action={this.state.action} />
         <View style={styles.overlayContainer}>
           <View>
             <TouchableOpacity
@@ -259,20 +281,7 @@ export default class AddOrder extends Component {
                 {this.state.tableName}
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={this.order}
-              style={{
-                height: 40,
-                borderRadius: 10,
-                width: 40,
-                marginLeft: 10,
-                backgroundColor: "#fff",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <AntDesign name="plus" size={24} color="#f02a4b" />
-            </TouchableOpacity>
+            
             <TouchableOpacity
               onPress={this.togglePicker}
               style={{
@@ -481,6 +490,7 @@ export default class AddOrder extends Component {
             />
           </View>
           {/* <Text>{JSON.stringify(this.state.list_order, null, 2)}</Text> */}
+          {add}
         </View>
       </ImageBackground>
     );

@@ -35,6 +35,7 @@ import { AntDesign } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { SERVER_ID } from "../config/properties";
 import Background from "../assets/Backgr-Login.jpg";
+import Response from "../components/Response";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
 const { width: WIDTH } = Dimensions.get("window");
@@ -68,6 +69,7 @@ export default class order extends Component {
       call_number: "",
       update: "notDone",
       value: '',
+      action: {},
     };
   }
   componentDidMount() {
@@ -183,6 +185,7 @@ export default class order extends Component {
     });
     return (
       <ImageBackground source={Background} style={styles.container}>
+        <Response action={this.state.action} />
         <SearchBar
           onChangeText={(text) => this.searchTable(text)}
           placeholder="Search"
@@ -207,22 +210,26 @@ export default class order extends Component {
                   right={this.state.right}
                   index={index}
                   navigation={this.props.navigation}
-                  onEdit={() =>{
-                    let list=[];
-                    list = this.state.order.find(x => x.name == item.name).orderList;
-                    
-                    let newList = list.map(item => Object.assign({},item,{
-                       name:item.id.dish.name,fullName:item.id.dish.fullName,
-                    }));
-                    
+                  onEdit={() => {
+                    let list = [];
+                    list = this.state.order.find((x) => x.name == item.name)
+                      .orderList;
+
+                    let newList = list.map((item) =>
+                      Object.assign({}, item, {
+                        name: item.id.dish.name,
+                        fullName: item.id.dish.fullName,
+                      })
+                    );
+
                     navigation.navigate("AddOrder", {
                       list_order: newList,
                       name: item.name,
                       action: {
-                        name: 'editOrder',
-                        time: getCurrentDateTime()
-                      }
-                    })
+                        name: "editOrder",
+                        time: getCurrentDateTime(),
+                      },
+                    });
                   }}
                 />
               );
