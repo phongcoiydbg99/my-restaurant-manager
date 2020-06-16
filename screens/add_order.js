@@ -122,44 +122,44 @@ export default class AddOrder extends Component {
         })
       );
     } else {
-      this.state.list_order.forEach((item) => {
+      let post_list = this.state.list_order.map(item => {
         let newOrder = {
           call_time: item.call_time != undefined ? item.call_time : getCurrentDateTime(),
           call_number: item.call_number,
         };
-        axios
-          .post(
-            `${SERVER_ID}table_dish/add/${this.state.tableName}/${item.name}`,
-            newOrder
-          )
-          .then(check++)
-          .catch((err) => console.log(err));
+        return axios.post(`${SERVER_ID}table_dish/add/${this.state.tableName}/${item.name}`,newOrder)
       });
-      if (check == this.state.list_order.length) {
-        navigation.navigate("Orders",{action:{
-          name: "postTable",
-          date: getCurrentDateTime(),
-          msg: "Order successful!",}})
-       
-        
-        // var cloneTable = {};
-        // axios
-        //   .get(`${SERVER_ID}table/${this.state.tableName}`)
-        //   .then((res) => {
-        //     cloneTable = res.data;
-        //     console.log(res.data);
-        //     cloneTable.status = "full";
-        //     if (cloneTable.reserve_time == null)
-        //       cloneTable.reserve_time = getCurrentDateTime();
-        //     console.log(cloneTable);
-        //     console.log(cloneTable);
-        //     axios.put(
-        //       `${SERVER_ID}table/modify/${this.state.tableName}`,
-        //       cloneTable
-        //     );
-        //   })
-        //   .then(() => navigation.navigate("Orders", check));
-      }
+      axios.all(post_list).then(axios.spread((...responses) => {
+        const responseOne = responses[0]
+        console.log(responseOne);
+        // use/access the results 
+      })).then(()=> navigation.navigate("Orders", {action: {
+        name: "postTable",
+        date: getCurrentDateTime(),
+        msg: "Order successful!",
+     
+      }})).catch(err=>console.log(err));
+      
+      // this.state.list_order.forEach((item) => {
+      //   let newOrder = {
+      //     call_time: item.call_time != undefined ? item.call_time : getCurrentDateTime(),
+      //     call_number: item.call_number,
+      //   };
+      //   axios
+      //     .post(
+      //       `${SERVER_ID}table_dish/add/${this.state.tableName}/${item.name}`,
+      //       newOrder
+      //     )
+      //     .then(check++)
+      //     .catch((err) => console.log(err));
+      // });
+      // if (check == this.state.list_order.length) {
+      //   navigation.navigate("Orders",{action:{
+      //     name: "postTable",
+      //     date: getCurrentDateTime(),
+      //     msg: "Order successful!",}})
+      // }
+      
     }
   };
   addOrder = (data) => {
