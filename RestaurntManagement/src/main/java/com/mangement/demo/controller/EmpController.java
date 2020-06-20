@@ -27,20 +27,14 @@ public class EmpController {
 	        }else return new ResponseEntity<String>("No job found", HttpStatus.NOT_FOUND);
 	    }
 	 
-	 @PostMapping("/add/{jobName}")//ham nay them thong tin 1 nhan vien gan voi 1 account trc do
-	 public ResponseEntity<?>  addEmployee(@RequestBody NHANVIEN nv, @PathVariable("jobName") String name){
-		 empService.addEmp(nv,name);
-		return new ResponseEntity<String>("Employee added",HttpStatus.OK);
+	 @PostMapping("/add/{jobName}/{username}")//ham nay them thong tin 1 nhan vien gan voi 1 account trc do
+	 public ResponseEntity<?>  addEmployee(@RequestBody NHANVIEN nv, @PathVariable("jobName") String name, @PathVariable("username") String user){
+		 if(empService.addEmp(nv,name,user)) {
+			 return new ResponseEntity<String>("Employee added",HttpStatus.OK);
+		 }
+		return new ResponseEntity<String>("Employee not found",HttpStatus.NOT_FOUND);
 		
 	}
-	 
-	@PutMapping("/modify/{name}")
-	public ResponseEntity<?> updateEmpInfo(@RequestBody NHANVIEN nv, @PathVariable("name")String name){
-		if(empService.modifyEmpByName(nv, name)) {
-			return new ResponseEntity<String>("Info modified !", HttpStatus.OK);
-		}else return new ResponseEntity<String>("Employee not found !", HttpStatus.NOT_FOUND);
-	}
-
         @DeleteMapping("delete/{name}")
         public ResponseEntity<String> deleteEmpByName( @PathVariable("name") String name){
               if(empService.deleteEmpByName(name)){

@@ -17,6 +17,9 @@ public class EmpService {
 	@Autowired
 	private JobManagement jobManagement;
 	
+	@Autowired
+	private AccManagement accManagement;
+	
 	public List<NHANVIEN> getAllEmp(){
 		 return empManagement.findAll();
 	 }
@@ -26,12 +29,13 @@ public class EmpService {
 		 //tra ve 1 nhanvien theo id tra ve null neu k tim thay
 	 }
 	
-	 public void addEmp (NHANVIEN nv, String jobName) {
-		 jobManagement.findById(jobName).map(job ->{
-			 nv.setJob(job);
-			 return empManagement.save(nv);
-		 });
-          
+	 public boolean addEmp (NHANVIEN nv, String jobName, String username) {
+		 Optional<CHUCVU> ojob = jobManagement.findById(jobName);
+		 Optional<TAIKHOAN> otk = accManagement.findById(username);
+		 if(!ojob.isPresent() || !otk.isPresent()) return false;
+		 nv.setJob(ojob.get()); nv.setTk(otk.get());
+		 empManagement.save(nv);
+         return true;
       }
 
      public boolean modifyEmpByName(NHANVIEN nv, String name) {

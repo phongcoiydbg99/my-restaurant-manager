@@ -10,10 +10,9 @@ public class NHANVIEN {
      private String maNV;
 	 
 	 
-	 @OneToOne(cascade = CascadeType.PERSIST)
+	 @OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "chuc_vu",nullable =false, referencedColumnName = "ten_chucvu")
 	 private CHUCVU job;
-	 
 	 
 	public CHUCVU getJob() {
 		return job;
@@ -21,6 +20,18 @@ public class NHANVIEN {
 
 	public void setJob(CHUCVU job) {
 		this.job = job;
+	}
+	
+	 @OneToOne(fetch = FetchType.EAGER)
+	 @JoinColumn(name = "acc",nullable =false, referencedColumnName = "username")
+	private TAIKHOAN tk;
+
+	public TAIKHOAN getTk() {
+		return tk;
+	}
+
+	public void setTk(TAIKHOAN tk) {
+		this.tk = tk;
 	}
 
 	@Column(name = "hoten")

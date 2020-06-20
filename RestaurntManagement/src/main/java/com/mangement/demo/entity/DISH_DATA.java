@@ -8,7 +8,9 @@ public class DISH_DATA {
    @Column(name = "ten_mon")
 	private String dishName;
 	
-    @Column(name = "January")
+  
+
+	@Column(name = "January")
     private int January;
     
     @Column(name = "February")
@@ -43,6 +45,13 @@ public class DISH_DATA {
     
     @Column(name = "December")
     private int December;
+    
+    public String getDishName() {
+    	return dishName;
+    }
+    public void setDishName(String dishName) {
+    	this.dishName = dishName;
+    }
     
     public int getJanuary() {
 		return January;

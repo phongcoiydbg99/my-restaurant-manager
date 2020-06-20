@@ -1,6 +1,8 @@
 package com.mangement.demo.entity;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class TAIKHOAN {
 	@Id
@@ -13,10 +15,17 @@ public class TAIKHOAN {
 	@Column(name="quyenhan")
     private String quyen_han;
 	
-	@Column(name="sodutk")
-    private long soduTK;
+	@JsonIgnore
+    @OneToOne(mappedBy = "tk", cascade = CascadeType.PERSIST)
+	private NHANVIEN emp;
 	
     
+	public NHANVIEN getEmp() {
+		return emp;
+	}
+	public void setEmp(NHANVIEN emp) {
+		this.emp = emp;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -35,10 +44,5 @@ public class TAIKHOAN {
 	public void setQuyen_han(String quyen_han) {
 		this.quyen_han = quyen_han;
 	}
-	public long getSoduTK() {
-		return soduTK;
-	}
-	public void setSoduTK(long soduTK) {
-		this.soduTK = soduTK;
-	}
+	
 }
