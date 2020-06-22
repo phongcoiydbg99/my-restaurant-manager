@@ -9,25 +9,22 @@ import java.util. *;
 
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:19002", "http://localhost:19001"})
 @RestController
-@RequestMapping("/manage")
+@RequestMapping("/account")
 public class AccController {
 	@Autowired
      AccountService accountService;
 	
-	@GetMapping("/account")//liet ke danh sach tk
+	@GetMapping("/all")//liet ke danh sach tk
 	public ResponseEntity<List<TAIKHOAN>> getAllAcc(){
 		return new ResponseEntity<List<TAIKHOAN>>(accountService.getAllAcc(),HttpStatus.OK);
 	}
-	@RequestMapping(value = "/hello", method = RequestMethod.GET) 
-	public ResponseEntity<String> hello(){
-		return ResponseEntity.ok("Hello there");
-	}
 	
-	@GetMapping("/account/{user}") //xem thong tin 1 tk
+	
+	@GetMapping("/{user}") //xem thong tin 1 tk
 	public ResponseEntity<?> getAcc(@PathVariable("user") String name){
 		Optional<TAIKHOAN> tk = accountService.getAccByUsername(name);
 		if(tk.isPresent()) {
-			return  new ResponseEntity<Optional<TAIKHOAN>>(tk,HttpStatus.OK);
+			return  new ResponseEntity<TAIKHOAN>(tk.get(),HttpStatus.OK);
 		}else return new ResponseEntity<String>("Not found employee",HttpStatus.NOT_FOUND);
 	}
 	
@@ -38,7 +35,7 @@ public class AccController {
 	}
 	
 	
-	@DeleteMapping("/account/{user}")
+	@DeleteMapping("/delete/{user}")
 	public ResponseEntity<?> deleteAcc(@PathVariable("user")String name){
 		if(accountService.delete(name)) {
 			return  new ResponseEntity<String>("Account deleted!",HttpStatus.OK);

@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { AuthContext } from "../context/context";
+import {useNavigation} from "@react-navigation/native"
+import { authContext } from "../context/context";
 import Background from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
@@ -83,24 +84,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textDecorationLine: "underline",
   },
+  textMsg:{
+    color: "rgba(255,255,255,1)",
+    fontSize:18
+  }
 });
 
-export default ({ navigation }) => {
-  const { signIn } = React.useContext(AuthContext);
+export default ({ error,status , setInfo }) => {
+  const navigation = useNavigation();
   const [username, setusername] = useState(null);
   const [password, setpassword] = useState(null);
-
+  const {authInfo} = React.useContext(authContext);
   const onChangeUser = (text) => {
     setusername(text);
   };
-
+  React.useEffect(()=>{
+    
+    if(status === "Authenticated" && authInfo.logged === true) {
+      
+      navigation.navigate("AppDrawerScreen");
+    }
+  },[status])
   const onChangePassword = (text) => {
     setpassword(text);
   };
 
   const checkLogin = () => {
-    if (username == 'Abc' && password == 'Abc') signIn()
-    else alert("Sai");
+    setInfo({...authInfo,user:{username:username,password:password},status:'Logging'})
   };
 
   return (
@@ -151,6 +161,7 @@ export default ({ navigation }) => {
         <TouchableOpacity style={styles.btn} onPress={() => checkLogin()}>
           <Text style={styles.text}>Login</Text>
         </TouchableOpacity>
+        <Text style={styles.textMsg}>{error}</Text>
       </View>
     </ImageBackground>
   );

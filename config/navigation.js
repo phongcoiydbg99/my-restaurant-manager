@@ -28,8 +28,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Splash } from "../components/Splash";
+import AuthProvider from "../context/context"
 
-import DangNhap from "../screens/dang_nhap";
 import DangKi from "../screens/dang_ky";
 import Welcome from "../screens/Welcome";
 import QuanLyBan from "../screens/quan_ly_ban";
@@ -221,7 +221,7 @@ const AuthStackScreen = () => (
   <AuthStack.Navigator>
     <AuthStack.Screen
       name="DangNhap"
-      component={DangNhap}
+      component={AuthProvider}
       options={{
         headerShown: false,
       }}
@@ -236,7 +236,7 @@ const AuthStackScreen = () => (
   </AuthStack.Navigator>
 );
 const CustomDrawerContent = (props) => {
-  const { signOut } = React.useContext(AuthContext);
+  // const { signOut } = React.useContext(AuthContext);
   return (
     <DrawerContentScrollView {...props}>
       <ImageBackground source={BackAv} style={styles.container}>
@@ -250,7 +250,7 @@ const CustomDrawerContent = (props) => {
         style={{ backgroundColor: "#ececec", height: 2, marginHorizontal: 10 }}
       ></View>
       <TouchableHighlight
-        onPress={() => signOut()}
+        // onPress={() => signOut()}
         style={{ marginHorizontal: 10, borderRadius:5, marginTop:5 }}
         underlayColor={"orange"}
       >
@@ -269,6 +269,14 @@ const AppDrawerScreen = () => {
   );
 };
 
+const EmpScreen = createBottomTabNavigator();
+const EmpScreenNavigator=()=>{
+  return(
+    <EmpScreen.Navigator>
+      
+    </EmpScreen.Navigator>
+  )
+}
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -283,26 +291,12 @@ const RootStackScreen = () => (
   </RootStack.Navigator>
 );
 
+
+
 export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const authContext = React.useMemo(() => {
-    return {
-      signIn: () => {
-        setIsLoading(false);
-        setUserToken("asdf");
-      },
-      signUp: (u) => {
-        setIsLoading(false);
-        setUserToken("asdf");
-      },
-      signOut: () => {
-        setIsLoading(false);
-        setUserToken(null);
-      },
-    };
-  }, []);
-
+  
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -313,14 +307,17 @@ export default () => {
     return <Splash />;
   }
   return (
-    <AuthContext.Provider value={authContext}>
+    
       <NavigationContainer>
-        {/* { !userToken ? <RootStackScreen /> : <AppDrawerScreen /> } */}
-        <AppDrawerScreen />
+        { !userToken ? <RootStackScreen /> : <AppDrawerScreen /> }
+        {/* <AppDrawerScreen /> */}
       </NavigationContainer>
-    </AuthContext.Provider>
+    
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   container: {
