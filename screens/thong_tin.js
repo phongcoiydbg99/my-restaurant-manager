@@ -6,7 +6,7 @@ import TabProfile from '../config/tabProfile'
 import { AuthContext } from "../context/context";
 
 export default ({ navigation }) => {
-  const { signOut } = React.useContext(AuthContext);
+  
   return (
     <TabProfile/>
   );
