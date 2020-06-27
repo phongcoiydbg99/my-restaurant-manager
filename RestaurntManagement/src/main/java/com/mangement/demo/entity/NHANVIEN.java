@@ -9,7 +9,7 @@ public class NHANVIEN {
 	 @Column(name = "MANV")
      private String maNV;
 	 
-	 
+	 @JsonIgnore
 	 @OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "chuc_vu",nullable =false, referencedColumnName = "ten_chucvu")
 	 private CHUCVU job;
@@ -22,6 +22,7 @@ public class NHANVIEN {
 		this.job = job;
 	}
 	
+	@JsonIgnore
 	 @OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "acc",nullable =false, referencedColumnName = "username")
 	private TAIKHOAN tk;

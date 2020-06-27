@@ -15,7 +15,7 @@ public class TAIKHOAN {
 	@Column(name="quyenhan")
     private String quyen_han;
 	
-	@JsonIgnore
+	
     @OneToOne(mappedBy = "tk", cascade = CascadeType.PERSIST)
 	private NHANVIEN emp;
 	
