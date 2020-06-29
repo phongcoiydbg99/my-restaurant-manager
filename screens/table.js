@@ -21,6 +21,7 @@ import { Separator } from "../components/Row";
 import Row from "../components/Row";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { authContext } from "../context/context";
 import FloatingButton from "../components/FloatingButton";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-modal-datetime-picker";
@@ -154,6 +155,8 @@ export default class Table extends Component {
   
   render() {
     const { navigation,route } = this.props;
+    // const { authInfo } = React.useContext(authContext);
+    // console.log(authInfo.user);
     const sortStyle = {
       transform: [
         {
