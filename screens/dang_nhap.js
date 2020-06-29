@@ -100,7 +100,7 @@ export default ({ error,status , setInfo }) => {
   };
   React.useEffect(()=>{
     
-    if(status === "Authenticated" && authInfo.logged === true) {
+    if(status === "Logged" && authInfo.logged === true) {
       
       navigation.navigate("AppDrawerScreen");
     }

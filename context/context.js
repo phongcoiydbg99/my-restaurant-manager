@@ -21,11 +21,12 @@ function AuthProvider(){
              if(token !== null){
                console.log(token);
                  AsyncStorage.getItem('user').then(user =>{
-                   setInfo({...authInfo,status:'Authenticated',user:user,logged:true});
+
+                   setInfo({...authInfo,status:'Authenticated',user:JSON.parse(user),logged:true});
                  })
              }
            }).finally(()=>console.log(authInfo));
-           AsyncStorage.removeItem('token');//cai nay dung de xoa token di. Khi co cai nay thi moi lan vao app deu phai dang nhap
+           //AsyncStorage.removeItem('token');//cai nay dung de xoa token di. Khi co cai nay thi moi lan vao app deu phai dang nhap
            //muon k phai dang nhap lai thi comment out 
             break;
         case 'Logging':
@@ -40,10 +41,13 @@ function AuthProvider(){
         case 'Error':
            break;
         case 'Authenticated' :
-            if(getToken() == null){
-              //luu token, cai nay lam sau
+          AsyncStorage.getItem('token').then(token =>{
+            if(token === null){
+              let token1 = authInfo.user.username + '@@' + authInfo.user.password;
+              let item = [['token',token1],['user',JSON.stringify(authInfo.user)]];
+              AsyncStorage.multiSet(item);
             }
-            // console.log(authInfo);
+          }).finally(()=>setInfo({...authInfo,status:'Logged'}));
            break;
         default:
            break;

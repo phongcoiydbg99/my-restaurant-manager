@@ -287,7 +287,7 @@ const RootStackScreen = () => (
     initialRouteName="AuthStackScreen"
   >
     <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
-    <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen} />
+    <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen}  />
   </RootStack.Navigator>
 );
 
