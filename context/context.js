@@ -2,25 +2,31 @@ import React from "react";
 import DangNhap from "../screens/dang_nhap";
 import axios from "axios";
 import {SERVER_ID} from "../config/properties"
-import AsyncStorage from '@react-native-community/async-storage';
-
- export const authContext = React.createContext();
+import AsyncStorage from "@react-native-community/async-storage"
+export const authContext = React.createContext();
 
 function AuthProvider(){
     const [authInfo,setInfo] =React.useState({
       status: 'pending',
       error: '',
       user: null,
-      logged:false
+      logged:false,
+      
     });
 
     React.useEffect(()=>{
       switch(authInfo.status){
         case 'pending':
-            if(getToken() !== null){
-              let user = getUser();
-              setInfo({...authInfo,status:'Authenticated',user:user,logged:tabRevenue});
-            }
+           AsyncStorage.getItem('token').then( token => {
+             if(token !== null){
+               console.log(token);
+                 AsyncStorage.getItem('user').then(user =>{
+                   setInfo({...authInfo,status:'Authenticated',user:user,logged:true});
+                 })
+             }
+           }).finally(()=>console.log(authInfo));
+           AsyncStorage.removeItem('token');//cai nay dung de xoa token di. Khi co cai nay thi moi lan vao app deu phai dang nhap
+           //muon k phai dang nhap lai thi comment out 
             break;
         case 'Logging':
            
@@ -35,14 +41,15 @@ function AuthProvider(){
            break;
         case 'Authenticated' :
             if(getToken() == null){
-              
+              //luu token, cai nay lam sau
             }
-            console.log(authInfo);
+            // console.log(authInfo);
            break;
         default:
            break;
 
       }
+    
     },[authInfo])  
     return(
       <authContext.Provider value={{authInfo,setInfo}}>
@@ -51,23 +58,6 @@ function AuthProvider(){
     )
 }
 
-const getToken = async ()=>{
-  try{
-     const token = await AsyncStorage.getItem('token');
-     return token !== null ? token :null;
-  }catch(e){
-    console.log(e);
-  }
-}
-
-const getUser = async () =>{
-  try{
-     const user = await AsyncStorage.getItem('user');
-     return user !== null ? JSON.parse(user):null;
-  }catch(e){
-    console.log(e);
-  }
-}
 const LogInForm = () =>{
   let {authInfo, setInfo}= React.useContext(authContext);
   return(
