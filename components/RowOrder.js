@@ -84,7 +84,7 @@ export default class RowOrder extends React.Component {
                 >
                   {this.props.item.name}
                 </Text>
-                <Text style={styles.subtitle}>{this.props.item.pirce}</Text>
+                <Text style={styles.subtitle}>{this.props.item.price}</Text>
               </View>
               <View
                 style={{ ...styles.right, alignItems: "center", marginTop: 10 }}
@@ -197,7 +197,7 @@ export default class RowOrder extends React.Component {
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>{this.props.item.name}</Text>
-          <Text style={styles.subtitle}>{this.props.item.pirce}</Text>
+          <Text style={styles.subtitle}>{this.props.item.price}</Text>
         </View>
         <View style={styles.right}>{button}</View>
       </TouchableOpacity>

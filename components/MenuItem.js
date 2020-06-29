@@ -115,7 +115,7 @@ export default class MenuItem extends React.Component {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.label}>Price: </Text>
-          <Text style={styles.title}>{this.props.item.pirce}</Text>
+          <Text style={styles.title}>{this.props.item.price}</Text>
         </View>
         <Animated.View
           style={{

@@ -159,7 +159,7 @@ export default class Menu extends Component {
     } else {
       let newMenu = {
         name: this.state.name,
-        pirce: this.state.price,
+        price: this.state.price,
         fullName: this.state.fullName,
         foodCategory: this.props.category,
       };
@@ -492,12 +492,12 @@ export default class Menu extends Component {
                         modalHeader: "EDIT",
                         name: item.name,
                         fullName: item.fullName,
-                        price: item.pirce.toString(),
+                        price: item.price.toString(),
                       });
                       // this.setState({ modalHeader: "EDIT" });
                       // this.setState({ name: item.name });
                       // this.setState({ fullName: item.fullName });
-                      // this.setState({ price: item.pirce.toString() });
+                      // this.setState({ price: item.price.toString() });
                     }}
                     delete={() => {
                       axios
