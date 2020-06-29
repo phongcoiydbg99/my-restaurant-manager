@@ -21,6 +21,7 @@ import Group from '../assets/Group.png'
 import outline from '../assets/outline.png'
 import saved from '../assets/saved.png'
 import { SERVER_ID } from "../config/properties";
+import { SERVER_IMAGE_ID } from "../config/properties";
 import axios from "axios";
 
 
@@ -32,11 +33,10 @@ export default class revenue extends Component {
       table: [],
       dataRevenueDay: [],
       revenueDay: '',
-      revenueMonth: '',
       dataRevenueMonth: [],
       rank1: '',
-      rank2: '',
-      rank3: '',
+      allDish: [],
+      favoriteFood: '',
     };
   }
   componentDidMount() {
@@ -54,6 +54,9 @@ export default class revenue extends Component {
     axios.get(`${SERVER_ID}revenue/all`).then((res) => {
       this.setState({ dataRevenueMonth: res.data });
     });
+    axios.get(`${SERVER_ID}dish/all`).then((res) => {
+      this.setState({ allDish: res.data });
+    });
   }
 
   compare_money(a, b){
@@ -62,34 +65,40 @@ export default class revenue extends Component {
     else return 0;
   }
 
+  compare_orderTime(a, b){
+    if(a.orderTime < b.orderTime) return 1;
+    else if(a.orderTime > b.orderTime) return -1;
+    else return 0;
+  }
+
   render(){
     const {navigation} = this.props;
-    
-    //get revenue ngay 4
+    var date = new Date().getDate();
+    var month = new Date().getMonth();
+
+    // get revenue theo ngay
     this.state.dataRevenueDay.filter((item) => {
-      if(item.dayNum == 4){
+      if(item.dayNum == date){
         this.state.revenueDay = item.revenue;
       }
     });
 
-    //get revenue thang 6
+    // get revenue cao nhat trong cac thang
     this.state.dataRevenueMonth.sort(this.compare_money);
     var dem = 0;
     this.state.dataRevenueMonth.filter((item) => {
-      if(item.month == 'June'){
-        this.state.revenueMonth = item;
-      }
-      if(dem == 0) this.state.rank1 = item.month;
-      if(dem == 1) this.state.rank2 = item.month;
-      if(dem == 2) this.state.rank3 = item.month;
+      if(dem == 0) this.state.rank1 = item;
       dem++;
     })
 
-    // this.state.rank1 = this.state.dataRevenueMonth[0],
-    // this.state.rank2 = this.state.dataRevenueMonth[1],
-    // this.state.rank3= this.state.dataRevenueMonth[2],
-    console.log(this.state.rank1);
-    //console.log(this.state.result);
+    // get mon an duoc goi nhieu nhat
+    this.state.allDish.sort(this.compare_orderTime);
+    dem = 0;
+    this.state.allDish.filter((item) => {
+      if(dem == 0) this.state.favoriteFood = item;
+      dem++;
+    })
+    //console.log(this.state.favoriteFood);
     return(
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
@@ -99,7 +108,7 @@ export default class revenue extends Component {
             <View style={styles.custommer}>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Text style={styles.title}>Custommer</Text>
-                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#F20000', borderWidth:1, borderRadius: 50, borderColor: '#F20000', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                <View style={styles.iconCustomer}>
                   <Image source={avatar} style={{width: 16, height: 16,}} />
                 </View>
                 
@@ -109,9 +118,24 @@ export default class revenue extends Component {
             <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Text style={styles.title}>Favorite Food</Text>
-                  <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#3BAA9E', borderWidth:1, borderRadius: 50, borderColor: '#3BAA9E', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                  <View style={styles.iconFav}>
                     <Image source={outline} style={{width: 16, height: 16,}} />
                   </View>
+              </View>
+              <View>
+                <Text style={styles.nameFav}>{this.state.favoriteFood.fullName}</Text>
+              </View>
+              <View style={{alignItems: 'center'}}>
+                <Image
+                    source={{
+                      uri:
+                        `${SERVER_IMAGE_ID}` +
+                        "public/" +
+                        this.state.favoriteFood.name +
+                        ".png",
+                    }}
+                    style={{alignItems: "center", marginTop: 15, width: 150, height: 150, borderColor: '#3BAA9E', borderRadius: 10, }}
+                  />
               </View>
             </TouchableOpacity>
           </View>
@@ -120,29 +144,26 @@ export default class revenue extends Component {
             <TouchableOpacity activeOpacity={0.6} style={styles.revenueStatistics} onPress={() => navigation.navigate('revenueStatistics')}>
               <View  style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Text style={styles.title}>One month</Text>
-                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#3F3CB4', borderWidth:1, borderRadius: 50, borderColor: '#3F3CB4', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                <View style={styles.iconRev}>
                   <Image source={saved} style={{width: 16, height: 16,}} />
                 </View>
               </View>
               <Text style={styles.subTitle}>Revenue statistics</Text>
               <View style={{}}>
-                <Text style={{fontSize: 20, color: "#fff", paddingTop: 20,marginLeft: 20,}}>This month</Text>
-                <Text style={{fontSize: 18, color: "#fff", paddingTop: 10, marginLeft: 30, fontStyle: 'italic',}}>{this.state.revenueMonth.month}: {this.state.revenueMonth.money}đ</Text>
-                <Text style={{fontSize: 20, color: "#fff", paddingTop: 20,marginLeft: 20,}}>RANKING</Text>
-                <Text style={{fontSize: 18, color: "#fff", paddingTop: 10, marginLeft: 30, fontStyle: 'italic',}}>#1. {this.state.rank1}</Text>
-                <Text style={{fontSize: 18, color: "#fff", paddingTop: 10, marginLeft: 30, fontStyle: 'italic',}}>#2. {this.state.rank2}</Text>
-                <Text style={{fontSize: 18, color: "#fff", paddingTop: 10, marginLeft: 30, fontStyle: 'italic',}}>#3. {this.state.rank3}</Text>
+                <Text style={{fontSize: 32, color: "#fff", paddingTop: 20, marginLeft: 30, fontWeight: 'bold', textShadowColor: '#000', textShadowRadius: 10}}>#1. {this.state.rank1.month}</Text>
+                <Text style={{fontSize: 28, color: "#fff", paddingTop: 20, marginLeft: 30,}}>{this.state.rank1.money}</Text>
+                <Text style={{marginLeft: 30, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
               </View>
             </TouchableOpacity>
             {/* revenueInDay */}
             <View style={styles.revenueInDay}>
               <View  style={{flexDirection: 'row', marginBottom: 20,}}>
                 <Text style={styles.title}>Revenue in day</Text>
-                <View style={{justifyContent: 'center',alignItems: "center", backgroundColor: '#C26900', borderWidth:1, borderRadius: 50, borderColor: '#C26900', width: 26, height: 26, marginTop: 35, marginLeft: 10,}}>
+                <View style={styles.iconRevDay}>
                   <Image source={Group} style={{width: 16, height: 16,}} />
                 </View>
               </View>
-                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff',}}>{JSON.stringify(this.state.revenueDay)}</Text>
+                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{JSON.stringify(this.state.revenueDay)}</Text>
                 <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
             </View>
           </View>
@@ -193,6 +214,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
   },
+  iconCustomer: {
+    justifyContent: 'center',
+    alignItems: "center", 
+    backgroundColor: '#F20000', 
+    borderWidth:1, borderRadius: 50, 
+    borderColor: '#F20000', 
+    width: 26, 
+    height: 26, 
+    marginTop: 35, 
+    marginLeft: 10,
+  },
   favoriteFood: {
     backgroundColor: '#54E0C3',
     width: (WIDTH - 80)/2,
@@ -201,6 +233,27 @@ const styles = StyleSheet.create({
     borderColor: '#707070',
     borderWidth: 1,
     borderRadius: 20,
+  },
+  iconFav: {
+    justifyContent: 'center',
+    alignItems: "center", 
+    backgroundColor: '#3BAA9E', 
+    borderWidth:1, 
+    borderRadius: 50, 
+    borderColor: '#3BAA9E', 
+    width: 26, 
+    height: 26, 
+    marginTop: 35, 
+    marginLeft: 10,
+  },
+  nameFav: {
+    textAlign: 'center',
+    fontSize: 32, 
+    color: "#fff", 
+    paddingTop: 20, 
+    fontWeight: 'bold', 
+    textShadowColor: '#000', 
+    textShadowRadius: 10
   },
   revenueInDay: {
     position: 'relative',
@@ -211,6 +264,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
   },
+  iconRevDay:{
+    justifyContent: 'center',
+    alignItems: "center",
+    backgroundColor: '#C26900', 
+    borderWidth:1, 
+    borderRadius: 50, 
+    borderColor: '#C26900',
+    width: 26, 
+    height: 26, 
+    marginTop: 35, 
+    marginLeft: 10,
+  },
   revenueStatistics: {
     backgroundColor: '#5754D5',
     width: (WIDTH - 80)/2,
@@ -219,6 +284,18 @@ const styles = StyleSheet.create({
     borderColor: '#707070',
     borderWidth: 1,
     borderRadius: 20,
+  },
+  iconRev: {
+    justifyContent: 'center',
+    alignItems: "center", 
+    backgroundColor: '#3F3CB4', 
+    borderWidth:1, 
+    borderRadius: 50, 
+    borderColor: '#3F3CB4', 
+    width: 26, 
+    height: 26, 
+    marginTop: 35, 
+    marginLeft: 10,
   },
   title: {
     fontSize: 18, 

@@ -79,7 +79,7 @@ export default class revenueStatistics extends Component {
                 data={this.data}
                 width={WIDTH} // from react-native
                 height={220}
-              //yAxisLabel={'Rs'}
+                yAxisSuffix={'m'}
                 chartConfig={{
                   backgroundColor: '#1cc910',
                   backgroundGradientFrom: '#fff',
