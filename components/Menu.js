@@ -131,13 +131,25 @@ export default class Menu extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  searchMenu(text) {
-    this.state.menu = this.state.result.filter(
-      (menu) => menu.name.split(text).length > 1
-    );
-    console.log(this.state.result);
-    this.setState({ value: text });
-  }
+  // searchMenu(text) {
+  //   this.state.menu = this.state.result.filter(
+  //     (menu) => menu.name.split(text).length > 1
+  //   );
+  //   console.log(this.state.result);
+  //   this.setState({ value: text });
+  // }
+  updateSearch = (search) => {
+    const newData = this.state.result.filter((item) => {
+      const itemData = `${item.fullName.toUpperCase()}`;
+      const textData = search.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      menu: newData,
+      search,
+    });
+  };
   changeMenu() {
     if (
       this.state.name == "" ||
@@ -285,6 +297,7 @@ export default class Menu extends Component {
   };
 
   render() {
+    const {search} = this.state;
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
@@ -417,14 +430,14 @@ export default class Menu extends Component {
             </TouchableHighlight>
           </Modal>
           <SearchBar
-            onChangeText={(text) => this.searchMenu(text)}
+            onChangeText={this.updateSearch}
             placeholder="Search"
             placeholderTextColor="#86939e"
             platform="android"
             containerStyle={styles.searchBarContainer}
             inputContainerStyle={styles.SearchBar}
             placeholderTextColor={"#666"}
-            value={this.state.value}
+            value={search}
           />
           <View
             style={{

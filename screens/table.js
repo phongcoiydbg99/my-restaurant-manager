@@ -147,19 +147,25 @@ export default class Table extends Component {
         (table) => table.status == "empty"
       );
   }
-  // search table
-  searchTable(text) {
-    this.state.table = this.state.result.filter(
-      (table) => table.name.split(text).length > 1
-    );
-    this.setState({ value: text });
-  }
-  searchTable(text) {
-    this.state.table = this.state.result.filter(
-      (table) => table.name.split(text).length > 1
-    );
-    this.setState({ value: text });
-  }
+  // searchTable(text) {
+  //   this.state.table = this.state.result.filter(
+  //     (table) => table.name.split(text).length > 1
+  //   );
+  //   this.setState({ value: text });
+  // }
+  updateSearch = (search) => {
+    const newData = this.state.result.filter((item) => {
+      const itemData = `${item.fullName.toUpperCase()}`;
+      const textData = search.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      table: newData,
+      search,
+    });
+  };
+
   // floating button
   animation = new Animated.Value(0);
 
@@ -270,7 +276,8 @@ export default class Table extends Component {
     }
   }
   render() {
-    const { navigation, route } = this.props;
+    const {search} = this.state;
+    const { navigation,route } = this.props;
     // const { authInfo } = React.useContext(authContext);
     // console.log(authInfo.user);
     const bookStyle = {
@@ -655,14 +662,14 @@ export default class Table extends Component {
         <View style={styles.overlayContainer}>
           <Response action={route.params.action} />
           <SearchBar
-            onChangeText={(text) => this.searchTable(text)}
+            onChangeText={this.updateSearch}
             placeholder="Search"
             placeholderTextColor="#86939e"
             platform="android"
             containerStyle={{ ...styles.searchBarContainer, marginTop: 70 }}
             inputContainerStyle={styles.SearchBar}
             placeholderTextColor={"#666"}
-            value={this.state.value}
+            value={search}
           />
           <FlatList
             data={this.state.table}
