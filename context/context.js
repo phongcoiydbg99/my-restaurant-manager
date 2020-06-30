@@ -15,14 +15,15 @@ function AuthProvider(){
     });
 
     React.useEffect(()=>{
-      // console.log(authInfo);
-      // AsyncStorage.removeItem('token');
+      console.log(authInfo);
+      // 
       switch(authInfo.status){
         
         case 'pending':
+           AsyncStorage.removeItem("token");
            AsyncStorage.getItem('token').then( token => {
              if(token !== null){
-               console.log(token);
+              //  console.log(token);
                  AsyncStorage.getItem('user').then(user =>{
 
                    setInfo({...authInfo,status:'Authenticated',user:JSON.parse(user),logged:true});
@@ -45,6 +46,7 @@ function AuthProvider(){
         case 'Error':
            break;
         case 'Authenticated' :
+          // AsyncStorage.removeItem("token");
           AsyncStorage.getItem('token').then(token =>{
             if(token === null){
               let token1 = authInfo.user.username + '@@' + authInfo.user.password;

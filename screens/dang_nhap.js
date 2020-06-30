@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
 
 export default ({ error, status, setInfo }) => {
   const navigation = useNavigation();
-  const [username, setusername] = useState(null);
-  const [password, setpassword] = useState(null);
+  const [username, setusername] = useState('');
+  const [password, setpassword] = useState('');
   const { authInfo } = React.useContext(authContext);
   // console.log(authContext);
   const onChangeUser = (text) => {
@@ -102,8 +102,8 @@ export default ({ error, status, setInfo }) => {
   React.useEffect(() => {
     if (status === "Logged" && authInfo.logged === true) {
       // console.log(authInfo.user);
-      setusername(null);
-      setpassword(null);
+      setusername('');
+      setpassword('');
       if (authInfo.user.quyen_han == "NHANVIEN")
         navigation.navigate("AppDrawerNVScreen");
       else navigation.navigate("AppDrawerScreen");
@@ -131,6 +131,7 @@ export default ({ error, status, setInfo }) => {
           <TextInput
             style={styles.input}
             placeholder={"Username"}
+            value={username}
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
             underLineColorAndroid="transparent"
             onChangeText={(text) => onChangeUser(text)}
@@ -147,6 +148,7 @@ export default ({ error, status, setInfo }) => {
           <TextInput
             style={styles.input}
             placeholder={"Password"}
+            value={password}
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
             underLineColorAndroid="transparent"
             secureTextEntry={true}

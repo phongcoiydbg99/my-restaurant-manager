@@ -283,6 +283,7 @@ const AuthStackScreen = () => (
 const CustomDrawerContent = (props) => {
   // const { signOut } = React.useContext(AuthContext);
   const { navi } = props;
+  console.log(navi);
   const [user, setuser] = useState('');
   AsyncStorage.getItem("token").then((token) => {
     if (token !== null) {
@@ -308,8 +309,7 @@ const CustomDrawerContent = (props) => {
       <TouchableHighlight
         onPress={() => {
           AsyncStorage.removeItem("token");
-          console.log(navi);
-          // navi.navigate('AuthStackScreen');
+          props.navigation.navigate('AuthStackScreen');
         }}
         style={{ marginHorizontal: 10, borderRadius: 5, marginTop: 5 }}
         underlayColor={"orange"}
@@ -325,7 +325,7 @@ const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => {
   const navigation  = useNavigation();
   return (
-    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props } navi = {navigation}/> }>
+    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props } /> }>
       <AppDrawer.Screen name="Home" component={AppTabsScreen} />
       <AppDrawer.Screen name="Profile" component={ThongTinStackScreen} />
     </AppDrawer.Navigator>
