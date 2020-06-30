@@ -59,7 +59,7 @@ export default class Bill extends Component {
     const tableInfo = route.params.table;
     // var total = '';
     // this.state.result.filter((item) => {
-    //   total = parseInt(total + item.id.dish.pirce * item.call_number);
+    //   total = parseInt(total + item.id.dish.price * item.call_number);
     // });
 
     return (
@@ -270,14 +270,14 @@ export const Order = ({ item }) => (
       <Text style={styles.billTable}>{item.id.dish.fullName}</Text>
     </View>
     <View>
-      <Text style={styles.billTable}>{item.id.dish.pirce}đ</Text>
+      <Text style={styles.billTable}>{item.id.dish.price}đ</Text>
     </View>
     <View>
       <Text style={styles.billTable}>{item.call_number}</Text>
     </View>
     <View>
       <Text style={styles.billTable}>
-        {item.id.dish.pirce * item.call_number}đ
+        {item.id.dish.price * item.call_number}đ
       </Text>
     </View>
   </View>

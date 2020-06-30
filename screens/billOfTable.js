@@ -96,7 +96,7 @@ export default class BillOfTable extends Component {
       var t_price = item.price;
       this.state.totalPrice.filter((item1) => {
         if (item1.id.table.name == temp) {
-          t_price = t_price + item1.id.dish.pirce * item1.call_number;
+          t_price = t_price + item1.id.dish.price * item1.call_number;
         }
       });
       // let dem = {

@@ -29,6 +29,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Splash } from "../components/Splash";
 import AuthProvider from "../context/context"
+import { authContext } from "../context/context";
 
 import DangKi from "../screens/dang_ky";
 import Welcome from "../screens/Welcome";
@@ -215,6 +216,50 @@ const AppTabsScreen = () => (
     />
   </AppTabs.Navigator>
 );
+const AppTabsNV = createBottomTabNavigator();
+const AppTabsNVScreen = () => (
+  <AppTabsNV.Navigator>
+    <AppTabsNV.Screen
+      name="Table"
+      component={QuanLyBanStackScreen}
+      options={{
+        tabBarLabel: "Table",
+        showLabel: false,
+        tabBarIcon: (props) => (
+          <MaterialCommunityIcons
+            name="tablet-dashboard"
+            size={props.size}
+            color={props.color}
+          />
+        ),
+      }}
+    />
+    <AppTabsNV.Screen
+      name="Orders"
+      component={OrderStackScreen}
+      options={{
+        tabBarLabel: "Orders",
+        tabBarIcon: (props) => (
+          <FontAwesome name="reorder" size={props.size} color={props.color} />
+        ),
+      }}
+    />
+    <AppTabsNV.Screen
+      name="Menu"
+      component={QuanLyMenuStackScreen}
+      options={{
+        tabBarLabel: "Menu",
+        tabBarIcon: (props) => (
+          <MaterialIcons
+            name="restaurant-menu"
+            size={props.size}
+            color={props.color}
+          />
+        ),
+      }}
+    />
+  </AppTabsNV.Navigator>
+);
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
@@ -268,6 +313,17 @@ const AppDrawerScreen = () => {
     </AppDrawer.Navigator>
   );
 };
+const AppDrawerNV = createDrawerNavigator();
+const AppDrawerNVScreen = () => {
+  return (
+    <AppDrawerNV.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <AppDrawerNV.Screen name="Home" component={AppTabsNVScreen} />
+      <AppDrawerNV.Screen name="Profile" component={ThongTinStackScreen} />
+    </AppDrawerNV.Navigator>
+  );
+};
 
 const EmpScreen = createBottomTabNavigator();
 const EmpScreenNavigator=()=>{
@@ -288,6 +344,7 @@ const RootStackScreen = () => (
   >
     <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
     <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen}  />
+    <RootStack.Screen name="AppDrawerNVScreen" component={AppDrawerNVScreen}  />
   </RootStack.Navigator>
 );
 
@@ -296,7 +353,6 @@ const RootStackScreen = () => (
 export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -307,12 +363,10 @@ export default () => {
     return <Splash />;
   }
   return (
-    
-      <NavigationContainer>
-        { !userToken ? <RootStackScreen /> : <AppDrawerScreen /> }
-        {/* <AppDrawerScreen /> */}
-      </NavigationContainer>
-    
+    <NavigationContainer>
+      {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+      {/* <RootStackScreen /> */}
+    </NavigationContainer>
   );
 };
 

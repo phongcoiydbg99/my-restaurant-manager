@@ -11,14 +11,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {useNavigation} from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native";
 import { authContext } from "../context/context";
 import Background from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const { width: WIDTH} = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get("window");
 
 const ScreenContainer = ({ children }) => (
   <View style={styles.container}>{children}</View>
@@ -84,33 +84,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textDecorationLine: "underline",
   },
-  textMsg:{
+  textMsg: {
     color: "rgba(255,255,255,1)",
-    fontSize:18
-  }
+    fontSize: 18,
+  },
 });
 
-export default ({ error,status , setInfo }) => {
+export default ({ error, status, setInfo }) => {
   const navigation = useNavigation();
   const [username, setusername] = useState(null);
   const [password, setpassword] = useState(null);
-  const {authInfo} = React.useContext(authContext);
+  const { authInfo } = React.useContext(authContext);
   const onChangeUser = (text) => {
     setusername(text);
   };
-  React.useEffect(()=>{
-    
-    if(status === "Logged" && authInfo.logged === true) {
-      
-      navigation.navigate("AppDrawerScreen");
+  React.useEffect(() => {
+    if (status === "Logged" && authInfo.logged === true) {
+      // console.log(authInfo.user);
+      if (authInfo.user.quyen_han == "NHANVIEN")
+        navigation.navigate("AppDrawerNVScreen");
+      else navigation.navigate("AppDrawerScreen");
     }
-  },[status])
+  }, [status]);
   const onChangePassword = (text) => {
     setpassword(text);
   };
 
   const checkLogin = () => {
-    setInfo({...authInfo,user:{username:username,password:password},status:'Logging'})
+    setInfo({
+      ...authInfo,
+      user: { username: username, password: password },
+      status: "Logging",
+    });
   };
 
   return (
