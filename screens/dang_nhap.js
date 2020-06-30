@@ -95,12 +95,15 @@ export default ({ error, status, setInfo }) => {
   const [username, setusername] = useState(null);
   const [password, setpassword] = useState(null);
   const { authInfo } = React.useContext(authContext);
+  // console.log(authContext);
   const onChangeUser = (text) => {
     setusername(text);
   };
   React.useEffect(() => {
     if (status === "Logged" && authInfo.logged === true) {
       // console.log(authInfo.user);
+      setusername(null);
+      setpassword(null);
       if (authInfo.user.quyen_han == "NHANVIEN")
         navigation.navigate("AppDrawerNVScreen");
       else navigation.navigate("AppDrawerScreen");

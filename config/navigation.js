@@ -282,13 +282,23 @@ const AuthStackScreen = () => (
 );
 const CustomDrawerContent = (props) => {
   // const { signOut } = React.useContext(AuthContext);
-  const {navi} = props;
+  const { navi } = props;
+  const [user, setuser] = useState('');
+  AsyncStorage.getItem("token").then((token) => {
+    if (token !== null) {
+      console.log(token);
+      AsyncStorage.getItem("user").then((u) => {
+        // setuser(user);
+        setuser(JSON.parse(u).emp.fullName);
+      });
+    }
+  });
   return (
     <DrawerContentScrollView {...props}>
       <ImageBackground source={BackAv} style={styles.container}>
         <View style={styles.overlayContainer}>
           <Image source={Avatar} style={styles.avatar}></Image>
-          <Text style={styles.text}>Name</Text>
+          <Text style={styles.text}>{user}</Text>
         </View>
       </ImageBackground>
       <DrawerItemList {...props} />
@@ -297,13 +307,16 @@ const CustomDrawerContent = (props) => {
       ></View>
       <TouchableHighlight
         onPress={() => {
-          AsyncStorage.removeItem('token');
-          navi.navigate('AuthStackScreen')
+          AsyncStorage.removeItem("token");
+          console.log(navi);
+          // navi.navigate('AuthStackScreen');
         }}
-        style={{ marginHorizontal: 10, borderRadius:5, marginTop:5 }}
+        style={{ marginHorizontal: 10, borderRadius: 5, marginTop: 5 }}
         underlayColor={"orange"}
       >
-        <Text style={{ paddingVertical: 15, paddingHorizontal: 10 }}>Sign Out</Text>
+        <Text style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
+          Sign Out
+        </Text>
       </TouchableHighlight>
     </DrawerContentScrollView>
   );

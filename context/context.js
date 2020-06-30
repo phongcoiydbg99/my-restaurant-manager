@@ -15,8 +15,8 @@ function AuthProvider(){
     });
 
     React.useEffect(()=>{
-      console.log(authInfo);
-      AsyncStorage.removeItem('token');
+      // console.log(authInfo);
+      // AsyncStorage.removeItem('token');
       switch(authInfo.status){
         
         case 'pending':
@@ -39,7 +39,8 @@ function AuthProvider(){
                    setInfo({...authInfo,status:'Authenticated',user:res.data, error: '',logged:true})
             }else setInfo({...authInfo,status:'Error', error:'Wrong password'});
            }).catch(err=>{setInfo({...authInfo,status:'Error',error:"User does not exist!"});
-                           console.log(authInfo)});
+                          //  console.log(authInfo)
+                           });
            break;
         case 'Error':
            break;
