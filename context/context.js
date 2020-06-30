@@ -15,7 +15,10 @@ function AuthProvider(){
     });
 
     React.useEffect(()=>{
+      console.log(authInfo);
+      AsyncStorage.removeItem('token');
       switch(authInfo.status){
+        
         case 'pending':
            AsyncStorage.getItem('token').then( token => {
              if(token !== null){
@@ -25,8 +28,8 @@ function AuthProvider(){
                    setInfo({...authInfo,status:'Authenticated',user:JSON.parse(user),logged:true});
                  })
              }
-           }).finally(()=>console.log(authInfo));
-           //AsyncStorage.removeItem('token');//cai nay dung de xoa token di. Khi co cai nay thi moi lan vao app deu phai dang nhap
+           });
+           //cai nay dung de xoa token di. Khi co cai nay thi moi lan vao app deu phai dang nhap
            //muon k phai dang nhap lai thi comment out 
             break;
         case 'Logging':

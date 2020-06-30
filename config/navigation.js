@@ -30,7 +30,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Splash } from "../components/Splash";
 import AuthProvider from "../context/context"
 import { authContext } from "../context/context";
-
+import { useNavigation } from "@react-navigation/native";
 import DangKi from "../screens/dang_ky";
 import Welcome from "../screens/Welcome";
 import QuanLyBan from "../screens/quan_ly_ban";
@@ -42,7 +42,7 @@ import Order from "../screens/quan_ly_order";
 import Logo from "../assets/gb2.png";
 import BackAv from "../assets/Backgr-Login.jpg";
 import Avatar from "../assets/avatar.jpg";
-
+import AsyncStorage from "@react-native-community/async-storage"
 const QuanLyBanStack = createStackNavigator();
 const QuanLyBanStackScreen = () => (
   <QuanLyBanStack.Navigator>
@@ -282,6 +282,7 @@ const AuthStackScreen = () => (
 );
 const CustomDrawerContent = (props) => {
   // const { signOut } = React.useContext(AuthContext);
+  const {navi} = props;
   return (
     <DrawerContentScrollView {...props}>
       <ImageBackground source={BackAv} style={styles.container}>
@@ -295,7 +296,10 @@ const CustomDrawerContent = (props) => {
         style={{ backgroundColor: "#ececec", height: 2, marginHorizontal: 10 }}
       ></View>
       <TouchableHighlight
-        // onPress={() => signOut()}
+        onPress={() => {
+          AsyncStorage.removeItem('token');
+          navi.navigate('AuthStackScreen')
+        }}
         style={{ marginHorizontal: 10, borderRadius:5, marginTop:5 }}
         underlayColor={"orange"}
       >
@@ -306,8 +310,9 @@ const CustomDrawerContent = (props) => {
 };
 const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => {
+  const navigation  = useNavigation();
   return (
-    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props} /> }>
+    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props } navi = {navigation}/> }>
       <AppDrawer.Screen name="Home" component={AppTabsScreen} />
       <AppDrawer.Screen name="Profile" component={ThongTinStackScreen} />
     </AppDrawer.Navigator>
