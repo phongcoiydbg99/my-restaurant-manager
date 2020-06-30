@@ -21,11 +21,11 @@ public class DishDataController {
     }
 	
 	@GetMapping("/{name}")
-    public ResponseEntity<?> getMonthlyRevenue(@PathVariable("name") String name){
-    	Optional<DISH_DATA> ojob = dishDataService.getDish(name);
+    public ResponseEntity<?> getDishRevenue(@PathVariable("name") String dishname){
+    	Optional<DISH_DATA> ojob = dishDataService.getDish(dishname);
         if(ojob.isPresent()) {
         	return new ResponseEntity<DISH_DATA> (ojob.get(),HttpStatus.OK);
-        }else return new ResponseEntity<String>("Month found", HttpStatus.NOT_FOUND);
+        }else return new ResponseEntity<String>("Dish not found", HttpStatus.NOT_FOUND);
     }
 	
 	 @PutMapping("/modify/{name}")//sua data cua 1 mon an
