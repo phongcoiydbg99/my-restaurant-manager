@@ -70,9 +70,13 @@ function AuthProvider(){
 
 const LogInForm = () =>{
   let {authInfo, setInfo}= React.useContext(authContext);
-  return(
-    <DangNhap status={authInfo.status} setInfo={setInfo} error={authInfo.error}/>
-  )
+  return (
+    <DangNhap
+      authInfo={authInfo}
+      setInfo={setInfo}
+      error={authInfo.error}
+    />
+  );
 }
 
 export default AuthProvider
