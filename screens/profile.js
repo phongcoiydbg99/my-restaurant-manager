@@ -99,27 +99,10 @@ export default ({ navigation }) => {
       //   .catch((err) => console.log(err));
     }
   };
-  let edtBtn;
-  if (!dis)
-    edtBtn = (
-      <View style={styles.elementForm}>
-        <TouchableOpacity
-          style={styles.btnSubmit}
-          onPress={editProfile}
-        >
-          <Text>Sửa</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  else edtBtn = <View />;
-  return (
-    <ImageBackground source={Background} style={styles.container}>
-      <View style={styles.overlayContainer}>
-      {/* <View style={{ marginTop: 70 }}> */}
-        <Response action={action} />
-        <View style={{ ...styles.header }}>
-          <Image source={Avatar} style={styles.avatar}></Image>
-        </View>
+  let view;
+  if (user.quyen_han != "QUANLY") {
+    view = (
+      <View>
         <TouchableOpacity
           onPress={() => setdis(false)}
           style={{
@@ -173,6 +156,31 @@ export default ({ navigation }) => {
           onChangeText={(text) => setuser({ ...user, diachi: text })}
           disabled={dis}
         />
+      </View>
+    );
+  } else view = (<View><Text>QUẢN LÝ</Text></View>)
+  let edtBtn;
+  if (!dis)
+    edtBtn = (
+      <View style={styles.elementForm}>
+        <TouchableOpacity
+          style={styles.btnSubmit}
+          onPress={editProfile}
+        >
+          <Text>Sửa</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  else edtBtn = <View />;
+  return (
+    <ImageBackground source={Background} style={styles.container}>
+      <View style={styles.overlayContainer}>
+        {/* <View style={{ marginTop: 70 }}> */}
+        <Response action={action} />
+        <View style={{ ...styles.header }}>
+          <Image source={Avatar} style={styles.avatar}></Image>
+        </View>
+        {view}
         {edtBtn}
         {/* <TouchableOpacity
         style={{

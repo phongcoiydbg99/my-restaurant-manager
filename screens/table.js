@@ -40,6 +40,7 @@ import { getCurrentDateTime } from "../config/util";
 import { SERVER_ID } from "../config/properties";
 
 import Background from "../assets/Backgr-Login.jpg";
+import BackgroundTable from "../assets/table.png";
 
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -677,7 +678,7 @@ export default class Table extends Component {
             renderItem={({ item, index }) => {
               return (
                 <Row
-                  image={Background}
+                  image={BackgroundTable}
                   item={item}
                   onPress={() =>
                     navigation.navigate("AddTable", {

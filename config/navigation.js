@@ -290,7 +290,8 @@ const CustomDrawerContent = (props) => {
       console.log(token);
       AsyncStorage.getItem("user").then((u) => {
         // setuser(user);
-        setuser(JSON.parse(u).emp.fullName);
+        if (u.quyen_han == "QUANLY") setuser("Quản lý");
+        if ((JSON.parse(u).emp != null)) setuser(JSON.parse(u).emp.fullName);
       });
     }
   });
