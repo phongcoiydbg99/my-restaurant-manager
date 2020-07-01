@@ -712,7 +712,7 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleMenu();
-              // this.setState({ bookModalVisible: true });
+              this.setState({ bookModalVisible: true });
             }}
           >
             <Animated.View
