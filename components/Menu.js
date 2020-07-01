@@ -24,7 +24,7 @@ import { Input } from "react-native-elements";
 import MenuItem from "../components/MenuItem";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
+import AsyncStorage from "@react-native-community/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -64,17 +64,25 @@ export default class Menu extends Component {
       model: "",
       image: null,
       randNum: new Date().getTime(),
+      role: "",
     };
   }
   componentDidMount() {
-    axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
-      this.setState(
-        (prevState) => ({
+    axios
+      .get(`${SERVER_ID}dish/category/${this.props.category}`)
+      .then((res) => {
+        this.setState((prevState) => ({
           ...prevState,
-          result: res.data ,
+          result: res.data,
           menu: res.data,
         }));
-    }).catch(err => console.log('Dish error : ' + err));
+      }).finally(()=>{
+      AsyncStorage.getItem('user').then(user=>{
+        let user1 = JSON.parse(user);
+        this.setState({role:user1.quyen_han});
+      });
+    });
+      // .catch((err) => console.log("Dish error : " + err))
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.model);
@@ -442,48 +450,57 @@ export default class Menu extends Component {
             placeholderTextColor={"#666"}
             value={search}
           />
+          {this.state.role === "QUANLY" && (
+            <View
+              style={{
+                marginVertical: 10,
+                marginLeft: 10,
+                flexDirection: "row-reverse",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  this.toggleEditMode();
+                }}
+                style={{
+                  height: 40,
+                  borderRadius: 10,
+                  width: 40,
+                  marginLeft: 10,
+                  backgroundColor: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FontAwesome5 name="edit" size={24} color="orange" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ modalVisible: true });
+                  this.setState({ modalHeader: "ADD" });
+                }}
+                style={{
+                  height: 40,
+                  borderRadius: 10,
+                  width: 40,
+                  marginLeft: 10,
+                  backgroundColor: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <AntDesign name="plus" size={24} color="#f02a4b" />
+              </TouchableOpacity>
+            </View>
+          )}
+
           <View
-            style={{
-              marginVertical: 10,
-              marginLeft: 10,
-              flexDirection: "row-reverse",
-            }}
+            style={
+              this.state.role === "QUANLY"
+                ? styles.contentContainer
+                : { ...styles.contentContainer, height: HEIGHT+90 }
+            }
           >
-            <TouchableOpacity
-              onPress={() => {
-                this.toggleEditMode();
-              }}
-              style={{
-                height: 40,
-                borderRadius: 10,
-                width: 40,
-                marginLeft: 10,
-                backgroundColor: "#fff",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FontAwesome5 name="edit" size={24} color="orange" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ modalVisible: true });
-                this.setState({ modalHeader: "ADD" });
-              }}
-              style={{
-                height: 40,
-                borderRadius: 10,
-                width: 40,
-                marginLeft: 10,
-                backgroundColor: "#fff",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <AntDesign name="plus" size={24} color="#f02a4b" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.contentContainer}>
             <FlatList
               data={this.state.menu}
               keyExtractor={(item) => {
@@ -527,28 +544,28 @@ export default class Menu extends Component {
                           },
                           {
                             text: "OK",
-                            onPress: () => axios
-                                          .delete(`${SERVER_ID}dish/delete/${item.name}`)
-                                          .then((res) => {
-                                            this.setState(
-                                              (prevState) => ({
-                                                ...prevState,
-                                                model: "delete",
-                                                action: {
-                                                  ...prevState.action,
-                                                  name: "deleteTable",
-                                                  date: getCurrentDateTime(),
-                                                  msg: "Delete Menu",
-                                                },
-                                              }),
-                                              () => console.log(this.state.action)
-                                            );
-                                          }),
+                            onPress: () =>
+                              axios
+                                .delete(`${SERVER_ID}dish/delete/${item.name}`)
+                                .then((res) => {
+                                  this.setState(
+                                    (prevState) => ({
+                                      ...prevState,
+                                      model: "delete",
+                                      action: {
+                                        ...prevState.action,
+                                        name: "deleteTable",
+                                        date: getCurrentDateTime(),
+                                        msg: "Delete Menu",
+                                      },
+                                    }),
+                                    () => console.log(this.state.action)
+                                  );
+                                }),
                           },
                         ],
                         { cancelable: false }
                       );
-                      
                     }}
                     width={this.state.width}
                     right={this.state.right}
@@ -586,6 +603,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: WIDTH,
     alignItems: "center",
+    
   },
   checkboxContainer: {
     flexDirection: "row",

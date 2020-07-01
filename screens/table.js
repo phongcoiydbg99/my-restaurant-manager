@@ -365,7 +365,7 @@ export default class Table extends Component {
           visible={this.state.modalVisible}
         >
           <TouchableHighlight
-            style={styles.centeredView}
+            style={styles.centerView}
             onPress={() => {
               this.setState({ modalVisible: false });
             }}
@@ -667,7 +667,6 @@ export default class Table extends Component {
           </TouchableHighlight>
         </Modal>
 
-
         {/* --------------------------------- */}
         <View style={styles.overlayContainer}>
           <Response action={route.params.action} />
@@ -696,7 +695,7 @@ export default class Table extends Component {
                         name: "editTable",
                         time: getCurrentDateTime(),
                       },
-                      
+
                       item: item,
                     })
                   }
@@ -713,8 +712,7 @@ export default class Table extends Component {
           />
         </View>
 
-
-        {this.state.role === 'QUANLY'&&
+        {this.state.role === "QUANLY" && (
           <View
             style={{
               ...styles.floatinContainer,
@@ -734,7 +732,7 @@ export default class Table extends Component {
                 <AntDesign name="book" size={20} color="#f02a4b" />
               </Animated.View>
             </TouchableWithoutFeedback>
-  
+
             <TouchableWithoutFeedback
               onPress={() => {
                 this.toggleMenu();
@@ -747,11 +745,11 @@ export default class Table extends Component {
                 <MaterialIcons name="sort" size={20} color="#f02a4b" />
               </Animated.View>
             </TouchableWithoutFeedback>
-  
+
             <TouchableWithoutFeedback
               onPress={() => {
                 this.toggleEditMode();
-  
+
                 this.toggleMenu();
               }}
             >
@@ -761,12 +759,11 @@ export default class Table extends Component {
                 <FontAwesome5 name="edit" size={20} color="#f02a4b" />
               </Animated.View>
             </TouchableWithoutFeedback>
-  
+
             <TouchableWithoutFeedback
               onPress={() => {
                 this.toggleMenu();
                 navigation.navigate("AddTable", {
-                  
                   action: { name: "addTable", time: getCurrentDateTime() },
                 });
                 // this.toggleEditMode();
@@ -779,15 +776,42 @@ export default class Table extends Component {
                 <AntDesign name="plus" size={20} color="#f02a4b" />
               </Animated.View>
             </TouchableWithoutFeedback>
-  
+
             <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
               <Animated.View style={[styles.button, styles.menu, rotation]}>
                 <AntDesign name="plus" size={24} color="#fff" />
               </Animated.View>
             </TouchableWithoutFeedback>
           </View>
-        
-            }
+        )}
+        {this.state.role === "NHANVIEN" && (
+          <View
+            style={{
+              ...styles.floatinContainer,
+              bottom: 70,
+              right: WIDTH / 2,
+            }}
+          >
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.toggleMenu();
+                this.setState({ bookModalVisible: true });
+              }}
+            >
+              <Animated.View
+                style={[styles.button, styles.floating, addStyle, opacity]}
+              >
+                <AntDesign name="book" size={20} color="#f02a4b" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
+              <Animated.View style={[styles.button, styles.menu, rotation]}>
+                <AntDesign name="plus" size={24} color="#fff" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
       </ImageBackground>
     );
   }
@@ -831,12 +855,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 10,
   },
-  // centeredView: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   backgroundColor: "rgba(0, 0, 0, 0.5)",
-  // },
+  centerView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
   centeredView: {
     flex: 1,
     justifyContent: "flex-end",
