@@ -13,7 +13,6 @@ import {
 
 const { width: WIDTH } = Dimensions.get("window");
 
-import { authContext } from "../context/context";
 import BackAv from "../assets/Backgr-Login.jpg";
 import Background from "../assets/Backgr-Login.jpg";
 import Avatar from "../assets/avatar.jpg";

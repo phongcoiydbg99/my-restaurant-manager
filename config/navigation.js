@@ -34,7 +34,6 @@ import { useNavigation } from "@react-navigation/native";
 import DangKi from "../screens/dang_ky";
 import Welcome from "../screens/Welcome";
 import QuanLyBan from "../screens/quan_ly_ban";
-import QuanLyKH from "../screens/quan_ly_kh";
 import QuanLyMenu from "../screens/quan_ly_menu";
 import ThongKe from "../screens/thong_ke";
 import HoaDon from "../screens/hoa_don";
@@ -145,19 +144,6 @@ const OrderStackScreen = () => (
   </OrderStack.Navigator>
 );
 
-const CustomerStack = createStackNavigator();
-const CustomerStackScreen = () => (
-  <CustomerStack.Navigator>
-    <CustomerStack.Screen
-      name="Customer"
-      component={QuanLyKH}
-      options={{
-        headerTitle: false,
-        headerTransparent: true,
-      }}
-    />
-  </CustomerStack.Navigator>
-);
 const AppTabs = createBottomTabNavigator();
 const AppTabsScreen = () => (
   <AppTabs.Navigator>
@@ -219,20 +205,6 @@ const AppTabsScreen = () => (
       component={HoaDonStackScreen}
       options={{
         tabBarLabel: "Bill",
-        tabBarIcon: (props) => (
-          <FontAwesome5
-            name="money-bill-alt"
-            size={props.size}
-            color={props.color}
-          />
-        ),
-      }}
-    />
-    <AppTabs.Screen
-      name="Customer"
-      component={CustomerStackScreen}
-      options={{
-        tabBarLabel: "Customer",
         tabBarIcon: (props) => (
           <FontAwesome5
             name="money-bill-alt"

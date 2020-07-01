@@ -48,8 +48,7 @@ export default class AddTable extends React.Component {
       isTimePickerVisible: false,
       action:{},
       mode:"",
-      
-      
+      text: this.props.route.params.action.name == "addTable" ? "Thêm" : "Sửa",
     };
   }
   componentDidMount() {
@@ -60,17 +59,33 @@ export default class AddTable extends React.Component {
     let act = this.props.route.params.action
     let item = this.props.route.params.item
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
-    if(act.name == "editTable"){
-      let arr = item.reserve_time.split(" ");
-      this.setState({mode:act.name,
-                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
-                     status: item.status, price: item.price.toString(), datetime:arr[0], time:arr[1]
-                   
-      });
-      console.log(arr);
-    }else this.setState({mode:act.name})
+    this.setState({
+      mode: act.name,
+      name: item.name,
+      fullName: item.fullName,
+      chairNum: item.chairNum.toString(),
+      status: item.status,
+      price: item.price.toString(),
+      reserve_time: item.reserve_time,
+      datetime:
+        item.reserve_time != "" ? this.toShortFormat(item.reserve_time) : "",
+      time: item.reserve_time != "" ? this.toTime(item.reserve_time) : "",
+    });
+    console.log(this.toTime(item.reserve_time));
   }
- 
+  // componentDidUpdate(prevProps,prevState){
+  //   if(prevProps.route.params !== this.props.route.params){
+  //     let act = JSON.stringify(this.props.route.params.action);
+  //     let item = JSON.stringify(this.props.route.params.item);
+      
+  //     this.setState({mode:act.name,
+  //                    name:item.name, fullName:item.fullName,chairNum:item.chairNum,
+  //                    status: item.status, price: item.price, reserve_time:item.reserve_time,
+                     
+  //     });
+  //     console.log(item);
+  //   }
+  // }
   toShortFormat = (date) => {
     var month_names = [
       "Jan",
