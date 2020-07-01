@@ -87,24 +87,24 @@ export default class RowCustomer extends React.Component {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <View style={{ flexDirection: "row", width: "55%" }}>
-                <Text style={styles.label}>Guest</Text>
+                <Text style={styles.label}>Khách hàng: </Text>
                 <Text style={styles.title}> {item.guestName}</Text>
               </View>
               <View style={{ flexDirection: "row", width: "40%" }}>
-                <Text style={styles.label}>Phone </Text>
+                <Text style={styles.label}>Số điện thoại: </Text>
                 <Text style={styles.title}>{item.phoneNum}</Text>
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.label}>Email </Text>
+              <Text style={styles.label}>Email: </Text>
               <Text style={styles.title}>{item.email === null ? 'null' : item.email}</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.label}>Time: </Text>
+              <Text style={styles.label}>Thời gian: </Text>
               <Text style={styles.title}>{item.reservedTime}</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.sublabel}>Table </Text>
+              <Text style={styles.sublabel}>Bàn: </Text>
               <Text style={styles.subtitle}>{item.tableName}</Text>
             </View>
           </View>

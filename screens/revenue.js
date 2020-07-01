@@ -37,6 +37,8 @@ export default class revenue extends Component {
       rank1: '',
       allDish: [],
       favoriteFood: '',
+      customerData: [],
+      customerMonth: '',
     };
   }
   componentDidMount() {
@@ -47,23 +49,26 @@ export default class revenue extends Component {
     this.focusListener = navigation.addListener("focus", () => {
       axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
         this.setState({ dataRevenueDay: res.data });
-      });
+      }).catch(err => console.log(err));
       axios.get(`${SERVER_ID}revenue/all`).then((res) => {
         this.setState({ dataRevenueMonth: res.data });
-      });
+      }).catch(err => console.log(err));
       axios.get(`${SERVER_ID}dish/all`).then((res) => {
         this.setState({ allDish: res.data });
-      });
+      }).catch(err => console.log(err));
     });
     axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
       this.setState({ dataRevenueDay: res.data });
-    });
+    }).catch(err => console.log(err));
     axios.get(`${SERVER_ID}revenue/all`).then((res) => {
       this.setState({ dataRevenueMonth: res.data });
-    });
+    }).catch(err => console.log(err));
     axios.get(`${SERVER_ID}dish/all`).then((res) => {
       this.setState({ allDish: res.data });
-    });
+    }).catch(err => console.log(err));
+    axios.get(`${SERVER_ID}customerdata/all`).then((res) => {
+      this.setState({ customerData: res.data });
+    }).catch(err => console.log(err));
   }
 
   compare_money(a, b){
@@ -77,11 +82,25 @@ export default class revenue extends Component {
     else if(a.orderTime > b.orderTime) return -1;
     else return 0;
   }
+  formatMonth(month){
+    if(month == 1) return 'January';
+    else if(month == 2) return 'February';
+    else if(month == 3) return 'March';
+    else if(month == 4) return 'April';
+    else if(month == 5) return 'May';
+    else if(month == 6) return 'June';
+    else if(month == 7) return 'July';
+    else if(month == 8) return 'August';
+    else if(month == 9) return 'September';
+    else if(month == 10) return 'October';
+    else if(month == 11) return 'November';
+    else if(month == 12) return 'December';
+  }
 
   render(){
     const {navigation} = this.props;
     var date = new Date().getDate();
-    var month = new Date().getMonth();
+    var month = new Date().getMonth() + 1;
 
     // get revenue theo ngay
     this.state.dataRevenueDay.filter((item) => {
@@ -106,6 +125,15 @@ export default class revenue extends Component {
       dem++;
     })
     //console.log(this.state.favoriteFood);
+
+    // get so luong khach hang trong thang
+   
+    this.state.customerData.filter((item) => {
+      if(item.month == this.formatMonth(month)){
+        this.state.customerMonth = item.amount;
+      }
+    })
+    //console.log(month);
     return(
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
@@ -113,13 +141,14 @@ export default class revenue extends Component {
           <View style={styles.subContentLeft}>
               {/* custommer */}
             <View style={styles.custommer}>
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={{flexDirection: 'row', marginBottom: 20,}}>
                 <Text style={styles.title}>Custommer</Text>
                 <View style={styles.iconCustomer}>
                   <Image source={avatar} style={{width: 16, height: 16,}} />
                 </View>
-                
               </View>
+               <Text style={{ marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{this.state.customerMonth}</Text>
+                <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>Persons</Text>
             </View>
               {/* favoriteFood */}
             <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
@@ -170,7 +199,7 @@ export default class revenue extends Component {
                   <Image source={Group} style={{width: 16, height: 16,}} />
                 </View>
               </View>
-                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{JSON.stringify(this.state.revenueDay)}</Text>
+                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{this.state.revenueDay}</Text>
                 <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
             </View>
           </View>
