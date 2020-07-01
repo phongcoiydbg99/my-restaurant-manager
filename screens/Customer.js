@@ -180,111 +180,108 @@ export default class Customer extends Component{
       inputRange: [0, 0.5, 1],
       outputRange: [0, 0, 1],
     });
-       return(
-        <ImageBackground source={Background} style={styles.container}>
-        <Response action={this.state.action} />
-        <SearchBar
-          
-          placeholder="Search"
-          placeholderTextColor="#86939e"
-          platform="android"
-          containerStyle={styles.searchBarContainer}
-          inputContainerStyle={styles.SearchBar}
-          placeholderTextColor={"#666"}
-          
-        />
-        <View style={styles.overlayContainer}>
-          <FlatList
-            data={this.state.reserve_list}
-            keyExtractor={(item) => {
-              return `${item.orderId}`;
-            }}
-            renderItem={({ item, index }) => {
-              return (
-                <RowCustomer
-                  item={item}
-                  width={this.state.width}
-                  right={this.state.right}
-                  
-                  navigation={this.props.navigation}
-                  onEdit={() => {
-                    let customer = this.state.reserve_list.filter(it=> it.orderId === item.orderId );
-                    console.log(customer[0]);
-                    navigation.navigate("AddCustomer", {
-                      item: customer[0],
-                      action: {
-                        name: "editCustomer",
-                        time: getCurrentDateTime(),
-                      },
-                    });
-                  }}
-                />
-              );
-            }}
-          />
-        </View>
-        <View
-          style={{
-            ...styles.floatinContainer,
-            bottom: 70,
-            right: 40,
-          }}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.setState({ modalVisible: true });
-              this.toggleMenu();
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, sortStyle, opacity]}
-            >
-              <MaterialIcons name="sort" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+       return (
+         <ImageBackground source={Background} style={styles.container}>
+           <Response action={this.state.action} />
+           <SearchBar
+             placeholder="Search"
+             placeholderTextColor="#86939e"
+             platform="android"
+             containerStyle={{ ...styles.searchBarContainer, marginTop: 70 }}
+             inputContainerStyle={styles.SearchBar}
+             placeholderTextColor={"#666"}
+           />
+           <View style={styles.overlayContainer}>
+             <FlatList
+               data={this.state.reserve_list}
+               keyExtractor={(item) => {
+                 return `${item.orderId}`;
+               }}
+               renderItem={({ item, index }) => {
+                 return (
+                   <RowCustomer
+                     item={item}
+                     width={this.state.width}
+                     right={this.state.right}
+                     navigation={this.props.navigation}
+                     onEdit={() => {
+                       let customer = this.state.reserve_list.filter(
+                         (it) => it.orderId === item.orderId
+                       );
+                       console.log(customer[0]);
+                       navigation.navigate("AddCustomer", {
+                         item: customer[0],
+                         action: {
+                           name: "editCustomer",
+                           time: getCurrentDateTime(),
+                         },
+                       });
+                     }}
+                   />
+                 );
+               }}
+             />
+           </View>
+           <View
+             style={{
+               ...styles.floatinContainer,
+               bottom: 70,
+               right: 40,
+             }}
+           >
+             <TouchableWithoutFeedback
+               onPress={() => {
+                 this.setState({ modalVisible: true });
+                 this.toggleMenu();
+               }}
+             >
+               <Animated.View
+                 style={[styles.button, styles.floating, sortStyle, opacity]}
+               >
+                 <MaterialIcons name="sort" size={20} color="#f02a4b" />
+               </Animated.View>
+             </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleEditMode();
+             <TouchableWithoutFeedback
+               onPress={() => {
+                 this.toggleEditMode();
 
-              this.toggleMenu();
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, editStyle, opacity]}
-            >
-              <FontAwesome5 name="edit" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+                 this.toggleMenu();
+               }}
+             >
+               <Animated.View
+                 style={[styles.button, styles.floating, editStyle, opacity]}
+               >
+                 <FontAwesome5 name="edit" size={20} color="#f02a4b" />
+               </Animated.View>
+             </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleMenu();
-              // this.setState({ overlay: true });
-              this.toggleEditMode();
-              navigation.navigate("AddCustomer", {
-                action: { name: "addCustomer", time: getCurrentDateTime() },
-              });
-              // this.setState({ addmodalVisible: true });
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, addStyle, opacity]}
-            >
-              <AntDesign name="plus" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+             <TouchableWithoutFeedback
+               onPress={() => {
+                 this.toggleMenu();
+                 // this.setState({ overlay: true });
+                 this.toggleEditMode();
+                 navigation.navigate("AddCustomer", {
+                   action: { name: "addCustomer", time: getCurrentDateTime() },
+                 });
+                 // this.setState({ addmodalVisible: true });
+               }}
+             >
+               <Animated.View
+                 style={[styles.button, styles.floating, addStyle, opacity]}
+               >
+                 <AntDesign name="plus" size={20} color="#f02a4b" />
+               </Animated.View>
+             </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
-            <Animated.View style={[styles.button, styles.menu, rotation]}>
-              <AntDesign name="plus" size={24} color="#fff" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        </View>
-      </ImageBackground>   
-
-
-       )
+             <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
+               <Animated.View style={[styles.button, styles.menu, rotation]}>
+                 <AntDesign name="plus" size={24} color="#fff" />
+               </Animated.View>
+             </TouchableWithoutFeedback>
+           </View>
+         </ImageBackground>
+       );
 
     }
 }

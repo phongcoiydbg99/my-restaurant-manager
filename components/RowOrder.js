@@ -212,6 +212,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
+    borderRadius:5,
+    marginLeft: 10,
+    marginBottom:2,
+    width: "95%"
   },
   image: {
     width: 50,

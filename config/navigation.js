@@ -234,8 +234,8 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: "Customer",
         tabBarIcon: (props) => (
-          <FontAwesome5
-            name="money-bill-alt"
+          <FontAwesome
+            name="users"
             size={props.size}
             color={props.color}
           />
