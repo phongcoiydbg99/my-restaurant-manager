@@ -252,6 +252,7 @@ export default class order extends Component {
                     navigation.navigate("AddOrder", {
                       list_order: newList,
                       name: item.name,
+                      table: item,
                       action: {
                         name: "editOrder",
                         time: getCurrentDateTime(),
