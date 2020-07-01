@@ -15,6 +15,7 @@ import {
   CheckBox,
   Picker,
   Animated,
+  Alert,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
@@ -326,29 +327,29 @@ export default class Menu extends Component {
                   }}
                 >
                   <Text style={styles.labelStyle}>
-                    {this.state.modalHeader}
+                    {this.state.modalHeader == "EDIT" ? "Sửa" : "Thêm"} Menu
                   </Text>
                 </View>
                 <View style={styles.modalBody}>
                   <Input
-                    placeholder="Name"
-                    label="Name"
+                    placeholder="Mã món ăn"
+                    label="Mã món ăn :"
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
                     value={this.state.name}
                     onChangeText={(text) => this.setState({ name: text })}
                   />
                   <Input
-                    placeholder="fullName"
-                    label="fullName"
+                    placeholder="Tên món ăn"
+                    label="Tên món ăn :"
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
                     value={this.state.fullName}
                     onChangeText={(text) => this.setState({ fullName: text })}
                   />
                   <Input
-                    placeholder="price"
-                    label="price"
+                    placeholder="Giá"
+                    label="Giá :"
                     value={this.state.price}
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
@@ -422,7 +423,9 @@ export default class Menu extends Component {
                       style={styles.btnSubmit}
                       onPress={() => this.changeMenu()}
                     >
-                      <Text>{this.state.modalHeader}</Text>
+                      <Text>
+                        {this.state.modalHeader == "EDIT" ? "Sửa" : "Thêm"}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -513,23 +516,39 @@ export default class Menu extends Component {
                       // this.setState({ price: item.price.toString() });
                     }}
                     delete={() => {
-                      axios
-                        .delete(`${SERVER_ID}dish/delete/${item.name}`)
-                        .then((res) => {
-                          this.setState(
-                            (prevState) => ({
-                              ...prevState,
-                              model: "delete",
-                              action: {
-                                ...prevState.action,
-                                name: "deleteTable",
-                                date: getCurrentDateTime(),
-                                msg: "Delete Menu",
-                              },
-                            }),
-                            () => console.log(this.state.action)
-                          );
-                        });
+                      Alert.alert(
+                        "Thông báo",
+                        "Bạn chắc chắn muốn xóa không ?",
+                        [
+                          {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                          },
+                          {
+                            text: "OK",
+                            onPress: () => axios
+                                          .delete(`${SERVER_ID}dish/delete/${item.name}`)
+                                          .then((res) => {
+                                            this.setState(
+                                              (prevState) => ({
+                                                ...prevState,
+                                                model: "delete",
+                                                action: {
+                                                  ...prevState.action,
+                                                  name: "deleteTable",
+                                                  date: getCurrentDateTime(),
+                                                  msg: "Delete Menu",
+                                                },
+                                              }),
+                                              () => console.log(this.state.action)
+                                            );
+                                          }),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                      
                     }}
                     width={this.state.width}
                     right={this.state.right}
@@ -619,6 +638,9 @@ const styles = StyleSheet.create({
   elementForm: {
     marginTop: 10,
     flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   labelStyle: {
     fontSize: 16,

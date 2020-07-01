@@ -101,8 +101,7 @@ export default class MenuItem extends React.Component {
         <View>
           <Image
             source={{
-              uri:this.props.image,
-                
+              uri: this.props.image,
             }}
             // source={images}
             //  source={require(`../public/${this.props.item.name}.png`)}
@@ -110,12 +109,11 @@ export default class MenuItem extends React.Component {
           />
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>Name: </Text>
-          <Text style={styles.title}>{this.props.item.fullName}</Text>
+          <Text style={styles.label}>{this.props.item.fullName}</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>Price: </Text>
-          <Text style={styles.title}>{this.props.item.price}</Text>
+          <Text style={styles.label}>Giá: </Text>
+          <Text style={styles.title}>{this.props.item.price} </Text>
         </View>
         <Animated.View
           style={{
