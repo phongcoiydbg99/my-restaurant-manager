@@ -16,7 +16,6 @@ import {
   CardStyleInterpolators
 } from "@react-navigation/stack";
 import Table from "../screens/table";
-import EditTable from "../screens/edit_table";
 import AddTable from "../screens/add_table.js";
 import Order from "../screens/order";
 import Background from "../assets/Backgr-Login.jpg";
@@ -54,30 +53,7 @@ export default () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="EditTable"
-        component={EditTable}
-        options={{
-          headerShown: false,
-          headerTitle: false,
-          headerTransparent: true,
-          headerStyle: {
-            height: 80,
-            opacity: 0.9,
-          },
-          //headerStatusBarHeight: 20,
-          headerRight: (props) => <LogoTitle {...props} />,
-          headerBackground: () => (
-            <View style={styles.header}>
-              <Text style={styles.headerTitle}>
-                <Text style={styles.GBtype}>GB</Text>
-                <Text> Restaurant</Text>
-              </Text>
-            </View>
-          ),
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
-      />
+      
       <Tab.Screen
         name="AddTable"
         component={AddTable}

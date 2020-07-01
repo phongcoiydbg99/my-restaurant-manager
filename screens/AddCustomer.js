@@ -33,22 +33,21 @@ import {getCurrentDateTime} from "../config/util";
 import { SERVER_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
-export default class AddTable extends React.Component {
+export default class AddCustomer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      chairNum: "",
-      status: "reserved",
-      price: "",
-      fullName: "",
+      phoneNum: "",
+      email:"",
       datetime: "",
       time: "",
+      table:"",
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       action:{},
       mode:"",
-      
+      orderId:0
       
     };
   }
@@ -60,17 +59,19 @@ export default class AddTable extends React.Component {
     let act = this.props.route.params.action
     let item = this.props.route.params.item
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
-    if(act.name == "editTable"){
-      let arr = item.reserve_time.split(" ");
+     if(act.name == "editCustomer"){
+        let arr = item.reservedTime.split(" ");
       this.setState({mode:act.name,
-                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
-                     status: item.status, price: item.price.toString(), datetime:arr[0], time:arr[1]
+                     name:item.guestName, datetime:arr[0], time:arr[1],email:item.email,table:item.tableName,
+                     phoneNum: item.phoneNum.toString(), orderId:item.orderId
                    
-      });
-      console.log(arr);
-    }else this.setState({mode:act.name})
+      },()=>console.log(this.state));
+    }else if(act.name == "addCustomer"){
+        let id = Math.floor(Math.random() * 1000000);
+        this.setState({mode:act.name,orderId:id});
+    }
+    
   }
- 
   toShortFormat = (date) => {
     var month_names = [
       "Jan",
@@ -126,10 +127,10 @@ export default class AddTable extends React.Component {
     this.setState({ time: t });
     this.setState({ isTimePickerVisible: false });
   };
-  addTable = () => {
+  addCustomer = () => {
     //kiem tra xem cac input co null hay k, neu k null thi moi post data
-    if(this.state.name == "" || this.state.fullName == ""  || this.state.price == "" || this.state.status == ""
-       || this.state.chairNum == ""){
+    if(this.state.name == "" || this.state.datetime == ""  || this.state.time == "" || this.state.table== ""
+       || this.state.phoneNum == "" ){
       this.setState(prevState=>({
           ...prevState,
           action:{
@@ -138,24 +139,21 @@ export default class AddTable extends React.Component {
             date: getCurrentDateTime()
           }
       }));
-      //this.setState({action:'formError',actionTime:getCurrentDateTime()});
       
     }else{
       const reserve = this.state.datetime + " " + this.state.time;
       let newTable = {
-        
-        name: this.state.name,
-        chairNum: this.state.chairNum,
-        status: this.state.status,
-        price: this.state.price,
-        fullName: this.state.fullName,
-        reserve_time: reserve,
+        guestName: this.state.name,
+        phoneNum: this.state.phoneNum,
+        email: this.state.email,
+        tableName: this.state.table,
+        orderId:this.state.orderId,
+        reservedTime: reserve,
       };
+      console.log(newTable);
       let newData = {}
       const { navigation, route } = this.props;
-      if(this.state.mode == 'addTable'){
-         //thuc hien post data
-        axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
+      axios.post(`${SERVER_ID}reserved/add`,newTable).then(res=>{
         
         newData = {...newTable, action:{
            name:'postTable',
@@ -163,24 +161,35 @@ export default class AddTable extends React.Component {
            msg:res.data
         }}
          }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
-       navigation.navigate("Table",newData);//navigate ve table voi param
+       navigation.navigate("Customer",newData);//navigate ve table voi param
         }).catch(err => console.log(err));
-      }else if(this.state.mode == "editTable"){//modify data
-        axios.put(`${SERVER_ID}table/modify/${this.state.name}`,newTable).then(res=>{
+
+    //   if(this.state.mode == 'addTable'){
+    //      //thuc hien post data
+    //     axios.post(`${SERVER_ID}table/add`,newTable).then(res=>{
+        
+    //     newData = {...newTable, action:{
+    //        name:'postTable',
+    //        date: getCurrentDateTime(),
+    //        msg:res.data
+    //     }}
+    //      }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+    //    navigation.navigate("Table",newData);//navigate ve table voi param
+    //     }).catch(err => console.log(err));
+    //   }else if(this.state.mode == "editTable"){//modify data
+    //     axios.post(`${SERVER_ID}table/modify/${this.state.name}`,newTable).then(res=>{
           
-          newData = {...newTable, action:{
-             name:'putTable',
-             date: getCurrentDateTime(),
-             msg:res.data
-          }}
-           }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
-         navigation.navigate("Table",newData);//navigate ve table voi param
-          }).catch(err => console.log(err));
-      }
+    //       newData = {...newTable, action:{
+    //          name:'putTable',
+    //          date: getCurrentDateTime(),
+    //          msg:res.data
+    //       }}
+    //        }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+    //      navigation.navigate("Table",newData);//navigate ve table voi param
+    //       }).catch(err => console.log(err));
+    //   }
     }
   };
-  
-
   render() {
     const { navigation } = this.props;
     return (
@@ -191,7 +200,7 @@ export default class AddTable extends React.Component {
           <View>
             <TouchableOpacity
               style={styles.btnBack}
-              onPress={() => navigation.navigate("Table")}
+              onPress={() => navigation.navigate("Customer")}
             >
               <Ionicons name="ios-arrow-back" size={30} color="white" />
             </TouchableOpacity>
@@ -204,46 +213,39 @@ export default class AddTable extends React.Component {
             value={this.state.name}
             onChangeText={(text) => this.setState({ name: text })}
           />
-          <Input
-            placeholder="fullName"
-            label="fullName"
-            labelStyle={styles.labelStyle}
-            inputStyle={styles.inputstyle}
-            value={this.state.fullName}
-            onChangeText={(text) => this.setState({ fullName: text })}
-          />
+          
           <Input
             placeholder="chairNum"
-            label="chairNum"
+            label="phoneNum"
             value={this.state.chairNum}
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
             keyboardType="numeric"
-            onChangeText={(text) => this.setState({ chairNum: text })}
+            value={this.state.phoneNum}
+            onChangeText={(text) => this.setState({ phoneNum: text })}
+          />
+          <Input
+            placeholder="fullName"
+            label="Email"
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
+            value={this.state.email}
+            onChangeText={(text) => this.setState({ email: text })}
           />
           <Text
             style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}
           >
             Status
           </Text>
-          <Picker
-            mode={"dropdown"}
-            selectedValue={this.state.status}
-            style={{ marginHorizontal: 10, color: "#fff" }}
-            onValueChange={(text) => this.setState({ status: text })}
-          >
-            <Picker.Item label="reserved" value="reserved" />
-            <Picker.Item label="full" value="full" />
-            <Picker.Item label="empty" value="empty" />
-          </Picker>
+         
           <Input
             placeholder="price"
-            label="price"
-            value={this.state.price}
+            label="Table"
+            value={this.state.table}
             labelStyle={styles.labelStyle}
             inputStyle={styles.inputstyle}
-            keyboardType="numeric"
-            onChangeText={(text) => this.setState({ price: text })}
+            
+            onChangeText={(text) => this.setState({ table: text })}
           />
           <View
             style={{
@@ -298,7 +300,7 @@ export default class AddTable extends React.Component {
           <View style={styles.elementForm}>
             <TouchableOpacity
               style={styles.btnSubmit}
-              onPress={() => this.addTable()}
+              onPress={() => this.addCustomer()}
             >
               <Text>ADD</Text>
             </TouchableOpacity>
@@ -309,7 +311,10 @@ export default class AddTable extends React.Component {
       </ImageBackground>
     );
   }
+
+
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
