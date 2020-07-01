@@ -30,7 +30,7 @@ export default class Bill extends Component {
     const { navigation } = this.props;
     const { route } = this.props;
     const tableInfo = route.params.table;
-    console.log(route.params);
+    //console.log(tableInfo);
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
@@ -43,25 +43,27 @@ export default class Bill extends Component {
     });
   }
 
-  //thanh toan
-  paid = () => {
-    const { navigation, route } = this.props;
-    const tableInfo = route.params.table;
-    const newTable = tableInfo;
-    newTable.status = "empty";
-    axios.put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
+  // //thanh toan
+  // paid = () => {
+  //   const { navigation, route } = this.props;
+  //   const tableInfo = route.params.table;
+  //   const newTable = tableInfo;
+  //   newTable.status = "empty";
+  //   axios.put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
 
-    navigation.navigate("billOfTable", newTable);
-  };
+  //   navigation.navigate("billOfTable", newTable);
+  // };
 
   render() {
     const { navigation, route } = this.props;
     const tableInfo = route.params.table;
-    // var total = '';
-    // this.state.result.filter((item) => {
-    //   total = parseInt(total + item.id.dish.price * item.call_number);
-    // });
-
+    const dishInfo = route.params.item;
+    var total = '';
+    tableInfo.filter((item) => {
+      total = parseInt(total + item.id.dish.price * item.call_number);
+      console.log(total);
+    });
+    console.log(dishInfo);
     return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
@@ -70,9 +72,9 @@ export default class Bill extends Component {
             <View style={styles.billTitle}>
               <Text style={styles.textBillTitle}>GB Restaurant</Text>
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.textTableName}>{tableInfo.fullName}</Text>
+                <Text style={styles.textTableName}>{dishInfo.fullName}</Text>
                 <Text style={styles.textMaHoaDon}>
-                  {tableInfo.reserve_time}
+                  {dishInfo.reserve_time}
                 </Text>
               </View>
             </View>
@@ -101,10 +103,10 @@ export default class Bill extends Component {
                 }}
               >
                 <FlatList
-                  data={this.state.result}
+                  data={tableInfo}
                   renderItem={({ item }) => <Order item={item} />}
                   keyExtractor={(item) => {
-                    return `${item.id.dish.name}`;
+                    return `${item.name}`;
                   }}
                 />
               </View>
@@ -138,7 +140,7 @@ export default class Bill extends Component {
                     textAlign: "right",
                   }}
                 >
-                  {tableInfo.price}đ
+                  {dishInfo.price}đ
                 </Text>
               </View>
 
@@ -146,9 +148,9 @@ export default class Bill extends Component {
                 <Text
                   style={{ fontSize: 25, color: "#fff", paddingBottom: 10 }}
                 >
-                  Total Bill: {tableInfo.totalPrice}đ
+                  Total Bill: {parseInt(dishInfo.price) + total}đ
                 </Text>
-                <TouchableOpacity onPress={() => this.paid()}>
+                <TouchableOpacity onPress={() => navigation.navigate("Orders", dishInfo)}>
                   <Text style={{ fontSize: 25, color: "#fff" }}>Done!</Text>
                 </TouchableOpacity>
               </View>

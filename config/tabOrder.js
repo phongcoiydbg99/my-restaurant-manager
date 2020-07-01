@@ -17,7 +17,9 @@ import {
 } from "@react-navigation/stack";
 import Order from "../screens/order";
 import AddOrder from "../screens/add_order";
+import Bill from "../screens/bill";
 import Background from "../assets/Backgr-Login.jpg";
+import { Ionicons } from "@expo/vector-icons";
 const Tab = createStackNavigator();
 import axios from "axios";
 export default () => {
@@ -76,6 +78,31 @@ export default () => {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
+      <Tab.Screen 
+          name="bill" 
+          component={Bill} 
+          options={({navigation}) => ({
+            headerTitle: false,
+            headerTransparent: true,
+            headerStyle: {
+              height: 70,
+            },
+            //headerStatusBarHeight: 20,
+            headerRight: (props) => <LogoTitle {...props} />,
+            headerLeft: () => (
+              <TouchableOpacity
+                  style={styles.btnBack}
+                  onPress = {() => navigation.pop()}
+                >
+                <Ionicons name="ios-arrow-back" size={30} color="white" />
+                </TouchableOpacity>
+            ),
+            headerBackground: () => (
+              <View style={styles.header}>  
+              </View>
+            ),
+          })}
+          />
     </Tab.Navigator>
   );
 };
@@ -98,6 +125,9 @@ const styles = StyleSheet.create({
   },
   GBtype: {
     fontWeight: "bold",
+  },
+  btnBack: {
+    paddingLeft: 15,
   },
 });
 

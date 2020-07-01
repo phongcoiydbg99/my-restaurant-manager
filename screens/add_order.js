@@ -17,6 +17,7 @@ import {
   Picker,
   Animated,
   SectionList,
+  Alert,
 } from "react-native";
 
 import { MenuItem, Separator } from "../components/MenuItem";
@@ -84,6 +85,13 @@ export default class AddOrder extends Component {
       refresh: false,
       action: {},
       randNum: new Date().getTime(),
+      name: "",
+      chairNum: "",
+      status: "reserved",
+      price: "",
+      fullName: "",
+      datetime: "",
+      time: "",
     };
   }
   componentDidMount() {
@@ -103,6 +111,15 @@ export default class AddOrder extends Component {
       this.setState({ dessertmenu: res.data });
       this.setState({ cdessertmenu: res.data });
     });
+    let act = this.props.route.params.action
+    let item = this.props.route.params.table
+    //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
+    if(act.name == 'editOrder'){
+      this.setState({
+                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
+                     status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
+                   
+      });}
   }
   componentDidUpdate(prevProps, prevState) {
     
@@ -204,6 +221,76 @@ export default class AddOrder extends Component {
     );
     this.setState({ value: text });
   }
+
+  paid = () => {
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var day = new Date().getDate();
+    var month_index = new Date().getMonth();
+    var year = new Date().getFullYear();
+    const d = "" + day + "-" + month_names[month_index] + "-" + year;
+    const t =
+      ("00" + new Date().getHours()).slice(-2) +
+      ":" +
+      ("00" + new Date().getMinutes()).slice(-2) +
+      ":" +
+      ("00" + new Date().getSeconds()).slice(-2);
+    let reserve = d + " " + t;
+    let newTable = {
+      name: this.state.name,
+      chairNum: this.state.chairNum,
+      status: 'empty',
+      price: this.state.price,
+      fullName: this.state.fullName,
+      reserve_time: reserve,
+    };
+    let newData = {};
+    const { navigation, route } = this.props;
+
+    //console.log(this.state.list_order);
+    
+    
+    Alert.alert(
+      'Warning!',
+      'You definitely want to pay?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {console.log('Cancel Pressed')},
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => {
+          axios
+          .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable)
+          .then(res=>{
+            newData = {...newTable, action:{
+              name:'putTable',
+              date: getCurrentDateTime(),
+              msg:res.data
+              }}
+            })
+          .then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
+            //navigation.navigate("Orders",newData);//navigate ve table voi param
+            navigation.navigate("bill", {table: this.state.list_order, item: newData});
+            }).catch(err => console.log(err));
+        } }
+      ],
+      { cancelable: false }
+    );
+  };
+
   render() {
     const { navigation, route } = this.props;
     
@@ -314,6 +401,20 @@ export default class AddOrder extends Component {
               }}
             >
               <MaterialIcons name="border-color" size={24} color="#f02a4b" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.paid}
+              style={{
+                height: 40,
+                borderRadius: 10,
+                width: 40,
+                marginLeft: 10,
+                backgroundColor: "#fff",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome5 name="amazon-pay" size={24} color="#f02a4b" />
             </TouchableOpacity>
           </View>
           {/* // Chon ban */}
