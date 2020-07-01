@@ -51,6 +51,7 @@ export default class Customer extends Component{
         super(props);
         this.state = {
           reserve_list: [],
+          result: [],
           list:{},
           toogleMode: false,
           btWidth: new Animated.Value(0),
@@ -74,7 +75,7 @@ export default class Customer extends Component{
         axios.get(`${SERVER_ID}reserved/all`).then(res=>{
           
           
-          this.setState({reserve_list:res.data})
+          this.setState({reserve_list:res.data, result: res.data})
         })
         
         .catch(err=>console.log(err))
@@ -84,7 +85,7 @@ export default class Customer extends Component{
            
            axios.get(`${SERVER_ID}reserved/all`).then(res=>{
           
-            this.setState({reserve_list:res.data})
+            this.setState({reserve_list:res.data, result: res.data})
            })
          }
      }
@@ -123,9 +124,23 @@ export default class Customer extends Component{
      //   );
      //   this.setState({ value: text });
      // }
-   
+
+     updateSearch = (search) => {
+      const newData = this.state.result.filter((item) => {
+        const itemData = `${item.guestName.toUpperCase()}`;
+        const textData = search.toUpperCase();
+  
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        reserve_list: newData,
+        search,
+      });
+    };
+
     render(){
         const { search } = this.state;
+        console.log(this.state.reserve_list)
          const sortStyle = {
         transform: [
             {
@@ -190,6 +205,8 @@ export default class Customer extends Component{
              containerStyle={{ ...styles.searchBarContainer, marginTop: 70 }}
              inputContainerStyle={styles.SearchBar}
              placeholderTextColor={"#666"}
+             onChangeText={this.updateSearch}
+             value={search}
            />
            <View style={styles.overlayContainer}>
              <FlatList

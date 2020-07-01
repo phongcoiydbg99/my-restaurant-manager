@@ -63,21 +63,23 @@ export default class Menu extends Component {
     };
   }
   componentDidMount() {
-    axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
-      this.setState(
-        (prevState) => ({
-          ...prevState,
-          result: res.data ,
-          menu: res.data,
-        }));
-    }).catch(err => console.log('Dish error : ' + err));
-    axios.get(`${SERVER_ID}dishdata/all`).then((res) => {
-      this.setState(
-        (prevState) => ({
-          ...prevState,
-          favFood: res.data ,
-        }));
-    }).catch(err => console.log('Dish error : ' + err));
+    this.focusListener = navigation.addListener("focus", () => {
+      axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            result: res.data ,
+            menu: res.data,
+          }));
+      }).catch(err => console.log('Dish error : ' + err));
+      axios.get(`${SERVER_ID}dishdata/all`).then((res) => {
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            favFood: res.data ,
+          }));
+      }).catch(err => console.log('Dish error : ' + err));
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     //console.log(this.state.model);
