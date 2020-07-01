@@ -97,6 +97,7 @@ export default class Menu extends Component {
             menu: res.data,
             model: "",
             modalHeader: "",
+            randNum: new Date().getTime(),
           }));
         })
         .catch((err) => console.log("Dish error : " + err));
@@ -266,7 +267,7 @@ export default class Menu extends Component {
           .catch((err) => console.log(err));
       }
     }
-    this.setState({ modalVisible: false });
+    // this.setState({ modalVisible: false });
   }
 
   pickImageLibrary = async () => {

@@ -20,7 +20,7 @@ function AuthProvider(){
       switch(authInfo.status){
         
         case 'pending':
-          //  AsyncStorage.removeItem("token");
+           AsyncStorage.removeItem("token");
            AsyncStorage.getItem('token').then( token => {
              if(token !== null){
               //  console.log(token);
