@@ -45,8 +45,15 @@ export default class revenue extends Component {
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
-      // if (navigation.params != undefined ) 
-      console.log(route.parmas);
+      axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
+        this.setState({ dataRevenueDay: res.data });
+      });
+      axios.get(`${SERVER_ID}revenue/all`).then((res) => {
+        this.setState({ dataRevenueMonth: res.data });
+      });
+      axios.get(`${SERVER_ID}dish/all`).then((res) => {
+        this.setState({ allDish: res.data });
+      });
     });
     axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
       this.setState({ dataRevenueDay: res.data });
