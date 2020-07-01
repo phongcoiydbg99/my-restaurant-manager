@@ -271,7 +271,7 @@ export default class order extends Component {
             right: 40,
           }}
         >
-          <TouchableWithoutFeedback
+          {/* <TouchableWithoutFeedback
             onPress={() => {
               this.setState({ modalVisible: true });
               this.toggleMenu();
@@ -315,9 +315,20 @@ export default class order extends Component {
             >
               <AntDesign name="plus" size={20} color="#f02a4b" />
             </Animated.View>
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> */}
 
-          <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.toggleMenu();
+              // this.setState({ overlay: true });
+              this.toggleEditMode();
+              navigation.navigate("AddOrder", {
+                list_order: [],
+                name: [],
+              });
+              // this.setState({ addmodalVisible: true });
+            }}
+          >
             <Animated.View style={[styles.button, styles.menu, rotation]}>
               <AntDesign name="plus" size={24} color="#fff" />
             </Animated.View>

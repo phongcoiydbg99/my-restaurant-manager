@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   image1: {
     width: WIDTH - 20,
     margin: 10,
-    height: 200,
+    height: 300,
     borderRadius: 5,
     marginRight: 10,
   },

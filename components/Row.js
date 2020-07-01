@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
   modalView: {
     width: "95%",
     backgroundColor: "white",
-    borderTopRightRadius: 15,
-    borderTopStartRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -108,7 +106,7 @@ export default class Row extends React.Component {
     this.state = {
       check: false,
       modalVisible: false,
-      sort: "All",
+      sort: "Empty",
     };
   }
   changeTable = () => {
@@ -146,16 +144,6 @@ export default class Row extends React.Component {
             }}
           >
             <View style={styles.modalView}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.setState({ modalVisible: false });
-                  this.state.sort = "all";
-                  this.changeTable();
-                }}
-                style={styles.modalContent}
-              >
-                <Text>All</Text>
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
