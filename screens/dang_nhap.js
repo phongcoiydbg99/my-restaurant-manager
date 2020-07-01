@@ -12,7 +12,6 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { authContext } from "../context/context";
 import Background from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
 import { FontAwesome } from "@expo/vector-icons";
@@ -90,22 +89,25 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ error, status, setInfo }) => {
+export default ({ error, authInfo, setInfo }) => {
   const navigation = useNavigation();
-  const [username, setusername] = useState(null);
-  const [password, setpassword] = useState(null);
-  const { authInfo } = React.useContext(authContext);
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
+  // const { authInfo } = React.useContext(authContext);
+  // console.log(authContext);
   const onChangeUser = (text) => {
     setusername(text);
   };
   React.useEffect(() => {
-    if (status === "Logged" && authInfo.logged === true) {
+    if (authInfo.status === "Logged" && authInfo.logged === true) {
       // console.log(authInfo.user);
+      setusername("");
+      setpassword("");
       if (authInfo.user.quyen_han == "NHANVIEN")
         navigation.navigate("AppDrawerNVScreen");
       else navigation.navigate("AppDrawerScreen");
     }
-  }, [status]);
+  }, [authInfo.status]);
   const onChangePassword = (text) => {
     setpassword(text);
   };
@@ -128,6 +130,7 @@ export default ({ error, status, setInfo }) => {
           <TextInput
             style={styles.input}
             placeholder={"Username"}
+            value={username}
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
             underLineColorAndroid="transparent"
             onChangeText={(text) => onChangeUser(text)}
@@ -144,6 +147,7 @@ export default ({ error, status, setInfo }) => {
           <TextInput
             style={styles.input}
             placeholder={"Password"}
+            value={password}
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
             underLineColorAndroid="transparent"
             secureTextEntry={true}

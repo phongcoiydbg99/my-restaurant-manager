@@ -19,6 +19,7 @@ import {
 } from "react-native";
 import { Separator } from "../components/Row";
 import Row from "../components/Row";
+import Response from "../components/Response";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { authContext } from "../context/context";
@@ -29,13 +30,13 @@ import { Input } from "react-native-elements";
 
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-import Response from "../components/Response"
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import {getCurrentDateTime} from "../config/util"
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { getCurrentDateTime } from "../config/util";
 import { SERVER_ID } from "../config/properties";
 
 import Background from "../assets/Backgr-Login.jpg";
@@ -50,20 +51,31 @@ export default class Table extends Component {
     this.state = {
       addmodalVisible: false,
       modalVisible: false,
+      bookModalVisible: false,
       toggleMode: false,
       toggleInput: false,
       value: "",
       sort: "All",
       result: [],
       table: [],
+      emptyTable: [],
       newTable: {},
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
       right: new Animated.Value(0),
-      
+      datetime: "",
+      time: "",
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      pickerVisible: false,
+      guestName: "",
+      numeric: "",
+      email: "",
+      tableName: "",
+      action: {},
     };
   }
-  
+
   componentDidMount() {
     const { navigation, route } = this.props;
     //Adding an event listner om focus
@@ -72,32 +84,35 @@ export default class Table extends Component {
     //   // if (navigation.params != undefined )
     //   console.log(route.parmas);
     // });
-    
+
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
       this.setState({ table: res.data });
-    
+      this.setState({
+        emptyTable: res.data.filter((table) => table.status == "empty"),
+      });
     });
   }
   componentDidUpdate(prevProps, prevState) {
-    
     if (
-      prevProps.route.params !== this.props.route.params
+      prevProps.route.params !== this.props.route.params 
+      ||
+      prevState.action !== this.state.action
       //param nay chua thong tin table moi tu add_table
       //chi update neu params thay doi
     ) {
-       
       // console.log('act:' + JSON.stringify(this.props.route.params.action));
       axios.get(`${SERVER_ID}table/all`).then((res) => {
-        
         //  this.toggleEditMode();
         this.setState({ table: res.data });
         this.setState({ result: res.data });
-        
+        this.setState({
+          emptyTable: res.data.filter((table) => table.status == "empty"),
+        });
       });
     } //chi  update lai UI khi props.route.param nhan value moi (sau moi lan them do an moi)
   }
- 
+
   toggleEditMode() {
     if (!this.state.toggleMode) {
       Animated.sequence([
@@ -132,13 +147,25 @@ export default class Table extends Component {
         (table) => table.status == "empty"
       );
   }
-  // search table
-  searchTable(text) {
-    this.state.table = this.state.result.filter(
-      (table) => table.name.split(text).length > 1
-    );
-    this.setState({ value: text });
-  }
+  // searchTable(text) {
+  //   this.state.table = this.state.result.filter(
+  //     (table) => table.name.split(text).length > 1
+  //   );
+  //   this.setState({ value: text });
+  // }
+  updateSearch = (search) => {
+    const newData = this.state.result.filter((item) => {
+      const itemData = `${item.fullName.toUpperCase()}`;
+      const textData = search.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      table: newData,
+      search,
+    });
+  };
+
   // floating button
   animation = new Animated.Value(0);
 
@@ -152,11 +179,120 @@ export default class Table extends Component {
 
     this.open = !this.open;
   };
-  
+  togglePicker = () => {
+    this.setState({ pickerVisible: !this.state.pickerVisible });
+  };
+  toShortFormat = (date) => {
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    date = new Date(date);
+    var day = date.getDate();
+    var month_index = date.getMonth();
+    var year = date.getFullYear();
+
+    return "" + day + "-" + month_names[month_index] + "-" + year;
+  };
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: true });
+  };
+  showTimePicker = () => {
+    this.setState({ isTimePickerVisible: true });
+  };
+
+  hideDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
+  };
+  hideTimePicker = () => {
+    this.setState({ isTimePickerVisible: false });
+  };
+  handleConfirm = (date) => {
+    const d = this.toShortFormat(date);
+    this.setState({ datetime: d });
+    this.setState({ isDatePickerVisible: false });
+  };
+  handleConfirmTime = (date) => {
+    date = new Date(date);
+    const t =
+      ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    this.setState({ time: t });
+    this.setState({ isTimePickerVisible: false });
+  };
+  bookTable = () => {
+    if(this.state.email == "" || this.state.tableName == ""  || this.state.guestName == "" || this.state.reservedTime == ""
+       || this.state.phoneNum == ""){
+      this.setState(prevState=>({
+          ...prevState,
+          action:{
+            ...prevState.action,
+            name:'formError',
+            date: getCurrentDateTime()
+          }
+      }));
+      //this.setState({action:'formError',actionTime:getCurrentDateTime()});
+      
+    }else{
+    const reserve = this.state.datetime + " " + this.state.time;
+    let newReserver = {
+      orderId: 1299,
+      tableName: this.state.tableName,
+      phoneNum: this.state.phoneNum,
+      email: this.state.email,
+      guestName: this.state.guestName,
+      reservedTime: reserve,
+    };
+    axios
+      .post(`${SERVER_ID}reserved/add`, newReserver)
+      .then((res) => {
+        this.setState((prevState) => ({
+          ...prevState,
+          action: {
+            ...prevState.action,
+            name: "postTable",
+            date: getCurrentDateTime(),
+            msg: "Đặt bàn thành công",
+          },
+        }));
+      })
+      .then(() => {
+        this.setState({ bookModalVisible: false });
+      })
+      .catch((err) => console.log(err));
+    }
+  }
   render() {
+    const {search} = this.state;
     const { navigation,route } = this.props;
     // const { authInfo } = React.useContext(authContext);
     // console.log(authInfo.user);
+    const bookStyle = {
+      transform: [
+        {
+          scale: this.animation,
+        },
+        {
+          translateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -260],
+          }),
+        },
+      ],
+    };
     const sortStyle = {
       transform: [
         {
@@ -213,7 +349,8 @@ export default class Table extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
-        
+        <Response action={this.state.action} />
+        {/* Modal chọn sort */}
         <Modal
           animationType="fade"
           transparent={true}
@@ -269,21 +406,274 @@ export default class Table extends Component {
             </View>
           </TouchableHighlight>
         </Modal>
+        {/* modal chon ban */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.pickerVisible}
+        >
+          <TouchableHighlight style={styles.centeredView}>
+            <View style={styles.modalTableView}>
+              <TouchableOpacity
+                style={styles.inputClose}
+                onPress={() => {
+                  this.togglePicker();
+                }}
+              >
+                <Ionicons
+                  name="md-close-circle-outline"
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+              <SearchBar
+                onChangeText={(text) => this.searchTable(text)}
+                placeholder="Search"
+                placeholderTextColor="#86939e"
+                platform="android"
+                containerStyle={{
+                  ...styles.searchBarContainer,
+                  marginTop: 40,
+                  backgroundColor: "#ececec",
+                }}
+                inputContainerStyle={styles.SearchBar}
+                placeholderTextColor={"#666"}
+                value={this.state.value}
+              />
+              {this.state.emptyTable.map((item) => (
+                <View key={item.name}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      alignItems: "center",
+                      backgroundColor: "#fff",
+                    }}
+                    onPress={() => {
+                      this.setState({ tableName: item.name });
+                      this.togglePicker();
+                    }}
+                  >
+                    <View>
+                      <Image source={Background} style={styles.image} />
+                    </View>
+                    <View style={{ ...styles.content }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View style={{ flexDirection: "row", width: "55%" }}>
+                          <Text style={styles.label}>Name: </Text>
+                          <Text style={styles.title}>{item.fullName}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row", width: "50%" }}>
+                          <Text style={styles.label}>People: </Text>
+                          <Text style={styles.title}>{item.chairNum}</Text>
+                        </View>
+                      </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.label}>Price: </Text>
+                        <Text style={styles.title}>{item.price}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </TouchableHighlight>
+        </Modal>
+        {/* Modal booktable */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.bookModalVisible}
+        >
+          <TouchableHighlight
+            style={styles.centeredView}
+            onPress={() => {
+              this.setState({ bookModalVisible: false });
+            }}
+          >
+            <View style={styles.modalView}>
+              <View
+                style={{
+                  height: "8%",
+                  width: "95%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottomColor: "#cececc",
+                  borderBottomWidth: 1,
+                  marginHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#000",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Đặt bàn
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ ...styles.labelStyle, marginLeft: 10 }}>
+                  Choose table:{" "}
+                </Text>
+                <View
+                  style={{
+                    backgroundColor: "#fff",
+                    width: 100,
+                    height: 30,
+                    borderBottomWidth: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {this.state.tableName}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={this.togglePicker}
+                  style={{
+                    height: 40,
+                    borderRadius: 10,
+                    width: 40,
+                    marginLeft: 10,
+                    backgroundColor: "#fff",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="table-plus"
+                    size={24}
+                    color="#f02a4b"
+                  />
+                </TouchableOpacity>
+              </View>
+              <Input
+                placeholder="Tên khách hàng"
+                label="Tên khách hàng"
+                labelStyle={styles.labelStyle}
+                inputStyle={styles.inputstyle}
+                value={this.state.guestName}
+                onChangeText={(text) => this.setState({ guestName: text })}
+              />
+              <Input
+                placeholder="Số điện thoại"
+                label="Số điện thoại"
+                value={this.state.phoneNum}
+                labelStyle={styles.labelStyle}
+                inputStyle={styles.inputstyle}
+                keyboardType="numeric"
+                onChangeText={(text) => this.setState({ phoneNum: text })}
+              />
+              <Input
+                placeholder="Email"
+                label="Email"
+                labelStyle={styles.labelStyle}
+                inputStyle={styles.inputstyle}
+                value={this.state.email}
+                onChangeText={(text) => this.setState({ email: text })}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <Input
+                  inputContainerStyle={{ width: WIDTH - 100 }}
+                  placeholder="date"
+                  label="Thời gian đặt"
+                  value={this.state.datetime}
+                  labelStyle={styles.labelStyle}
+                  inputStyle={styles.inputStyle}
+                />
+                <TouchableWithoutFeedback onPress={this.showDatePicker}>
+                  <View style={{ marginLeft: -60, marginTop: 25 }}>
+                    <Image
+                      source={icon}
+                      style={{ width: 30, height: 30 }}
+                    ></Image>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <Input
+                  inputContainerStyle={{ width: WIDTH - 100 }}
+                  placeholder="time"
+                  value={this.state.time}
+                  labelStyle={styles.labelStyle}
+                  inputStyle={styles.inputStyle}
+                />
+                <TouchableWithoutFeedback onPress={this.showTimePicker}>
+                  <View style={{ marginLeft: -60, marginTop: 10 }}>
+                    <Image
+                      source={clock}
+                      style={{ width: 30, height: 30 }}
+                    ></Image>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <DateTimePickerModal
+                isVisible={this.state.isDatePickerVisible}
+                mode="date"
+                onConfirm={this.handleConfirm}
+                onCancel={this.hideDatePicker}
+              />
+              <DateTimePickerModal
+                isVisible={this.state.isTimePickerVisible}
+                mode="time"
+                onConfirm={this.handleConfirmTime}
+                onCancel={this.hideTimePicker}
+              />
+              <View style={styles.elementForm}>
+                <TouchableOpacity
+                  style={{ ...styles.btnSubmit }}
+                  onPress={() => this.bookTable()}
+                >
+                  <Text>Đặt bàn</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableHighlight>
+        </Modal>
+        {/* --------------------------------- */}
         <View style={styles.overlayContainer}>
-           <Response action={route.params.action} />
+          <Response action={route.params.action} />
           <SearchBar
-            onChangeText={(text) => this.searchTable(text)}
+            onChangeText={this.updateSearch}
             placeholder="Search"
             placeholderTextColor="#86939e"
             platform="android"
-            containerStyle={styles.searchBarContainer}
+            containerStyle={{ ...styles.searchBarContainer, marginTop: 70 }}
             inputContainerStyle={styles.SearchBar}
             placeholderTextColor={"#666"}
-            value={this.state.value}
+            value={search}
           />
           <FlatList
             data={this.state.table}
-            keyExtractor={item=> item.name}
+            keyExtractor={(item) => item.name}
             renderItem={({ item, index }) => {
               return (
                 <Row
@@ -292,11 +682,12 @@ export default class Table extends Component {
                   onPress={() =>
                     navigation.navigate("AddTable", {
                       action: {
-                        name: 'editTable',
-                        time: getCurrentDateTime()
-                      }, action: {
-                        name: 'editTable',
-                        time: getCurrentDateTime()
+                        name: "editTable",
+                        time: getCurrentDateTime(),
+                      },
+                      action: {
+                        name: "editTable",
+                        time: getCurrentDateTime(),
                       },
                       item: item,
                     })
@@ -317,12 +708,24 @@ export default class Table extends Component {
           style={{
             ...styles.floatinContainer,
             bottom: 70,
-            right: WIDTH/2,
+            right: WIDTH / 2,
           }}
         >
           <TouchableWithoutFeedback
             onPress={() => {
-              
+              this.toggleMenu();
+              this.setState({ bookModalVisible: true });
+            }}
+          >
+            <Animated.View
+              style={[styles.button, styles.floating, bookStyle, opacity]}
+            >
+              <AntDesign name="book" size={20} color="#f02a4b" />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() => {
               this.toggleMenu();
               this.setState({ modalVisible: true });
             }}
@@ -337,8 +740,7 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleEditMode();
-              
-              
+
               this.toggleMenu();
             }}
           >
@@ -352,12 +754,19 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleMenu();
-              navigation.navigate("AddTable", { item:{
-                name:"", fullName:"", chairNum: "", status: "", price: "", reserve_time: ""
-              }, action:{name:'addTable' ,time: getCurrentDateTime()}});
+              navigation.navigate("AddTable", {
+                item: {
+                  name: "",
+                  fullName: "",
+                  chairNum: "",
+                  status: "",
+                  price: "",
+                  reserve_time: "",
+                },
+                action: { name: "addTable", time: getCurrentDateTime() },
+              });
               this.toggleEditMode();
               // this.setState({ addmodalVisible: true });
-              
             }}
           >
             <Animated.View
@@ -410,9 +819,21 @@ const styles = StyleSheet.create({
     width: 150,
     height: 200,
   },
+  image: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  // centeredView: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: "rgba(0, 0, 0, 0.5)",
+  // },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
@@ -420,7 +841,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: 50,
     //opacity: .5,
-    marginTop: 70,
     borderBottomWidth: 1,
     borderBottomColor: "#ececec",
   },
@@ -428,14 +848,33 @@ const styles = StyleSheet.create({
     height: 30,
   },
   modalView: {
+    width: "95%",
+    height: "80%",
     backgroundColor: "white",
-    alignItems: "center",
+    borderTopRightRadius: 15,
+    borderTopStartRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 5,
+  },
+  modalTableView: {
+    width: "95%",
+    height: "65%",
+    backgroundColor: "white",
+    borderTopRightRadius: 15,
+    borderTopStartRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 5,
@@ -479,12 +918,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   labelStyle: {
-    color: "#fff",
-    fontSize: 16,
+    color: "#000",
+    fontSize: 20,
     fontWeight: "bold",
   },
   inputStyle: {
-    color: "#fff",
+    color: "#000",
   },
   btnBack: {
     margin: 10,
@@ -492,6 +931,9 @@ const styles = StyleSheet.create({
   elementForm: {
     marginTop: 10,
     flexDirection: "row",
+    width: "100%",
+    alignItems:"center",
+    justifyContent:"center",
   },
   btnSubmit: {
     marginTop: 10,

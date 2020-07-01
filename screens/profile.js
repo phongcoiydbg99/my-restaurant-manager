@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -19,16 +19,25 @@ import Avatar from "../assets/avatar.jpg";
 import employee from "../assets/worker.png";
 import warehouse from "../assets/factory.png";
 import salary from '../assets/payment.png';
-
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default ({ navigation }) => {
-     const {authInfo, setInfo} = React.useContext(authContext);
-   return(
-  <View style={styles.container}>
+  const [user, setuser] = useState("");
+  AsyncStorage.getItem("token").then((token) => {
+    if (token !== null) {
+      console.log(token);
+      AsyncStorage.getItem("user").then((u) => {
+        // setuser(user);
+        setuser(JSON.parse(u).emp.fullName);
+      });
+    }
+  });
+  return (
+     <View style={styles.container}>
     <View style={{ marginTop: 70 }}>
       <View style={{ ...styles.header }}>
         <Image source={Avatar} style={styles.avatar}></Image>
-        <Text style={styles.text}>Name</Text>
+        <Text style={styles.text}>{user}</Text>
       </View>
       <TouchableOpacity
         style={{
@@ -61,8 +70,9 @@ export default ({ navigation }) => {
       </View>
     </View>
   </View>
-);
-      }
+  );
+ 
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

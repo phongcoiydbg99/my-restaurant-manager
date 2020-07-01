@@ -16,13 +16,14 @@ function AuthProvider(){
 
     React.useEffect(()=>{
       console.log(authInfo);
-      AsyncStorage.removeItem('token');
+      // 
       switch(authInfo.status){
         
         case 'pending':
+           AsyncStorage.removeItem("token");
            AsyncStorage.getItem('token').then( token => {
              if(token !== null){
-               console.log(token);
+              //  console.log(token);
                  AsyncStorage.getItem('user').then(user =>{
 
                    setInfo({...authInfo,status:'Authenticated',user:JSON.parse(user),logged:true});
@@ -39,11 +40,13 @@ function AuthProvider(){
                    setInfo({...authInfo,status:'Authenticated',user:res.data, error: '',logged:true})
             }else setInfo({...authInfo,status:'Error', error:'Wrong password'});
            }).catch(err=>{setInfo({...authInfo,status:'Error',error:"User does not exist!"});
-                           console.log(authInfo)});
+                          //  console.log(authInfo)
+                           });
            break;
         case 'Error':
            break;
         case 'Authenticated' :
+          // AsyncStorage.removeItem("token");
           AsyncStorage.getItem('token').then(token =>{
             if(token === null){
               let token1 = authInfo.user.username + '@@' + authInfo.user.password;
@@ -67,9 +70,13 @@ function AuthProvider(){
 
 const LogInForm = () =>{
   let {authInfo, setInfo}= React.useContext(authContext);
-  return(
-    <DangNhap status={authInfo.status} setInfo={setInfo} error={authInfo.error}/>
-  )
+  return (
+    <DangNhap
+      authInfo={authInfo}
+      setInfo={setInfo}
+      error={authInfo.error}
+    />
+  );
 }
 
 export default AuthProvider

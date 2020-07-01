@@ -121,14 +121,28 @@ export default class order extends Component {
     }
     this.state.toggleMode = !this.state.toggleMode;
   }
-  searchTable(text) {
-    this.state.order = this.state.clone_order.filter(
-      (table) => table.name.split(text).length > 1
-    );
-    this.setState({ value: text });
-  }
+  // searchTable(text) {
+  //   this.state.order = this.state.clone_order.filter(
+  //     (table) => table.fullName.split(text).length > 1
+  //   );
+  //   this.setState({ value: text });
+  // }
+
+  updateSearch = (search) => {
+    const newData = this.state.clone_order.filter((item) => {
+      const itemData = `${item.fullName.toUpperCase()}`;
+      const textData = search.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      order: newData,
+      search,
+    });
+  };
 
   render() {
+    const { search } = this.state;
     const sortStyle = {
       transform: [
         {
@@ -187,14 +201,14 @@ export default class order extends Component {
       <ImageBackground source={Background} style={styles.container}>
         <Response action={this.state.action} />
         <SearchBar
-          onChangeText={(text) => this.searchTable(text)}
+          onChangeText={this.updateSearch}
           placeholder="Search"
           placeholderTextColor="#86939e"
           platform="android"
           containerStyle={styles.searchBarContainer}
           inputContainerStyle={styles.SearchBar}
           placeholderTextColor={"#666"}
-          value={this.state.value}
+          value={search}
         />
         <View style={styles.overlayContainer}>
           <FlatList
