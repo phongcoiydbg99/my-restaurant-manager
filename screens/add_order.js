@@ -54,7 +54,6 @@ export default class AddOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
       list_order:
         this.props.route.params.list_order != undefined
           ? this.props.route.params.list_order
@@ -95,7 +94,6 @@ export default class AddOrder extends Component {
     };
   }
   componentDidMount() {
-    
     axios.get(`${SERVER_ID}table/all`).then((res) => {
       this.setState({ result: res.data });
     });
@@ -111,20 +109,21 @@ export default class AddOrder extends Component {
       this.setState({ dessertmenu: res.data });
       this.setState({ cdessertmenu: res.data });
     });
-    let act = this.props.route.params.action
-    let item = this.props.route.params.table
+    let act = this.props.route.params.action;
+    let item = this.props.route.params.table;
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
-    if(act.name == 'editOrder'){
+    if (act.name == "editOrder") {
       this.setState({
-                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
-                     status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
-                   
-      });}
+        name: item.name,
+        fullName: item.fullName,
+        chairNum: item.chairNum.toString(),
+        status: item.status,
+        price: item.price.toString(),
+        reserve_time: item.reserve_time,
+      });
+    }
   }
-  componentDidUpdate(prevProps, prevState) {
-    
-    
-  }
+  componentDidUpdate(prevProps, prevState) {}
   onRefresh = () => {
     this.setState({ refresh: !this.state.refresh });
   };
@@ -132,35 +131,67 @@ export default class AddOrder extends Component {
     let check = 0;
     const { navigation } = this.props;
     if (this.state.tableName == "" || this.state.list_order.length == 0) {
-      this.setState(
-        (prevState) => ({
-          ...prevState,
-          action: {
-            ...prevState.action,
-            name: "formError",
-            date: getCurrentDateTime(),
-          },
-        })
-      );
+      this.setState((prevState) => ({
+        ...prevState,
+        action: {
+          ...prevState.action,
+          name: "formError",
+          date: getCurrentDateTime(),
+        },
+      }));
     } else {
-      let post_list = this.state.list_order.map(item => {
+      let post_list = this.state.list_order.map((item) => {
         let newOrder = {
-          call_time: item.call_time != undefined ? item.call_time : getCurrentDateTime(),
+          call_time:
+            item.call_time != undefined ? item.call_time : getCurrentDateTime(),
           call_number: item.call_number,
         };
-        return axios.post(`${SERVER_ID}table_dish/add/${this.state.tableName}/${item.name}`,newOrder)
+        return axios.post(
+          `${SERVER_ID}table_dish/add/${this.state.tableName}/${item.name}`,
+          newOrder
+        );
       });
-      axios.all(post_list).then(axios.spread((...responses) => {
-        const responseOne = responses[0]
-        console.log(responseOne);
-        // use/access the results 
-      })).then(()=> navigation.navigate("Orders", {action: {
-        name: "postTable",
-        date: getCurrentDateTime(),
-        msg: "Order successful!",
-     
-      }})).catch(err=>console.log(err));
-      
+      axios
+        .all(post_list)
+        .then(
+          axios.spread((...responses) => {
+            const responseOne = responses[0];
+            console.log(responseOne);
+            // use/access the results
+          })
+        )
+        .then(() => {
+          let tableOrder = {};
+          axios.get(`${SERVER_ID}table/${this.state.tableName}`).then((res) => {
+            //  this.toggleEditMode();
+            tableOrder = res.data;
+            tableOrder.status = "full";
+            tableOrder.reserve_time = getCurrentDateTime();
+            let newTable = {
+              name: tableOrder.name,
+              chairNum: tableOrder.chairNum,
+              status: tableOrder.status,
+              price: tableOrder.price,
+              fullName: tableOrder.fullName,
+              reserve_time: tableOrder.reserve_time,
+            };
+            axios
+              .put(`${SERVER_ID}table/modify/${this.state.tableName}`, newTable)
+              .then((res) => {
+                console.log(newTable);
+                console.log("SAsas");
+              });
+          });
+          navigation.navigate("Orders", {
+            action: {
+              name: "postTable",
+              date: getCurrentDateTime(),
+              msg: "Order successful!",
+            },
+          });
+        })
+        .catch((err) => console.log(err));
+
       // this.state.list_order.forEach((item) => {
       //   let newOrder = {
       //     call_time: item.call_time != undefined ? item.call_time : getCurrentDateTime(),
@@ -180,7 +211,6 @@ export default class AddOrder extends Component {
       //     date: getCurrentDateTime(),
       //     msg: "Order successful!",}})
       // }
-      
     }
   };
   addOrder = (data) => {
@@ -251,7 +281,7 @@ export default class AddOrder extends Component {
     let newTable = {
       name: this.state.name,
       chairNum: this.state.chairNum,
-      status: 'empty',
+      status: "empty",
       price: this.state.price,
       fullName: this.state.fullName,
       reserve_time: reserve,
@@ -260,32 +290,44 @@ export default class AddOrder extends Component {
     const { navigation, route } = this.props;
 
     //console.log(this.state.list_order);
-    
-    
+
     Alert.alert(
-      'Warning!',
-      'You definitely want to pay?',
+      "Warning!",
+      "You definitely want to pay?",
       [
         {
-          text: 'Cancel',
-          onPress: () => {console.log('Cancel Pressed')},
-          style: 'cancel'
+          text: "Cancel",
+          onPress: () => {
+            console.log("Cancel Pressed");
+          },
+          style: "cancel",
         },
-        { text: 'OK', onPress: () => {
-          axios
-          .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable)
-          .then(res=>{
-            newData = {...newTable, action:{
-              name:'putTable',
-              date: getCurrentDateTime(),
-              msg:res.data
-              }}
-            })
-          .then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
-            //navigation.navigate("Orders",newData);//navigate ve table voi param
-            navigation.navigate("bill", {table: this.state.list_order, item: newData});
-            }).catch(err => console.log(err));
-        } }
+        {
+          text: "OK",
+          onPress: () => {
+            axios
+              .put(`${SERVER_ID}table/modify/${newTable.name}`, newTable)
+              .then((res) => {
+                newData = {
+                  ...newTable,
+                  action: {
+                    name: "putTable",
+                    date: getCurrentDateTime(),
+                    msg: res.data,
+                  },
+                };
+              })
+              .then(() => {
+                //post xong data ms navigate ve table , mang theo 1 param
+                //navigation.navigate("Orders",newData);//navigate ve table voi param
+                navigation.navigate("bill", {
+                  table: this.state.list_order,
+                  item: newData,
+                });
+              })
+              .catch((err) => console.log(err));
+          },
+        },
       ],
       { cancelable: false }
     );
@@ -293,7 +335,7 @@ export default class AddOrder extends Component {
 
   render() {
     const { navigation, route } = this.props;
-    
+
     this.state.menu = [
       {
         title: "Maincoure",
@@ -323,10 +365,7 @@ export default class AddOrder extends Component {
     } else
       add = (
         <View style={{ alignItems: "center" }}>
-          <TouchableOpacity
-            onPress={this.order}
-            style={styles.btnSubmit}
-          >
+          <TouchableOpacity onPress={this.order} style={styles.btnSubmit}>
             <Text>ADD</Text>
           </TouchableOpacity>
         </View>
@@ -369,7 +408,7 @@ export default class AddOrder extends Component {
                 {this.state.tableName}
               </Text>
             </View>
-            
+
             <TouchableOpacity
               onPress={this.togglePicker}
               style={{

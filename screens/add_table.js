@@ -60,7 +60,6 @@ export default class AddTable extends React.Component {
     let item = this.props.route.params.item;
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
     if (act.name == "editTable") {
-      let arr = item.reserve_time.split(" ");
       this.setState({
         mode: act.name,
         name: item.name,

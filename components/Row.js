@@ -195,7 +195,7 @@ export default class Row extends React.Component {
         <TouchableOpacity
           style={{ ...styles.content }}
           onPress={(text) => {
-            this.setState({ modalVisible: true });
+            if (role !== "QUANLY") this.setState({ modalVisible: true });
           }}
         >
           <View

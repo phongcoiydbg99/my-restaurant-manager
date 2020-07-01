@@ -74,7 +74,7 @@ export default class Table extends Component {
       email: "",
       tableName: "",
       action: {},
-      role:"",
+      role: "",
     };
   }
 
@@ -86,25 +86,42 @@ export default class Table extends Component {
     //   // if (navigation.params != undefined )
     //   console.log(route.parmas);
     // });
-
-    axios.get(`${SERVER_ID}table/all`).then((res) => {
-      this.setState({ result: res.data });
-      this.setState({ table: res.data });
-      this.setState({
-        emptyTable: res.data.filter((table) => table.status == "empty"),
-      });
-    }).finally(()=>{
-      AsyncStorage.getItem('user').then(user=>{
-        let user1 = JSON.parse(user);
-        this.setState({role:user1.quyen_han});
-      });
+    this.focusListener = navigation.addListener("focus", () => {
+      axios
+        .get(`${SERVER_ID}table/all`)
+        .then((res) => {
+          this.setState({ result: res.data });
+          this.setState({ table: res.data });
+          this.setState({
+            emptyTable: res.data.filter((table) => table.status == "empty"),
+          });
+        })
+        .finally(() => {
+          AsyncStorage.getItem("user").then((user) => {
+            let user1 = JSON.parse(user);
+            this.setState({ role: user1.quyen_han });
+          });
+        });
     });
-   
+    axios
+      .get(`${SERVER_ID}table/all`)
+      .then((res) => {
+        this.setState({ result: res.data });
+        this.setState({ table: res.data });
+        this.setState({
+          emptyTable: res.data.filter((table) => table.status == "empty"),
+        });
+      })
+      .finally(() => {
+        AsyncStorage.getItem("user").then((user) => {
+          let user1 = JSON.parse(user);
+          this.setState({ role: user1.quyen_han });
+        });
+      });
   }
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.route.params !== this.props.route.params 
-      ||
+      prevProps.route.params !== this.props.route.params ||
       prevState.action !== this.state.action
       //param nay chua thong tin table moi tu add_table
       //chi update neu params thay doi
@@ -242,50 +259,54 @@ export default class Table extends Component {
     this.setState({ isTimePickerVisible: false });
   };
   bookTable = () => {
-    if(this.state.email == "" || this.state.tableName == ""  || this.state.guestName == "" || this.state.reservedTime == ""
-       || this.state.phoneNum == ""){
-      this.setState(prevState=>({
-          ...prevState,
-          action:{
-            ...prevState.action,
-            name:'formError',
-            date: getCurrentDateTime()
-          }
+    if (
+      this.state.email == "" ||
+      this.state.tableName == "" ||
+      this.state.guestName == "" ||
+      this.state.reservedTime == "" ||
+      this.state.phoneNum == ""
+    ) {
+      this.setState((prevState) => ({
+        ...prevState,
+        action: {
+          ...prevState.action,
+          name: "formError",
+          date: getCurrentDateTime(),
+        },
       }));
       //this.setState({action:'formError',actionTime:getCurrentDateTime()});
-      
-    }else{
-    const reserve = this.state.datetime + " " + this.state.time;
-    let newReserver = {
-      orderId: 1299,
-      tableName: this.state.tableName,
-      phoneNum: this.state.phoneNum,
-      email: this.state.email,
-      guestName: this.state.guestName,
-      reservedTime: reserve,
-    };
-    axios
-      .post(`${SERVER_ID}reserved/add`, newReserver)
-      .then((res) => {
-        this.setState((prevState) => ({
-          ...prevState,
-          action: {
-            ...prevState.action,
-            name: "postTable",
-            date: getCurrentDateTime(),
-            msg: "Đặt bàn thành công",
-          },
-        }));
-      })
-      .then(() => {
-        this.setState({ bookModalVisible: false });
-      })
-      .catch((err) => console.log(err));
+    } else {
+      const reserve = this.state.datetime + " " + this.state.time;
+      let newReserver = {
+        orderId: Math.random(),
+        tableName: this.state.tableName,
+        phoneNum: this.state.phoneNum,
+        email: this.state.email,
+        guestName: this.state.guestName,
+        reservedTime: reserve,
+      };
+      axios
+        .post(`${SERVER_ID}reserved/add`, newReserver)
+        .then((res) => {
+          this.setState((prevState) => ({
+            ...prevState,
+            action: {
+              ...prevState.action,
+              name: "postTable",
+              date: getCurrentDateTime(),
+              msg: "Đặt bàn thành công",
+            },
+          }));
+        })
+        .then(() => {
+          this.setState({ bookModalVisible: false });
+        })
+        .catch((err) => console.log(err));
     }
-  }
+  };
   render() {
-    const {search} = this.state;
-    const { navigation,route } = this.props;
+    const { search } = this.state;
+    const { navigation, route } = this.props;
     // const { authInfo } = React.useContext(authContext);
     // console.log(authInfo.user);
     const bookStyle = {
@@ -962,8 +983,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: "row",
     width: "100%",
-    alignItems:"center",
-    justifyContent:"center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   btnSubmit: {
     marginTop: 10,
