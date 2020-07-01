@@ -277,7 +277,7 @@ export default class AddTable extends React.Component {
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Response action={this.state.action} />
-        <View style={styles.overlayContainer}>
+        <ScrollView style={styles.overlayContainer}>
           <View
             style={{
               flexDirection: "row",
@@ -360,7 +360,7 @@ export default class AddTable extends React.Component {
             </TouchableOpacity>
           </View>
           {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
-        </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
