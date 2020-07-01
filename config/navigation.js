@@ -103,20 +103,6 @@ const ThongKeStackScreen = () => (
   </ThongKeStack.Navigator>
 );
 
-const HoaDonStack = createStackNavigator();
-const HoaDonStackScreen = () => (
-  <HoaDonStack.Navigator>
-    <HoaDonStack.Screen
-      name="HoaDon"
-      component={HoaDon} 
-      options={{
-        headerTitle: false,
-        headerTransparent: true,
-       
-      }}
-    />
-  </HoaDonStack.Navigator>
-);
 
 const ThongTinStack = createStackNavigator();
 const ThongTinStackScreen = () => (
@@ -208,20 +194,6 @@ const AppTabsScreen = () => (
         tabBarIcon: (props) => (
           <MaterialCommunityIcons
             name="chart-areaspline"
-            size={props.size}
-            color={props.color}
-          />
-        ),
-      }}
-    />
-    <AppTabs.Screen
-      name="Bill"
-      component={HoaDonStackScreen}
-      options={{
-        tabBarLabel: "Bill",
-        tabBarIcon: (props) => (
-          <FontAwesome5
-            name="money-bill-alt"
             size={props.size}
             color={props.color}
           />
