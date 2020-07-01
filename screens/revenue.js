@@ -102,6 +102,11 @@ export default class revenue extends Component {
     else if(month == 12) return 'December';
   }
 
+  UTCtoVN(date){
+    if(parseInt(date.substring(12, 14)) >= 17) return ('00' + (parseInt(date.substring(0,2)) + 1)).slice(-2) + date.substring(2, 20);
+    return date;
+  }
+
   render(){
     const {navigation} = this.props;
     var date = new Date().getDate();
@@ -157,8 +162,11 @@ export default class revenue extends Component {
 
     var revDay = 0;
     this.state.billDay.filter((item) => {
-      if(item.pay_time.substring(0, 11) == dateFormat)
+      if(this.UTCtoVN(item.pay_time).substring(0,11) == dateFormat)
         revDay += item.money;
+        // if(item.id == 45946773)
+        // console.log(this.UTCtoVN(item.pay_time).substring(0,11))
+
     })
     console.log(revDay)
     return(
