@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
     // elevation: 1,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: "#ececec",
-    paddingVertical:2,
+    paddingVertical:1,
   },
   right: {
     alignItems: "flex-end",

@@ -45,6 +45,7 @@ import axios from "axios";
 import RowOrder from "../components/RowOrder";
 import { RowBill } from "../components/RowBill";
 import {getCurrentDateTime} from "../config/util";
+
 export default class order extends Component {
   constructor(props) {
     super(props);
@@ -73,6 +74,19 @@ export default class order extends Component {
     };
   }
   componentDidMount() {
+    const { navigation, route } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener("focus", () => {
+      axios
+        .get(`${SERVER_ID}table/all`)
+        .then((res) => {
+          let temp = res.data.filter((item) => item.orderList.length > 0);
+          this.setState({ order: temp, clone_order: temp });
+        })
+
+        .catch((err) => console.log(err));
+    });
      axios.get(`${SERVER_ID}table/all`).then(res=>{
        
        let temp = res.data.filter(item=>item.orderList.length > 0);
@@ -82,14 +96,13 @@ export default class order extends Component {
      .catch(err=>console.log(err))
   }
   componentDidUpdate(prevProps, prevState) {
-      if(prevProps.route.params.action !== this.props.route.params.action) {
-        console.log('Updated')
-        axios.get(`${SERVER_ID}table/all`).then(res=>{
-       
-          let temp = res.data.filter(item=>item.orderList.length > 0);
+      if (prevProps.route.params.action !== this.props.route.params.action ) {
+        console.log("Updated");
+        axios.get(`${SERVER_ID}table/all`).then((res) => {
+          let temp = res.data.filter((item) => item.orderList.length > 0);
           console.log(temp);
-          this.setState({order:temp,clone_order:temp})
-        })
+          this.setState({ order: temp, clone_order: temp });
+        });
       }
   }
   animation = new Animated.Value(0);

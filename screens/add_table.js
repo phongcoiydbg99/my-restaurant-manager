@@ -39,7 +39,7 @@ export default class AddTable extends React.Component {
     this.state = {
       name: "",
       chairNum: "",
-      status: "reserved",
+      status: "empty",
       price: "",
       fullName: "",
       datetime: "",
@@ -169,7 +169,6 @@ export default class AddTable extends React.Component {
         fullName: this.state.fullName,
         reserve_time: reserve,
       };
-      console.log(newTable);
       let newData = {};
       const { navigation, route } = this.props;
       if (this.state.mode == "addTable") {
@@ -193,6 +192,11 @@ export default class AddTable extends React.Component {
           .catch((err) => console.log(err));
       } else if (this.state.mode == "editTable") {
         //modify data
+        if (newTable.status == 'empty') newTable = {
+                                          ...newTable,
+                                          reserve_time: "",
+                                        };
+      console.log(newTable);
         axios
           .put(`${SERVER_ID}table/modify/${this.state.name}`, newTable)
           .then((res) => {
@@ -216,10 +220,64 @@ export default class AddTable extends React.Component {
 
   render() {
     const { navigation } = this.props;
+    let pickdatetime;
+    if( this.state.status != "empty") {
+      pickdatetime = (<View><View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            <Input
+              inputContainerStyle={{ width: WIDTH - 100 }}
+              placeholder="Ngày đặt"
+              label="Thời gian đặt :"
+              value={this.state.datetime}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputStyle}
+            />
+            <TouchableWithoutFeedback onPress={this.showDatePicker}>
+              <View style={{ marginLeft: -60, marginTop: 25 }}>
+                <Image source={icon} style={{ width: 30, height: 30 }}></Image>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            <Input
+              inputContainerStyle={{ width: WIDTH - 100 }}
+              placeholder="Giờ đặt"
+              value={this.state.time}
+              labelStyle={styles.labelStyle}
+              inputStyle={styles.inputStyle}
+            />
+            <TouchableWithoutFeedback onPress={this.showTimePicker}>
+              <View style={{ marginLeft: -60, marginTop: 10 }}>
+                <Image source={clock} style={{ width: 30, height: 30 }}></Image>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <DateTimePickerModal
+            isVisible={this.state.isDatePickerVisible}
+            mode="date"
+            onConfirm={this.handleConfirm}
+            onCancel={this.hideDatePicker}
+          />
+          <DateTimePickerModal
+            isVisible={this.state.isTimePickerVisible}
+            mode="time"
+            onConfirm={this.handleConfirmTime}
+            onCancel={this.hideTimePicker}
+          />
+          </View>)
+    }
+    else pickdatetime = <View/>
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Response action={this.state.action} />
-        <View style={styles.overlayContainer}>
+        <ScrollView style={styles.overlayContainer}>
           <View
             style={{
               flexDirection: "row",
@@ -292,55 +350,7 @@ export default class AddTable extends React.Component {
             keyboardType="numeric"
             onChangeText={(text) => this.setState({ price: text })}
           />
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Input
-              inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="Ngày đặt"
-              label="Thời gian đặt :"
-              value={this.state.datetime}
-              labelStyle={styles.labelStyle}
-              inputStyle={styles.inputStyle}
-            />
-            <TouchableWithoutFeedback onPress={this.showDatePicker}>
-              <View style={{ marginLeft: -60, marginTop: 25 }}>
-                <Image source={icon} style={{ width: 30, height: 30 }}></Image>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Input
-              inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="Giờ đặt"
-              value={this.state.time}
-              labelStyle={styles.labelStyle}
-              inputStyle={styles.inputStyle}
-            />
-            <TouchableWithoutFeedback onPress={this.showTimePicker}>
-              <View style={{ marginLeft: -60, marginTop: 10 }}>
-                <Image source={clock} style={{ width: 30, height: 30 }}></Image>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          <DateTimePickerModal
-            isVisible={this.state.isDatePickerVisible}
-            mode="date"
-            onConfirm={this.handleConfirm}
-            onCancel={this.hideDatePicker}
-          />
-          <DateTimePickerModal
-            isVisible={this.state.isTimePickerVisible}
-            mode="time"
-            onConfirm={this.handleConfirmTime}
-            onCancel={this.hideTimePicker}
-          />
+          {pickdatetime}
           <View style={styles.elementForm}>
             <TouchableOpacity
               style={styles.btnSubmit}
@@ -350,7 +360,7 @@ export default class AddTable extends React.Component {
             </TouchableOpacity>
           </View>
           {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
-        </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
