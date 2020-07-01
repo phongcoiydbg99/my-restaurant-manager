@@ -40,7 +40,6 @@ import { RowFav, Separator } from '../components/RowFav';
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-
 import axios from "axios";
 
 export default class Menu extends Component {
@@ -63,7 +62,7 @@ export default class Menu extends Component {
     };
   }
   componentDidMount() {
-    this.focusListener = navigation.addListener("focus", () => {
+    const { navigation, route } = this.props;
       axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
         this.setState(
           (prevState) => ({
@@ -79,11 +78,10 @@ export default class Menu extends Component {
             favFood: res.data ,
           }));
       }).catch(err => console.log('Dish error : ' + err));
-    });
   }
   componentDidUpdate(prevProps, prevState) {
     //console.log(this.state.model);
-    if ("" != this.state.model) {
+    if ("" != this.state.model || prevState.action !== this.state.action) {
       axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
         this.setState(
         (prevState) => ({

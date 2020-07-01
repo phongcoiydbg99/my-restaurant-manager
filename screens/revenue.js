@@ -39,11 +39,13 @@ export default class revenue extends Component {
       favoriteFood: '',
       customerData: [],
       customerMonth: '',
+      billDay: [],
     };
   }
   componentDidMount() {
     const { navigation} = this.props;
     const { route } = this.props;
+    
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
@@ -56,19 +58,22 @@ export default class revenue extends Component {
       axios.get(`${SERVER_ID}dish/all`).then((res) => {
         this.setState({ allDish: res.data });
       }).catch(err => console.log(err));
+      axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
+        this.setState({ dataRevenueDay: res.data });
+      }).catch(err => console.log(err));
+      axios.get(`${SERVER_ID}revenue/all`).then((res) => {
+        this.setState({ dataRevenueMonth: res.data });
+      }).catch(err => console.log(err));
+      axios.get(`${SERVER_ID}dish/all`).then((res) => {
+        this.setState({ allDish: res.data });
+      }).catch(err => console.log(err));
+      axios.get(`${SERVER_ID}customerdata/all`).then((res) => {
+        this.setState({ customerData: res.data });
+      }).catch(err => console.log(err));
+      axios.get(`${SERVER_ID}bill/all`).then((res) => {
+        this.setState({ billDay: res.data });
+      }).catch(err => console.log(err));
     });
-    axios.get(`${SERVER_ID}dayRevenue/all`).then((res) => {
-      this.setState({ dataRevenueDay: res.data });
-    }).catch(err => console.log(err));
-    axios.get(`${SERVER_ID}revenue/all`).then((res) => {
-      this.setState({ dataRevenueMonth: res.data });
-    }).catch(err => console.log(err));
-    axios.get(`${SERVER_ID}dish/all`).then((res) => {
-      this.setState({ allDish: res.data });
-    }).catch(err => console.log(err));
-    axios.get(`${SERVER_ID}customerdata/all`).then((res) => {
-      this.setState({ customerData: res.data });
-    }).catch(err => console.log(err));
   }
 
   compare_money(a, b){
@@ -100,14 +105,30 @@ export default class revenue extends Component {
   render(){
     const {navigation} = this.props;
     var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear();
+    var day = ('00' + date).slice(-2);
+    var month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const dateFormat = "" + day + "-" + month_names[month] + "-" + year;
     // get revenue theo ngay
-    this.state.dataRevenueDay.filter((item) => {
-      if(item.dayNum == date){
-        this.state.revenueDay = item.revenue;
-      }
-    });
+    // this.state.dataRevenueDay.filter((item) => {
+    //   if(item.dayNum == date){
+    //     this.state.revenueDay = item.revenue;
+    //   }
+    // });
 
     // get revenue cao nhat trong cac thang
     this.state.dataRevenueMonth.sort(this.compare_money);
@@ -133,7 +154,13 @@ export default class revenue extends Component {
         this.state.customerMonth = item.amount;
       }
     })
-    //console.log(month);
+
+    var revDay = 0;
+    this.state.billDay.filter((item) => {
+      if(item.pay_time.substring(0, 11) == dateFormat)
+        revDay += item.money;
+    })
+    console.log(revDay)
     return(
     <ImageBackground source={Background} style={styles.container}>
       <View style={styles.overlayContainer}>
@@ -199,7 +226,7 @@ export default class revenue extends Component {
                   <Image source={Group} style={{width: 16, height: 16,}} />
                 </View>
               </View>
-                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{this.state.revenueDay}</Text>
+                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{revDay}</Text>
                 <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
             </View>
           </View>
