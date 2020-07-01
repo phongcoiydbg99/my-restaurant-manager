@@ -13,13 +13,17 @@ import {
 
 const { width: WIDTH } = Dimensions.get("window");
 
+import { authContext } from "../context/context";
 import BackAv from "../assets/Backgr-Login.jpg";
 import Avatar from "../assets/avatar.jpg";
 import employee from "../assets/worker.png";
 import warehouse from "../assets/factory.png";
 import salary from '../assets/payment.png';
 
-export default ({ navigation }) => (
+
+export default ({ navigation }) => {
+     const {authInfo, setInfo} = React.useContext(authContext);
+   return(
   <View style={styles.container}>
     <View style={{ marginTop: 70 }}>
       <View style={{ ...styles.header }}>
@@ -58,6 +62,7 @@ export default ({ navigation }) => (
     </View>
   </View>
 );
+      }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
