@@ -93,7 +93,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   btnBack: {
-    paddingLeft: 15,
+    padding: 15,
+    width: 30,
+    height: 30,
   },
 });
 

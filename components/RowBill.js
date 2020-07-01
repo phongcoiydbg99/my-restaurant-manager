@@ -79,7 +79,7 @@ export const RowBill = ({ item, onEdit }) => (
          >
            <View style={{ ...styles.content }}>
              <View
-               style={{ flexDirection: "row", justifyContent: "space-between" }}
+               style={{ flexDirection: "row", justifyContent: "space-between" , marginTop: 20}}
              >
                <View style={{ flexDirection: "row", width: "82%" }}>
                  <Text
@@ -97,7 +97,7 @@ export const RowBill = ({ item, onEdit }) => (
              <View style={{ flexDirection: "row" }}>
                   <Text style={styles.title}>{item.orderList[0].call_time}</Text>
              </View>
-             <View
+             {/* <View
                style={{
                  flex: 1,
                  alignContent: "center",
@@ -112,7 +112,7 @@ export const RowBill = ({ item, onEdit }) => (
                >
                  Price
                </Text>
-             </View>
+             </View> */}
              <View style={{ flexDirection: "row" }}>
                <Text style={styles.title}></Text>
              </View>

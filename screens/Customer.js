@@ -239,7 +239,7 @@ export default class Customer extends Component{
                }}
              />
            </View>
-           <View
+           {/* <View
              style={{
                ...styles.floatinContainer,
                bottom: 70,
@@ -296,7 +296,7 @@ export default class Customer extends Component{
                  <AntDesign name="plus" size={24} color="#fff" />
                </Animated.View>
              </TouchableWithoutFeedback>
-           </View>
+           </View> */}
          </ImageBackground>
        );
 

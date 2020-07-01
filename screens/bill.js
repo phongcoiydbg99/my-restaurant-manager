@@ -206,10 +206,10 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 25,
     //height: HIGHT - 240,
-    height: HIGHT - 260,
+    height: HIGHT - 200,
     marginLeft: 40,
     marginRight: 40,
-    marginTop: 40,
+    marginTop: 50,
     // display: 'none'
   },
   billTitle: {

@@ -122,60 +122,66 @@ export default ({ navigation }) => {
           <Image source={Avatar} style={styles.avatar}></Image>
         </View>
         <View>
-        <TouchableOpacity
-          onPress={() => setdis(false)}
-          style={{
-            height: 40,
-            borderRadius: 10,
-            width: 40,
-            marginLeft: WIDTH - 50,
-            backgroundColor: "#fff",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <FontAwesome5 name="edit" size={24} color="orange" />
-        </TouchableOpacity>
-        <Input
-          placeholder="Họ tên"
-          label="Họ tên :"
-          labelStyle={styles.labelStyle}
-          inputStyle={styles.inputstyle}
-          value={user.emp.fullName}
-          onChangeText={(text) =>
-            setuser({ emp: { ...user.emp, fullName: text } })
-          }
-          disabled={dis}
-        />
-        <Input
-          placeholder="Số điện thoại"
-          label="Số điện thoại :"
-          value={String(user.emp.phone)}
-          labelStyle={styles.labelStyle}
-          inputStyle={styles.inputstyle}
-          keyboardType="numeric"
-          onChangeText={(text) => setuser({ ...user, phone: text })}
-          disabled={dis}
-        />
-        <Input
-          placeholder="Email"
-          label="Email :"
-          labelStyle={styles.labelStyle}
-          inputStyle={styles.inputstyle}
-          value={user.emp.email}
-          onChangeText={(text) => setuser({ ...user, email: text })}
-          disabled={dis}
-        />
-        <Input
-          placeholder="Địa chỉ"
-          label="Địa chỉ :"
-          labelStyle={styles.labelStyle}
-          inputStyle={styles.inputstyle}
-          value={user.emp.diachi}
-          onChangeText={(text) => setuser({ ...user, diachi: text })}
-          disabled={dis}
-        />
-      </View>
+          <TouchableOpacity
+            onPress={() => setdis(false)}
+            style={{
+              height: 40,
+              borderRadius: 10,
+              width: 40,
+              marginLeft: WIDTH - 50,
+              backgroundColor: "#fff",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FontAwesome5 name="edit" size={24} color="orange" />
+          </TouchableOpacity>
+          <Input
+            placeholder="Họ tên"
+            label="Họ tên :"
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
+            value={user.emp.fullName}
+            onChangeText={(text) =>
+              setuser({ emp: { ...user.emp, fullName: text } })
+            }
+            disabled={dis}
+          />
+          <Input
+            placeholder="Số điện thoại"
+            label="Số điện thoại :"
+            value={String(user.emp.phone)}
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
+            keyboardType="numeric"
+            onChangeText={(text) =>
+              setuser({ emp: { ...user.emp, phone: text } })
+            }
+            disabled={dis}
+          />
+          <Input
+            placeholder="Email"
+            label="Email :"
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
+            value={user.emp.email}
+            onChangeText={(text) =>
+              setuser({ emp: { ...user.emp, email: text } })
+            }
+            disabled={dis}
+          />
+          <Input
+            placeholder="Địa chỉ"
+            label="Địa chỉ :"
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputstyle}
+            value={user.emp.diachi}
+            onChangeText={(text) =>
+              setuser({ emp: { ...user.emp, diachi: text } })
+            }
+            disabled={dis}
+          />
+        </View>
         {edtBtn}
         {/* <TouchableOpacity
         style={{

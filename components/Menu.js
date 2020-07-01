@@ -19,6 +19,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
+import { Ionicons } from "@expo/vector-icons";
 import { SeparatorMenu } from "../components/MenuItem";
 import { Input } from "react-native-elements";
 import MenuItem from "../components/MenuItem";
@@ -324,12 +325,7 @@ export default class Menu extends Component {
             transparent={true}
             visible={this.state.modalVisible}
           >
-            <TouchableHighlight
-              style={styles.centeredView}
-              onPress={() => {
-                this.setState({ modalVisible: false });
-              }}
-            >
+            <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View
                   style={{
@@ -344,6 +340,18 @@ export default class Menu extends Component {
                   <Text style={styles.labelStyle}>
                     {this.state.modalHeader == "EDIT" ? "Sửa" : "Thêm"} Menu
                   </Text>
+                  <TouchableOpacity
+                    style={styles.inputClose}
+                    onPress={() => {
+                      this.setState({ modalVisible: false });
+                    }}
+                  >
+                    <Ionicons
+                      name="md-close-circle-outline"
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.modalBody}>
                   <Input
@@ -447,7 +455,7 @@ export default class Menu extends Component {
                   </View>
                 </View>
               </View>
-            </TouchableHighlight>
+            </View>
           </Modal>
           <SearchBar
             onChangeText={this.updateSearch}
@@ -725,5 +733,10 @@ const styles = StyleSheet.create({
   },
   SearchBar: {
     height: 30,
+  },
+  inputClose: {
+    position: "absolute",
+    top: 0,
+    right: 5,
   },
 });

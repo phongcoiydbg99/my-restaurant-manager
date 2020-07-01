@@ -278,7 +278,7 @@ export default class Table extends Component {
     } else {
       const reserve = this.state.datetime + " " + this.state.time;
       let newReserver = {
-        orderId: Math.random(),
+        orderId: Math.floor(Math.random() * Math.floor(1000)),
         tableName: this.state.tableName,
         phoneNum: this.state.phoneNum,
         email: this.state.email,
@@ -391,7 +391,7 @@ export default class Table extends Component {
               this.setState({ modalVisible: false });
             }}
           >
-            <View style={styles.modalView}>
+            <View style={styles.modalSortView}>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalVisible: false });
@@ -520,12 +520,7 @@ export default class Table extends Component {
           transparent={true}
           visible={this.state.bookModalVisible}
         >
-          <TouchableHighlight
-            style={styles.centeredView}
-            onPress={() => {
-              this.setState({ bookModalVisible: false });
-            }}
-          >
+          <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View
                 style={{
@@ -547,6 +542,18 @@ export default class Table extends Component {
                 >
                   Đặt bàn
                 </Text>
+                <TouchableOpacity
+                  style={styles.inputClose}
+                  onPress={() => {
+                    this.setState({ bookModalVisible: false });
+                  }}
+                >
+                  <Ionicons
+                    name="md-close-circle-outline"
+                    size={24}
+                    color="black"
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -556,7 +563,7 @@ export default class Table extends Component {
                 }}
               >
                 <Text style={{ ...styles.labelStyle, marginLeft: 10 }}>
-                  Choose table:{" "}
+                  Chọn bàn :{" "}
                 </Text>
                 <View
                   style={{
@@ -685,7 +692,7 @@ export default class Table extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </TouchableHighlight>
+          </View>
         </Modal>
 
         {/* --------------------------------- */}
@@ -898,8 +905,21 @@ const styles = StyleSheet.create({
   SearchBar: {
     height: 30,
   },
-  modalView: {
+  modalSortView: {
     width: "95%",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 5,
+  },
+  modalView: {
+    width: "100%",
     height: "80%",
     backgroundColor: "white",
     borderTopRightRadius: 15,

@@ -15,6 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Avatar from '../assets/avaa.png';
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
 import { getCurrentDateTime } from "../config/util";
@@ -25,19 +26,20 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: "center",
     backgroundColor: "#fff",
-    borderWidth:1
+    borderBottomWidth: 3,
+    padding: 20,
+    borderBottomColor: "#ececec",
     // elevation: 1,
   },
   image: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginRight: 10,
   },
   content: {
     alignItems: "flex-start",
     justifyContent: "center",
-    
   },
   title: {
     fontSize: 18,
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: "#ececec",
-    paddingVertical:2,
+    paddingVertical: 10,
   },
   right: {
     alignItems: "flex-end",
@@ -80,10 +82,9 @@ export default class RowCustomer extends React.Component {
     render() {
       const {navigation,item} = this.props;
       return (
-        <TouchableOpacity  style={styles.container}>
-          
+        <TouchableOpacity style={styles.container}>
           <View style={{ ...styles.content }}>
-            <View
+            {/* <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <View style={{ flexDirection: "row", width: "55%" }}>
@@ -94,18 +95,39 @@ export default class RowCustomer extends React.Component {
                 <Text style={styles.label}>Số điện thoại: </Text>
                 <Text style={styles.title}>{item.phoneNum}</Text>
               </View>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.label}>Email: </Text>
-              <Text style={styles.title}>{item.email === null ? 'null' : item.email}</Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.label}>Thời gian: </Text>
-              <Text style={styles.title}>{item.reservedTime}</Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.sublabel}>Bàn: </Text>
-              <Text style={styles.subtitle}>{item.tableName}</Text>
+            </View> */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Image source={Avatar} style={styles.image} />
+              <View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.label}>Khách hàng: </Text>
+                  <Text style={styles.title}> {item.guestName}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.label}>Số điện thoại: </Text>
+                  <Text style={styles.title}>{item.phoneNum}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.label}>Email: </Text>
+                  <Text style={styles.title}>
+                    {item.email === null ? "null" : item.email}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.label}>Thời gian: </Text>
+                  <Text style={styles.title}>{item.reservedTime}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.label}>Bàn: </Text>
+                  <Text style={styles.title}>{item.tableName}</Text>
+                </View>
+              </View>
             </View>
           </View>
           <Animated.View
@@ -124,9 +146,17 @@ export default class RowCustomer extends React.Component {
             <TouchableOpacity
               onPress={() => {
                 this.setState({ check: true });
-                axios.delete(`${SERVER_ID}table/delete/${this.props.item.name}`).then(res=>{
-                  navigation.setParams({action:{name: 'deleteTable',msg:res.data,time:getCurrentDateTime() }});
-                })//delete table
+                axios
+                  .delete(`${SERVER_ID}table/delete/${this.props.item.name}`)
+                  .then((res) => {
+                    navigation.setParams({
+                      action: {
+                        name: "deleteTable",
+                        msg: res.data,
+                        time: getCurrentDateTime(),
+                      },
+                    });
+                  }); //delete table
               }}
               style={{
                 marginLeft: 10,
