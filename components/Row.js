@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Animated,
+  Alert,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -123,11 +124,38 @@ export default class Row extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              Alert.alert(
+                "Thông báo",
+                "Bạn chắc chắn muốn xóa không ?",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      this.setState({ check: true });
+                      axios
+                        .delete(
+                          `${SERVER_ID}table/delete/${this.props.item.name}`
+                        )
+                        .then((res) => {
+                          navigation.setParams({
+                            action: {
+                              name: "deleteTable",
+                              msg: res.data,
+                              time: getCurrentDateTime(),
+                            },
+                          });
+                        }); //delete table
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
               
-              this.setState({ check: true });
-              axios.delete(`${SERVER_ID}table/delete/${this.props.item.name}`).then(res=>{
-                navigation.setParams({action:{name: 'deleteTable',msg:res.data,time:getCurrentDateTime() }});
-              })//delete table
             }}
             style={{
               marginLeft: 10,

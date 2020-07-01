@@ -349,7 +349,7 @@ export default class Table extends Component {
 
     return (
       <ImageBackground source={Background} style={styles.container}>
-        {/* <Response action={this.state.action} /> */}
+        <Response action={this.state.action} />
         {/* Modal chọn sort */}
         <Modal
           animationType="fade"
@@ -761,7 +761,7 @@ export default class Table extends Component {
                 },
                 action: { name: "addTable", time: getCurrentDateTime() },
               });
-              this.toggleEditMode();
+              // this.toggleEditMode();
               // this.setState({ addmodalVisible: true });
             }}
           >

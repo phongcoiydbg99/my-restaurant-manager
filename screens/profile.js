@@ -135,8 +135,8 @@ export default ({ navigation }) => {
           <FontAwesome5 name="edit" size={24} color="orange" />
         </TouchableOpacity>
         <Input
-          placeholder="Tên khách hàng"
-          label="Tên khách hàng :"
+          placeholder="Họ tên"
+          label="Họ tên :"
           labelStyle={styles.labelStyle}
           inputStyle={styles.inputstyle}
           value={user.emp.fullName}

@@ -174,6 +174,7 @@ export default class AddTable extends React.Component {
         fullName: this.state.fullName,
         reserve_time: reserve,
       };
+      console.log(newTable);
       let newData = {}
       const { navigation, route } = this.props;
       if(this.state.mode == 'addTable'){
@@ -194,7 +195,7 @@ export default class AddTable extends React.Component {
           newData = {...newTable, action:{
              name:'putTable',
              date: getCurrentDateTime(),
-             msg:res.data
+             msg: res.data
           }}
            }).then( ()=> {//post xong data ms navigate ve table , mang theo 1 param
          navigation.navigate("Table",newData);//navigate ve table voi param
