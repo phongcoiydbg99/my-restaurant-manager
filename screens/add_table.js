@@ -47,8 +47,8 @@ export default class AddTable extends React.Component {
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       action:{},
-      mode:""
-      
+      mode:"",
+      text: this.props.route.params.action.name == "addTable" ? "Thêm" : "Sửa",
     };
   }
   componentDidMount() {
@@ -59,12 +59,19 @@ export default class AddTable extends React.Component {
     let act = this.props.route.params.action
     let item = this.props.route.params.item
     //ca 2 th add va edit deu gui thong tin table qua param (vs th add thi ttin table null)
-    
-      this.setState({mode:act.name,
-                     name:item.name, fullName:item.fullName,chairNum:item.chairNum.toString(),
-                     status: item.status, price: item.price.toString(), reserve_time:item.reserve_time,
-                   
-      });
+    this.setState({
+      mode: act.name,
+      name: item.name,
+      fullName: item.fullName,
+      chairNum: item.chairNum.toString(),
+      status: item.status,
+      price: item.price.toString(),
+      reserve_time: item.reserve_time,
+      datetime:
+        item.reserve_time != "" ? this.toShortFormat(item.reserve_time) : "",
+      time: item.reserve_time != "" ? this.toTime(item.reserve_time) : "",
+    });
+    console.log(this.toTime(item.reserve_time));
   }
   // componentDidUpdate(prevProps,prevState){
   //   if(prevProps.route.params !== this.props.route.params){
@@ -101,6 +108,14 @@ export default class AddTable extends React.Component {
 
     return "" + day + "-" + month_names[month_index] + "-" + year;
   };
+  toTime = (date) => {
+    date = new Date(date);
+    return ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+  }
   showDatePicker = () => {
     this.setState({ isDatePickerVisible: true });
   };
@@ -193,51 +208,65 @@ export default class AddTable extends React.Component {
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
-        
-        <Response action={this.state.action}/>
+        <Response action={this.state.action} />
         <View style={styles.overlayContainer}>
-          <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <TouchableOpacity
               style={styles.btnBack}
               onPress={() => navigation.navigate("Table")}
             >
               <Ionicons name="ios-arrow-back" size={30} color="white" />
             </TouchableOpacity>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 24,
+                fontWeight: "bold",
+                marginLeft: WIDTH / 2 - 110,
+              }}
+            >
+              {this.state.text} bàn
+            </Text>
           </View>
           <Input
-            placeholder="Name"
-            label="Name"
+            placeholder="Mã bàn"
+            label="Mã bàn :"
             labelStyle={styles.labelStyle}
-            inputStyle={styles.inputstyle}
+            inputStyle={styles.inputStyle}
             value={this.state.name}
             onChangeText={(text) => this.setState({ name: text })}
           />
           <Input
-            placeholder="fullName"
-            label="fullName"
+            placeholder="Tên bàn :"
+            label="Tên bàn"
             labelStyle={styles.labelStyle}
-            inputStyle={styles.inputstyle}
+            inputStyle={styles.inputStyle}
             value={this.state.fullName}
             onChangeText={(text) => this.setState({ fullName: text })}
           />
           <Input
-            placeholder="chairNum"
-            label="chairNum"
+            placeholder="Số ghế"
+            label="Số ghế :"
             value={this.state.chairNum}
             labelStyle={styles.labelStyle}
-            inputStyle={styles.inputstyle}
+            inputStyle={styles.inputStyle}
             keyboardType="numeric"
             onChangeText={(text) => this.setState({ chairNum: text })}
           />
           <Text
             style={{ ...styles.labelStyle, marginLeft: 10, marginBottom: 5 }}
           >
-            Status
+            Trạng thái :
           </Text>
           <Picker
             mode={"dropdown"}
             selectedValue={this.state.status}
-            style={{ marginHorizontal: 10, color: "#fff" }}
+            style={{ marginHorizontal: 10, color: "#fff", fontSize: 18 }}
             onValueChange={(text) => this.setState({ status: text })}
           >
             <Picker.Item label="reserved" value="reserved" />
@@ -245,11 +274,11 @@ export default class AddTable extends React.Component {
             <Picker.Item label="empty" value="empty" />
           </Picker>
           <Input
-            placeholder="price"
-            label="price"
+            placeholder="Giá"
+            label="Giá :"
             value={this.state.price}
             labelStyle={styles.labelStyle}
-            inputStyle={styles.inputstyle}
+            inputStyle={styles.inputStyle}
             keyboardType="numeric"
             onChangeText={(text) => this.setState({ price: text })}
           />
@@ -260,8 +289,8 @@ export default class AddTable extends React.Component {
           >
             <Input
               inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="date"
-              label="reserved_time"
+              placeholder="Ngày đặt"
+              label="Thời gian đặt :"
               value={this.state.datetime}
               labelStyle={styles.labelStyle}
               inputStyle={styles.inputStyle}
@@ -279,7 +308,7 @@ export default class AddTable extends React.Component {
           >
             <Input
               inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="time"
+              placeholder="Giờ đặt"
               value={this.state.time}
               labelStyle={styles.labelStyle}
               inputStyle={styles.inputStyle}
@@ -300,20 +329,18 @@ export default class AddTable extends React.Component {
             isVisible={this.state.isTimePickerVisible}
             mode="time"
             onConfirm={this.handleConfirmTime}
-            onCancel={this.hideTimePicker
-            }
+            onCancel={this.hideTimePicker}
           />
           <View style={styles.elementForm}>
             <TouchableOpacity
               style={styles.btnSubmit}
               onPress={() => this.addTable()}
             >
-              <Text>ADD</Text>
+              <Text>{this.state.text}</Text>
             </TouchableOpacity>
           </View>
           {/* <Text>{JSON.stringify(tableInfo, null, 2)}</Text> */}
         </View>
-        
       </ImageBackground>
     );
   }
@@ -343,11 +370,12 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
   },
   inputStyle: {
     color: "#fff",
+    fontSize: 18,
   },
   title: {
     width: "20%",
@@ -380,6 +408,9 @@ const styles = StyleSheet.create({
   elementForm: {
     marginTop: 10,
     flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   btnSubmit: {
     marginTop: 10,

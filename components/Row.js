@@ -87,24 +87,24 @@ export default class Row extends React.Component {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View style={{ flexDirection: "row", width: "55%" }}>
-              <Text style={styles.label}>Name: </Text>
+              <Text style={styles.label}>Tên: </Text>
               <Text style={styles.title}> {this.props.item.fullName}</Text>
             </View>
             <View style={{ flexDirection: "row", width: "20%" }}>
-              <Text style={styles.label}>People: </Text>
+              <Text style={styles.label}>Số ghế: </Text>
               <Text style={styles.title}>{this.props.item.chairNum}</Text>
             </View>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.label}>Price: </Text>
+            <Text style={styles.label}>Giá: </Text>
             <Text style={styles.title}>{this.props.item.price}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.label}>Time: </Text>
+            <Text style={styles.label}>Giờ đặt: </Text>
             <Text style={styles.title}>{this.props.item.reserve_time}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.sublabel}>Status: </Text>
+            <Text style={styles.sublabel}>Trạng thái: </Text>
             <Text style={styles.subtitle}>{this.props.item.status}</Text>
           </View>
         </View>
@@ -123,6 +123,7 @@ export default class Row extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              
               this.setState({ check: true });
               axios.delete(`${SERVER_ID}table/delete/${this.props.item.name}`).then(res=>{
                 navigation.setParams({action:{name: 'deleteTable',msg:res.data,time:getCurrentDateTime() }});

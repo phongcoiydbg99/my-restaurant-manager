@@ -326,29 +326,29 @@ export default class Menu extends Component {
                   }}
                 >
                   <Text style={styles.labelStyle}>
-                    {this.state.modalHeader}
+                    {this.state.modalHeader == "EDIT" ? "Sửa" : "Thêm"} Menu
                   </Text>
                 </View>
                 <View style={styles.modalBody}>
                   <Input
-                    placeholder="Name"
-                    label="Name"
+                    placeholder="Mã món ăn"
+                    label="Mã món ăn :"
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
                     value={this.state.name}
                     onChangeText={(text) => this.setState({ name: text })}
                   />
                   <Input
-                    placeholder="fullName"
-                    label="fullName"
+                    placeholder="Tên món ăn"
+                    label="Tên món ăn :"
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
                     value={this.state.fullName}
                     onChangeText={(text) => this.setState({ fullName: text })}
                   />
                   <Input
-                    placeholder="price"
-                    label="price"
+                    placeholder="Giá"
+                    label="Giá :"
                     value={this.state.price}
                     labelStyle={styles.labelStyle}
                     inputStyle={styles.inputstyle}
@@ -422,7 +422,9 @@ export default class Menu extends Component {
                       style={styles.btnSubmit}
                       onPress={() => this.changeMenu()}
                     >
-                      <Text>{this.state.modalHeader}</Text>
+                      <Text>
+                        {this.state.modalHeader == "EDIT" ? "Sửa" : "Thêm"}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>

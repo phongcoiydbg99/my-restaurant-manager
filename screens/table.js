@@ -569,7 +569,7 @@ export default class Table extends Component {
               </View>
               <Input
                 placeholder="Tên khách hàng"
-                label="Tên khách hàng"
+                label="Tên khách hàng :"
                 labelStyle={styles.labelStyle}
                 inputStyle={styles.inputstyle}
                 value={this.state.guestName}
@@ -577,7 +577,7 @@ export default class Table extends Component {
               />
               <Input
                 placeholder="Số điện thoại"
-                label="Số điện thoại"
+                label="Số điện thoại :"
                 value={this.state.phoneNum}
                 labelStyle={styles.labelStyle}
                 inputStyle={styles.inputstyle}
@@ -586,7 +586,7 @@ export default class Table extends Component {
               />
               <Input
                 placeholder="Email"
-                label="Email"
+                label="Email :"
                 labelStyle={styles.labelStyle}
                 inputStyle={styles.inputstyle}
                 value={this.state.email}
@@ -599,8 +599,8 @@ export default class Table extends Component {
               >
                 <Input
                   inputContainerStyle={{ width: WIDTH - 100 }}
-                  placeholder="date"
-                  label="Thời gian đặt"
+                  placeholder="Ngày đặt"
+                  label="Thời gian đặt :"
                   value={this.state.datetime}
                   labelStyle={styles.labelStyle}
                   inputStyle={styles.inputStyle}
@@ -621,7 +621,7 @@ export default class Table extends Component {
               >
                 <Input
                   inputContainerStyle={{ width: WIDTH - 100 }}
-                  placeholder="time"
+                  placeholder="Giờ đặt"
                   value={this.state.time}
                   labelStyle={styles.labelStyle}
                   inputStyle={styles.inputStyle}
@@ -681,10 +681,6 @@ export default class Table extends Component {
                   item={item}
                   onPress={() =>
                     navigation.navigate("AddTable", {
-                      action: {
-                        name: "editTable",
-                        time: getCurrentDateTime(),
-                      },
                       action: {
                         name: "editTable",
                         time: getCurrentDateTime(),
