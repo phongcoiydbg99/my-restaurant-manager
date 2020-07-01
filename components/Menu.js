@@ -15,6 +15,7 @@ import {
   CheckBox,
   Picker,
   Animated,
+  Alert,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
@@ -515,23 +516,39 @@ export default class Menu extends Component {
                       // this.setState({ price: item.price.toString() });
                     }}
                     delete={() => {
-                      axios
-                        .delete(`${SERVER_ID}dish/delete/${item.name}`)
-                        .then((res) => {
-                          this.setState(
-                            (prevState) => ({
-                              ...prevState,
-                              model: "delete",
-                              action: {
-                                ...prevState.action,
-                                name: "deleteTable",
-                                date: getCurrentDateTime(),
-                                msg: "Delete Menu",
-                              },
-                            }),
-                            () => console.log(this.state.action)
-                          );
-                        });
+                      Alert.alert(
+                        "Thông báo",
+                        "Bạn chắc chắn muốn xóa không ?",
+                        [
+                          {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                          },
+                          {
+                            text: "OK",
+                            onPress: () => axios
+                                          .delete(`${SERVER_ID}dish/delete/${item.name}`)
+                                          .then((res) => {
+                                            this.setState(
+                                              (prevState) => ({
+                                                ...prevState,
+                                                model: "delete",
+                                                action: {
+                                                  ...prevState.action,
+                                                  name: "deleteTable",
+                                                  date: getCurrentDateTime(),
+                                                  msg: "Delete Menu",
+                                                },
+                                              }),
+                                              () => console.log(this.state.action)
+                                            );
+                                          }),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                      
                     }}
                     width={this.state.width}
                     right={this.state.right}
@@ -621,6 +638,9 @@ const styles = StyleSheet.create({
   elementForm: {
     marginTop: 10,
     flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   labelStyle: {
     fontSize: 16,

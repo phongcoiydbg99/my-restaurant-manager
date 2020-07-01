@@ -161,12 +161,12 @@ export default ({ error, authInfo, setInfo }) => {
           />
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ marginBottom: 10 }}
           onPress={() => navigation.push("DangKi")}
         >
           <Text style={styles.underline}>Create account </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.btn} onPress={() => checkLogin()}>
           <Text style={styles.text}>Login</Text>
         </TouchableOpacity>

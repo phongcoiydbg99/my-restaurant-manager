@@ -381,8 +381,8 @@ export default () => {
   }
   return (
     <NavigationContainer>
-      {/* {!userToken ? <RootStackScreen /> : <AppDrawerScreen />} */}
-      <AppDrawerScreen />
+      {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+      {/* <AppDrawerScreen /> */}
     </NavigationContainer>
   );
 };
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   container1: {
-    //flex: 1,
+    flex: 1,
     width: "100%",
     height: "100%",
     //justifyContent: "center",
@@ -409,6 +409,8 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     flex: 1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(85,85,85,0.7)",
