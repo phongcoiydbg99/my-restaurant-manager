@@ -323,6 +323,7 @@ const CustomDrawerContent = (props) => {
 };
 const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => {
+  const navigation  = useNavigation();
   return (
     <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props } /> }>
       <AppDrawer.Screen name="Home" component={AppTabsScreen} />
@@ -381,8 +382,8 @@ export default () => {
   }
   return (
     <NavigationContainer>
-      {/* {!userToken ? <RootStackScreen /> : <AppDrawerScreen />} */}
-      <AppDrawerScreen />
+      {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+      {/* <RootStackScreen /> */}
     </NavigationContainer>
   );
 };
