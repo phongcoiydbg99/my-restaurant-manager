@@ -76,27 +76,30 @@ export default class Menu extends Component {
           result: res.data,
           menu: res.data,
         }));
-      }).finally(()=>{
-      AsyncStorage.getItem('user').then(user=>{
-        let user1 = JSON.parse(user);
-        this.setState({role:user1.quyen_han});
+      })
+      .finally(() => {
+        AsyncStorage.getItem("user").then((user) => {
+          let user1 = JSON.parse(user);
+          this.setState({ role: user1.quyen_han });
+        });
       });
-    });
-      // .catch((err) => console.log("Dish error : " + err))
+    // .catch((err) => console.log("Dish error : " + err))
   }
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.model);
     if ("" != this.state.model) {
-      axios.get(`${SERVER_ID}dish/category/${this.props.category}`).then((res) => {
-        this.setState(
-        (prevState) => ({
-          ...prevState,
-          result: res.data ,
-          menu: res.data ,
-           model: "",
-           modalHeader: "" ,
-        }));
-      }).catch(err => console.log('Dish error : ' + err));
+      axios
+        .get(`${SERVER_ID}dish/category/${this.props.category}`)
+        .then((res) => {
+          this.setState((prevState) => ({
+            ...prevState,
+            result: res.data,
+            menu: res.data,
+            model: "",
+            modalHeader: "",
+          }));
+        })
+        .catch((err) => console.log("Dish error : " + err));
     } //chi  update lai UI khi newDrink nhan value moi (sau moi lan them do an moi)
   }
 
@@ -184,7 +187,7 @@ export default class Menu extends Component {
         fullName: this.state.fullName,
         foodCategory: this.props.category,
       };
-      
+
       let newData = {};
       if (this.state.modalHeader == "ADD") {
         //thuc hien post data
@@ -255,12 +258,15 @@ export default class Menu extends Component {
                 name: newMenu.name,
               }),
             });
-            this.setState({ modalVisible: false , randNum: new Date().getTime()});
+            this.setState({
+              modalVisible: false,
+              randNum: new Date().getTime(),
+            });
           })
           .catch((err) => console.log(err));
       }
     }
-    // this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false });
   }
 
   pickImageLibrary = async () => {
@@ -306,7 +312,7 @@ export default class Menu extends Component {
   };
 
   render() {
-    const {search} = this.state;
+    const { search } = this.state;
     const { navigation } = this.props;
     return (
       <ImageBackground source={Background} style={styles.container}>
@@ -385,7 +391,9 @@ export default class Menu extends Component {
                               `${SERVER_IMAGE_ID}` +
                               "public/" +
                               this.state.name +
-                              ".png",
+                              ".png" +
+                              "?random_number=" +
+                              this.state.randNum,
                           }}
                           style={{ width: 200, height: 200 }}
                         />
@@ -476,6 +484,12 @@ export default class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
+                  this.setState({
+                    image: null,
+                    name: "",
+                    fullName: "",
+                    price: "",
+                  });
                   this.setState({ modalVisible: true });
                   this.setState({ modalHeader: "ADD" });
                 }}
@@ -498,7 +512,7 @@ export default class Menu extends Component {
             style={
               this.state.role === "QUANLY"
                 ? styles.contentContainer
-                : { ...styles.contentContainer, height: HEIGHT+90 }
+                : { ...styles.contentContainer, height: HEIGHT + 90 }
             }
           >
             <FlatList
@@ -603,7 +617,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: WIDTH,
     alignItems: "center",
-    
   },
   checkboxContainer: {
     flexDirection: "row",
