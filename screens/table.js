@@ -686,6 +686,7 @@ export default class Table extends Component {
                         name: "editTable",
                         time: getCurrentDateTime(),
                       },
+                      
                       item: item,
                     })
                   }
@@ -711,7 +712,7 @@ export default class Table extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleMenu();
-              this.setState({ bookModalVisible: true });
+              // this.setState({ bookModalVisible: true });
             }}
           >
             <Animated.View
@@ -752,14 +753,7 @@ export default class Table extends Component {
             onPress={() => {
               this.toggleMenu();
               navigation.navigate("AddTable", {
-                item: {
-                  name: "",
-                  fullName: "",
-                  chairNum: "",
-                  status: "",
-                  price: "",
-                  reserve_time: "",
-                },
+                
                 action: { name: "addTable", time: getCurrentDateTime() },
               });
               // this.toggleEditMode();
