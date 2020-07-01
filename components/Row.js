@@ -9,7 +9,9 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Alert,
+  Picker
 } from "react-native";
+
 
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -19,6 +21,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SERVER_ID } from "../config/properties";
 import axios from "axios";
 import { getCurrentDateTime } from "../config/util";
+import Axios from "axios";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -73,13 +76,14 @@ export default class Row extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      check: false,
+      check: false, 
     };
   }
+ 
   render() {
-    const {navigation} = this.props;
+    const {navigation, role , item} = this.props;
     return (
-      <TouchableOpacity  style={styles.container}>
+      <View  style={styles.container}>
         <View>
           <Image source={this.props.image} style={styles.image} />
         </View>
@@ -89,27 +93,68 @@ export default class Row extends React.Component {
           >
             <View style={{ flexDirection: "row", width: "55%" }}>
               <Text style={styles.label}>Tên: </Text>
-              <Text style={styles.title}> {this.props.item.fullName}</Text>
+              <Text style={styles.title}> {item.fullName}</Text>
             </View>
-            <View style={{ flexDirection: "row", width: "20%" }}>
-              <Text style={styles.label}>Số ghế: </Text>
-              <Text style={styles.title}>{this.props.item.chairNum}</Text>
+            { role === 'QUANLY' &&
+                 <View style={{ flexDirection: "row", width: "20%" }}>
+                 <Text style={styles.label}>Số ghế: </Text>
+                 <Text style={styles.title}>{item.chairNum}</Text>
+               </View>
+            }
+           
+          </View>
+          {role === 'QUANLY' &&
+              <View style={{ flexDirection: "row" }}>
+                 <Text style={styles.label}>Giá: </Text>
+              <Text style={styles.title}>{item.price}</Text>
             </View>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.label}>Giá: </Text>
-            <Text style={styles.title}>{this.props.item.price}</Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.label}>Giờ đặt: </Text>
-            <Text style={styles.title}>{this.props.item.reserve_time}</Text>
-          </View>
+          }
+          {role === 'QUANLY' &&
+              <View style={{ flexDirection: "row" }}>
+              <Text style={styles.label}>Giờ đặt: </Text>
+              <Text style={styles.title}>{item.reserve_time}</Text>
+            </View>
+          }
+          {role === 'QUANLY' ? 
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.sublabel}>Trạng thái: </Text>
-            <Text style={styles.subtitle}>{this.props.item.status}</Text>
-          </View>
+            <Text style={styles.subtitle}>{item.status}</Text>
+          </View> : 
+          <View style={{flexDirection: "row",
+          alignItems: "center",}}>
+              
+              <Text style={ styles.sublabel}>Trạng thái :</Text>
+          <Picker
+              mode={"dropdown"}
+              selectedValue={item.status}
+              style={{fontSize:17,width:'100%' }}
+               onValueChange={(text) => {
+                 let table={
+                   name:item.name, fullName:item.fullName,chairNum:item.chairNum,
+                   price:item.price,reserve_time:item.reserve_time,status:text
+                 };
+                 Axios.post(`${SERVER_ID}table/add`,table).then(res=>{
+                  navigation.setParams({
+                    action: {
+                      name: "deleteTable",
+                      msg: res.data,
+                      time: getCurrentDateTime(),
+                    },
+                  });
+                 });
+               }}
+           >
+              <Picker.Item label="reserved" value="reserved" />
+              <Picker.Item label="full" value="full" />
+              <Picker.Item label="empty" value="empty" />
+          </Picker>
+          </View> 
+          
+          }
+          
         </View>
-        <Animated.View
+        {role === 'QUANLY' &&
+          <Animated.View
           style={{
             width: this.props.width,
             marginLeft: -20,
@@ -139,7 +184,7 @@ export default class Row extends React.Component {
                       this.setState({ check: true });
                       axios
                         .delete(
-                          `${SERVER_ID}table/delete/${this.props.item.name}`
+                          `${SERVER_ID}table/delete/${item.name}`
                         )
                         .then((res) => {
                           navigation.setParams({
@@ -169,12 +214,13 @@ export default class Row extends React.Component {
             />
           </TouchableOpacity>
         </Animated.View>
+        }
+        
         <View style={styles.right}>
           <Ionicons name="ios-arrow-forward" color="#666" size={20} />
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
-
 export const Separator = () => <View style={styles.separator} />;

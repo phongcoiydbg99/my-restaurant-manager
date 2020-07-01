@@ -38,7 +38,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getCurrentDateTime } from "../config/util";
 import { SERVER_ID } from "../config/properties";
-
+import AsyncStorage from "@react-native-community/async-storage";
 import Background from "../assets/Backgr-Login.jpg";
 import BackgroundTable from "../assets/table.png";
 
@@ -74,6 +74,7 @@ export default class Table extends Component {
       email: "",
       tableName: "",
       action: {},
+      role:"",
     };
   }
 
@@ -92,7 +93,13 @@ export default class Table extends Component {
       this.setState({
         emptyTable: res.data.filter((table) => table.status == "empty"),
       });
+    }).finally(()=>{
+      AsyncStorage.getItem('user').then(user=>{
+        let user1 = JSON.parse(user);
+        this.setState({role:user1.quyen_han});
+      });
     });
+   
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -659,6 +666,8 @@ export default class Table extends Component {
             </View>
           </TouchableHighlight>
         </Modal>
+
+
         {/* --------------------------------- */}
         <View style={styles.overlayContainer}>
           <Response action={route.params.action} />
@@ -678,6 +687,7 @@ export default class Table extends Component {
             renderItem={({ item, index }) => {
               return (
                 <Row
+                  role={this.state.role}
                   image={BackgroundTable}
                   item={item}
                   onPress={() =>
@@ -702,77 +712,82 @@ export default class Table extends Component {
             ListFooterComponent={() => <Separator />}
           />
         </View>
-        <View
-          style={{
-            ...styles.floatinContainer,
-            bottom: 70,
-            right: WIDTH / 2,
-          }}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleMenu();
-              this.setState({ bookModalVisible: true });
+
+
+        {this.state.role === 'QUANLY'&&
+          <View
+            style={{
+              ...styles.floatinContainer,
+              bottom: 70,
+              right: WIDTH / 2,
             }}
           >
-            <Animated.View
-              style={[styles.button, styles.floating, bookStyle, opacity]}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.toggleMenu();
+                this.setState({ bookModalVisible: true });
+              }}
             >
-              <AntDesign name="book" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleMenu();
-              this.setState({ modalVisible: true });
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, sortStyle, opacity]}
+              <Animated.View
+                style={[styles.button, styles.floating, bookStyle, opacity]}
+              >
+                <AntDesign name="book" size={20} color="#f02a4b" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+  
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.toggleMenu();
+                this.setState({ modalVisible: true });
+              }}
             >
-              <MaterialIcons name="sort" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleEditMode();
-
-              this.toggleMenu();
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, editStyle, opacity]}
+              <Animated.View
+                style={[styles.button, styles.floating, sortStyle, opacity]}
+              >
+                <MaterialIcons name="sort" size={20} color="#f02a4b" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+  
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.toggleEditMode();
+  
+                this.toggleMenu();
+              }}
             >
-              <FontAwesome5 name="edit" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleMenu();
-              navigation.navigate("AddTable", {
-                
-                action: { name: "addTable", time: getCurrentDateTime() },
-              });
-              // this.toggleEditMode();
-              // this.setState({ addmodalVisible: true });
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, addStyle, opacity]}
+              <Animated.View
+                style={[styles.button, styles.floating, editStyle, opacity]}
+              >
+                <FontAwesome5 name="edit" size={20} color="#f02a4b" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+  
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.toggleMenu();
+                navigation.navigate("AddTable", {
+                  
+                  action: { name: "addTable", time: getCurrentDateTime() },
+                });
+                // this.toggleEditMode();
+                // this.setState({ addmodalVisible: true });
+              }}
             >
-              <AntDesign name="plus" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
-            <Animated.View style={[styles.button, styles.menu, rotation]}>
-              <AntDesign name="plus" size={24} color="#fff" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        </View>
+              <Animated.View
+                style={[styles.button, styles.floating, addStyle, opacity]}
+              >
+                <AntDesign name="plus" size={20} color="#f02a4b" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+  
+            <TouchableWithoutFeedback onPress={() => this.toggleMenu()}>
+              <Animated.View style={[styles.button, styles.menu, rotation]}>
+                <AntDesign name="plus" size={24} color="#fff" />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          </View>
+        
+            }
       </ImageBackground>
     );
   }
