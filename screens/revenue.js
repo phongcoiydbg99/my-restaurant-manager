@@ -111,6 +111,7 @@ export default class revenue extends Component {
     const {navigation} = this.props;
     var date = new Date().getDate();
     var month = new Date().getMonth();
+    var month_index = new Date().getMonth() +1;
     var year = new Date().getFullYear();
     var day = ('00' + date).slice(-2);
     var month_names = [
@@ -155,7 +156,7 @@ export default class revenue extends Component {
     // get so luong khach hang trong thang
    
     this.state.customerData.filter((item) => {
-      if(item.month == this.formatMonth(month)){
+      if(item.month == this.formatMonth(month_index)){
         this.state.customerMonth = item.amount;
       }
     })

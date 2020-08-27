@@ -268,7 +268,7 @@ export default class AddOrder extends Component {
       "Dec",
     ];
     var day = new Date().getDate();
-    var month_index = new Date().getMonth();
+    var month_index = new Date().getMonth() ;
     var year = new Date().getFullYear();
     const d = "" + day + "-" + month_names[month_index] + "-" + year;
     const t =
@@ -284,7 +284,7 @@ export default class AddOrder extends Component {
       status: "empty",
       price: this.state.price,
       fullName: this.state.fullName,
-      reserve_time: reserve,
+      reserve_time: "",
     };
     let newData = {};
     const { navigation, route } = this.props;

@@ -97,13 +97,13 @@ export default class Menu extends Component {
 
 
   selMonth(month, item){
-    if(month == this.state.monthRecently){
-      let temp;
-      this.state.result.filter((item1) => {
-        if(item1.name == item.dishName) temp = item1.orderTime;
-      })
-      return temp;
-    }else{
+    // if(month == this.state.monthRecently){
+    //   let temp;
+    //   this.state.result.filter((item1) => {
+    //     if(item1.name == item.dishName) temp = item1.orderTime;
+    //   })
+    //   return temp;
+    // }else{
       if(month == 1) return item.january;
       else if(month == 2) return item.february;
       else if(month == 3) return item.march;
@@ -116,7 +116,7 @@ export default class Menu extends Component {
       else if(month == 10) return item.october;
       else if(month == 11) return item.november;
       else if(month == 12) return item.december;
-    }
+    
   }
 
   render() {

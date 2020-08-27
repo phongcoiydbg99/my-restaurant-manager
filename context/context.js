@@ -20,7 +20,7 @@ function AuthProvider(){
       switch(authInfo.status){
         
         case 'pending':
-          //  AsyncStorage.removeItem("token");
+           AsyncStorage.removeItem("token");
            AsyncStorage.getItem('token').then( token => {
              if(token !== null){
               //  console.log(token);
@@ -48,7 +48,7 @@ function AuthProvider(){
         case 'Authenticated' :
           // AsyncStorage.removeItem("token");
           AsyncStorage.getItem('token').then(token =>{
-            if(token === null){
+            if(token === null){ 
               let token1 = authInfo.user.username + '@@' + authInfo.user.password;
               let item = [['token',token1],['user',JSON.stringify(authInfo.user)]];
               AsyncStorage.multiSet(item);

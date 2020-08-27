@@ -118,6 +118,8 @@ export default class Row extends React.Component {
       reserve_time: this.props.item.reserve_time,
       status: this.state.sort,
     };
+    if( table.status =='empty') table.reserve_time = "";
+
     Axios.post(`${SERVER_ID}table/add`, table).then((res) => {
       this.props.navigation.setParams({
         action: {
