@@ -1,46 +1,28 @@
-import React, { useState, Component } from "react";
+import axios from "axios";
+import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
   Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
+
+
+  FlatList, ImageBackground,
+
+
+
+
+
+
+
+  Picker, StyleSheet, Text, View
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import { SeparatorMenu } from "../components/MenuItem";
-import { Input } from "react-native-elements";
-import MenuItem from "../components/MenuItem";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
-
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import Response from "../components/Response";
-import { getCurrentDateTime } from "../config/util";
-
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
-
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
 import { RowFav, Separator } from '../components/RowFav';
+import { SERVER_ID } from "../config/properties";
+
+
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import axios from "axios";
 
 export default class Menu extends Component {
   constructor(props) {

@@ -1,19 +1,10 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
+  Image, ImageBackground, StyleSheet, Text, View
 } from "react-native";
-
-import { AuthContext } from "../context/context";
 import Backgr from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
+
 const ScreenContainer = ({ children }) => (
   <View style={styles.container}>{children}</View>
 );
@@ -46,19 +37,19 @@ const styles = StyleSheet.create({
   Sologan: {
     color: "rgba(169,169,169,1)",
   }
-}); 
+});
 
 export const Splash = () => (
   <ScreenContainer>
-       <ImageBackground
-    source = {Backgr} style ={styles.container1}
+    <ImageBackground
+      source={Backgr} style={styles.container1}
     >
-      <View style = {styles.overlayContainer}>
-      <View style={styles.logoContainer}>
+      <View style={styles.overlayContainer}>
+        <View style={styles.logoContainer}>
           <Image source={Logo} style={styles.logo} />
         </View>
-          <Text style = {styles.Sologan}>Simple and easy-to-use restaurant</Text>
-          <Text style={styles.Sologan}>management system</Text>
+        <Text style={styles.Sologan}>Simple and easy-to-use restaurant</Text>
+        <Text style={styles.Sologan}>management system</Text>
       </View>
     </ImageBackground>
   </ScreenContainer>

@@ -1,50 +1,32 @@
-import React, { useState, Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
-} from "react-native";
-
-import { MenuItem, Separator } from "../components/MenuItem";
-import {
-  List,
-  ListItem,
-  SearchBar,
-  Overlay,
-  Input,
-} from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import _ from "lodash"
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { SERVER_ID } from "../config/properties";
+import axios from "axios";
+import React, { Component } from "react";
+import {
+  Animated, Dimensions,
+
+
+
+  FlatList, ImageBackground, StyleSheet,
+
+
+
+
+
+
+
+  TouchableWithoutFeedback, View
+} from "react-native";
+import {
+  SearchBar
+} from "react-native-elements";
 import Background from "../assets/Backgr-Login.jpg";
 import Response from "../components/Response";
-import icon from "../assets/calendar.png";
-import clock from "../assets/clock.png";
+import { RowBill } from "../components/RowBill";
+import { SERVER_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
-import { Ionicons } from "@expo/vector-icons";
-import axios from "axios";
-import RowOrder from "../components/RowOrder";
-import { RowBill } from "../components/RowBill";
-import {getCurrentDateTime} from "../config/util";
 
 export default class order extends Component {
   constructor(props) {
@@ -55,7 +37,7 @@ export default class order extends Component {
       table_dish: [],
       result: [],
       list_order: [],
-      list:{},
+      list: {},
       toogleMode: false,
       btWidth: new Animated.Value(0),
       width: new Animated.Value(0),
@@ -87,23 +69,23 @@ export default class order extends Component {
 
         .catch((err) => console.log(err));
     });
-     axios.get(`${SERVER_ID}table/all`).then(res=>{
-       
-       let temp = res.data.filter(item=>item.orderList.length > 0);
-       this.setState({order:temp,clone_order:temp})
-     })
-     
-     .catch(err=>console.log(err))
+    axios.get(`${SERVER_ID}table/all`).then(res => {
+
+      let temp = res.data.filter(item => item.orderList.length > 0);
+      this.setState({ order: temp, clone_order: temp })
+    })
+
+      .catch(err => console.log(err))
   }
   componentDidUpdate(prevProps, prevState) {
-      if (prevProps.route.params.action !== this.props.route.params.action ) {
-        console.log("Updated");
-        axios.get(`${SERVER_ID}table/all`).then((res) => {
-          let temp = res.data.filter((item) => item.orderList.length > 0);
-          console.log(temp);
-          this.setState({ order: temp, clone_order: temp });
-        });
-      }
+    if (prevProps.route.params.action !== this.props.route.params.action) {
+      console.log("Updated");
+      axios.get(`${SERVER_ID}table/all`).then((res) => {
+        let temp = res.data.filter((item) => item.orderList.length > 0);
+        console.log(temp);
+        this.setState({ order: temp, clone_order: temp });
+      });
+    }
   }
   animation = new Animated.Value(0);
   toggleMenu = () => {
@@ -271,52 +253,6 @@ export default class order extends Component {
             right: 40,
           }}
         >
-          {/* <TouchableWithoutFeedback
-            onPress={() => {
-              this.setState({ modalVisible: true });
-              this.toggleMenu();
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, sortStyle, opacity]}
-            >
-              <MaterialIcons name="sort" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleEditMode();
-
-              this.toggleMenu();
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, editStyle, opacity]}
-            >
-              <FontAwesome5 name="edit" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.toggleMenu();
-              // this.setState({ overlay: true });
-              this.toggleEditMode();
-              navigation.navigate("AddOrder", {
-                list_order: [],
-                name: [],
-              });
-              // this.setState({ addmodalVisible: true });
-            }}
-          >
-            <Animated.View
-              style={[styles.button, styles.floating, addStyle, opacity]}
-            >
-              <AntDesign name="plus" size={20} color="#f02a4b" />
-            </Animated.View>
-          </TouchableWithoutFeedback> */}
-
           <TouchableWithoutFeedback
             onPress={() => {
               this.toggleMenu();

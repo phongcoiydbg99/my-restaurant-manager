@@ -1,20 +1,12 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Animated,
+  Animated, Dimensions, Image,
+  StyleSheet, Text,
+
+
+  TouchableOpacity, View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Asset } from 'expo-asset';
-import * as FileSystem from "expo-file-system";
 import { SERVER_IMAGE_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -24,7 +16,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
-    width: 400,
+    width: 380,
     height: 300,
     borderRadius: 15,
     shadowColor: "red",
@@ -38,7 +30,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 350,
-    height: 200,
+    height: 210,
     borderRadius: 10,
     margin: 10,
   },
@@ -93,9 +85,9 @@ export default class MenuItem extends React.Component {
       "public/" +
       this.props.item.name +
       ".png" +
-      "?random_number="+
+      "?random_number=" +
       new Date().getTime();
-      console.log(this.props.image);
+    console.log(this.props.image);
     return (
       <TouchableOpacity style={styles.container}>
         <View>

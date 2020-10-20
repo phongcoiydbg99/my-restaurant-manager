@@ -1,32 +1,24 @@
+import { FontAwesome5 } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
+  Dimensions, Image, ImageBackground, StyleSheet, Text,
+
+
+
+
+
+
+  TouchableOpacity, View
 } from "react-native";
+import { Input } from "react-native-elements";
+import Avatar from "../assets/avatar.jpg";
+import Background from "../assets/Backgr-Login.jpg";
+import Response from "../components/Response";
+import { getCurrentDateTime } from "../config/util";
 
 const { width: WIDTH } = Dimensions.get("window");
 
-import { authContext } from "../context/context";
-import BackAv from "../assets/Backgr-Login.jpg";
-import Background from "../assets/Backgr-Login.jpg";
-import Avatar from "../assets/avatar.jpg";
-import employee from "../assets/worker.png";
-import warehouse from "../assets/factory.png";
-import salary from "../assets/payment.png";
-import AsyncStorage from "@react-native-community/async-storage";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Input } from "react-native-elements";
-import axios from "axios";
-import Response from "../components/Response";
-import { getCurrentDateTime } from "../config/util";
 
 export default ({ navigation }) => {
   const [user, setuser] = useState({ emp: {} });
@@ -35,15 +27,15 @@ export default ({ navigation }) => {
   const [edit, setedit] = useState(false);
   const [action, setaction] = useState({});
   if (check)
-  AsyncStorage.getItem("token").then((token) => {
-    if (token !== null) {
-      AsyncStorage.getItem("user").then((u) => {
-        // setuser(user);
-        setuser(JSON.parse(u));
-        setcheck(false);
-      });
-    }
-  });
+    AsyncStorage.getItem("token").then((token) => {
+      if (token !== null) {
+        AsyncStorage.getItem("user").then((u) => {
+          // setuser(user);
+          setuser(JSON.parse(u));
+          setcheck(false);
+        });
+      }
+    });
   React.useEffect(() => {
     if (edit) {
       setdis(true);
@@ -55,13 +47,13 @@ export default ({ navigation }) => {
       user.emp.fullName == "" ||
       user.emp.phone == "" ||
       user.emp.email == "" ||
-      user.emp.diachi == "" 
+      user.emp.diachi == ""
     ) {
       setaction({
-          ...action,
-          name: "formError",
-          date: getCurrentDateTime(),
-        });
+        ...action,
+        name: "formError",
+        date: getCurrentDateTime(),
+      });
       //this.setState({action:'formError',actionTime:getCurrentDateTime()});
     } else {
       setedit(true);
@@ -72,32 +64,6 @@ export default ({ navigation }) => {
         date: getCurrentDateTime(),
         msg: "Sửa thông tin thành công",
       });
-      // const reserve = this.state.datetime + " " + this.state.time;
-      // let newReserver = {
-      //   orderId: 1299,
-      //   tableName: this.state.tableName,
-      //   phoneNum: this.state.phoneNum,
-      //   email: this.state.email,
-      //   guestName: this.state.guestName,
-      //   reservedTime: reserve,
-      // };
-      // axios
-      //   .post(`${SERVER_ID}reserved/add`, newReserver)
-      //   .then((res) => {
-      //     this.setState((prevState) => ({
-      //       ...prevState,
-      //       action: {
-      //         ...prevState.action,
-      //         name: "postTable",
-      //         date: getCurrentDateTime(),
-      //         msg: "Đặt bàn thành công",
-      //       },
-      //     }));
-      //   })
-      //   .then(() => {
-      //     this.setState({ bookModalVisible: false });
-      //   })
-      //   .catch((err) => console.log(err));
     }
   };
   let edtBtn;
@@ -183,38 +149,6 @@ export default ({ navigation }) => {
           />
         </View>
         {edtBtn}
-        {/* <TouchableOpacity
-        style={{
-          padding: 10,
-          margin: 20,
-          borderRadius: 20,
-          borderColor: "#fff",
-          borderWidth: 1,
-          backgroundColor: "#222121",
-        }}
-      >
-        <Text style={styles.text}>Edit Profile</Text>
-      </TouchableOpacity>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <TouchableOpacity
-          onPress={() => navigation.push("EmployeeManager")}
-          style={styles.part}
-        >
-          <Image source={employee} style={styles.icon}></Image>
-          <Text style={styles.text}>Employee Manager</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.part}>
-          <Image source={warehouse} style={styles.icon}></Image>
-          <Text style={styles.text}>Warehouse Manager</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <TouchableOpacity style={styles.part}>
-          <Image source={salary} style={styles.icon}></Image>
-          <Text style={styles.text}>Salary Manager</Text>
-        </TouchableOpacity>
-        <View style={styles.part}></View>
-      </View> */}
       </View>
     </ImageBackground>
   );

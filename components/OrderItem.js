@@ -1,24 +1,12 @@
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import {
-  View,
-  Text,
   Image,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Animated,
-  Modal,
+  StyleSheet, Text,
+
+
+  TouchableOpacity, View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { SERVER_ID } from "../config/properties";
-import axios from "axios";
-import { getCurrentDateTime } from "../config/util";
 export default class OrderItem extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +27,7 @@ export default class OrderItem extends React.Component {
     this.setState({ count: this.state.count + 1 });
     this.props.addOrder({
       name: this.props.item.name,
-      call_number: this.state.count +1,
+      call_number: this.state.count + 1,
     });
   };
   downCount = () => {
@@ -47,9 +35,9 @@ export default class OrderItem extends React.Component {
     else {
       this.setState({ count: this.state.count - 1 });
       this.props.addOrder({
-      name: this.props.item.name,
-      call_number: this.state.count -1,
-    });
+        name: this.props.item.name,
+        call_number: this.state.count - 1,
+      });
     }
   };
   render() {

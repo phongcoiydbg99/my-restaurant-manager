@@ -1,30 +1,20 @@
-import React, { useState, Component } from "react";
+import { AntDesign, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
+  Animated, Dimensions, StyleSheet,
+
+
+
+
+
+
+
+  TouchableWithoutFeedback, View
 } from "react-native";
 
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 
 export default class FloatingButton extends React.Component {
   animation = new Animated.Value(0);

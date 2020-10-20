@@ -1,47 +1,39 @@
-import React, { useState, Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
-  Alert,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import Background from "../assets/Backgr-Login.jpg";
-import { Ionicons } from "@expo/vector-icons";
-import { SeparatorMenu } from "../components/MenuItem";
-import { Input } from "react-native-elements";
-import MenuItem from "../components/MenuItem";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { AntDesign, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import Response from "../components/Response";
-import { getCurrentDateTime } from "../config/util";
-
+import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import React, { Component } from "react";
+import {
+  Alert, Animated, Dimensions,
 
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
+
+  FlatList, Image, ImageBackground,
+
+
+
+
+
+  Modal, StyleSheet, Text,
+
+
+
+
+
+
+  TouchableOpacity, View
+} from "react-native";
+import { Input, SearchBar } from "react-native-elements";
+import Background from "../assets/Backgr-Login.jpg";
+import MenuItem, { SeparatorMenu } from "../components/MenuItem";
+import Response from "../components/Response";
+import { SERVER_ID, SERVER_IMAGE_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
+
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import axios from "axios";
 
 export default class Menu extends Component {
   constructor(props) {
@@ -382,7 +374,7 @@ export default class Menu extends Component {
                   <View style={{ flexDirection: "row", marginLeft: 10 }}>
                     <View
                       style={{
-                        width: 200,
+                        width: 293,
                         height: 200,
                         backgroundColor: "#ececec",
                       }}
@@ -390,7 +382,7 @@ export default class Menu extends Component {
                       {this.state.image && (
                         <Image
                           source={{ uri: this.state.image.uri }}
-                          style={{ width: 200, height: 200 }}
+                          style={{ width: 293, height: 200 }}
                         />
                       )}
                       {!this.state.image && this.state.modalHeader == "EDIT" && (
@@ -404,7 +396,7 @@ export default class Menu extends Component {
                               "?random_number=" +
                               this.state.randNum,
                           }}
-                          style={{ width: 200, height: 200 }}
+                          style={{ width: 293, height: 200 }}
                         />
                       )}
                     </View>

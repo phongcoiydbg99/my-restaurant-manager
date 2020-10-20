@@ -1,23 +1,19 @@
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
+  Dimensions, Image, ImageBackground, StyleSheet, Text,
 
-import { AuthContext } from "../context/context";
+
+  TextInput,
+
+
+
+  TouchableOpacity, View
+} from "react-native";
 import Background from "../assets/Backgr-Login.jpg";
 import Logo from "../assets/gb2.png";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { AuthContext } from "../context/context";
+
 
 const ScreenContainer = ({ children }) => (
   <View style={styles.container}>{children}</View>
@@ -114,8 +110,8 @@ export default ({ navigation }) => {
   const checkSignUp = () => {
     if (confirmPassword == password) {
       var user = {
-        username: username ,
-        password: password ,
+        username: username,
+        password: password,
       };
       signUp(user);
     } else alert("Sai");

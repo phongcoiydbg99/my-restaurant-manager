@@ -1,20 +1,10 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
+  StyleSheet
 } from "react-native";
 import TabTable from "../config/tabTable";
-import Background from "../assets/Backgr-Login.jpg";
 export default () => (
-    <TabTable />
+  <TabTable />
 );
 const styles = StyleSheet.create({
   container: {

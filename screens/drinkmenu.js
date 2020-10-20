@@ -1,8 +1,8 @@
-import React, { useState, Component } from "react";
-import Menu from '../components/Menu'
+import React, { Component } from "react";
+import Menu from '../components/Menu';
 
 export default class drinkmenu extends Component {
-  render(){
-    return <Menu category={'Drink'}/>;
+  render() {
+    return <Menu category={'Drink'} />;
   }
 }

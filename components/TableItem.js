@@ -1,18 +1,11 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Animated,
+  Animated, Dimensions, StyleSheet, Text,
+
+
+  TouchableOpacity, View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -56,45 +49,45 @@ const styles = StyleSheet.create({
 });
 
 export const TableItem = ({ item, onPress, width, right }) => (
-         <View style={styles.container} onPress={onPress}>
-           <View style={styles.content}>
-             <View style={{ width: "20%" }}>
-               <Text style={styles.title}>{item.name}</Text>
-             </View>
-             <View style={{ width: "25%" }}>
-               <Text style={styles.title}>{item.fullName}</Text>
-             </View>
-             <View style={{ width: "25%", paddingHorizontal: "5%" }}>
-               <Text style={styles.title}>{item.chairNum}</Text>
-             </View>
-             <View style={{ width: "20%" }}>
-               <Text style={styles.subtitle}>{item.reserve_time}</Text>
-             </View>
-             <View style={{ width: "20%" }}>
-               <Text style={styles.subtitle}>{item.status}</Text>
-             </View>
-             <Animated.View
-               style={{
-                 width: width,
-                 marginRight: right,
-                 flexDirection: "row",
-                 alignItems: "flex-start",
-                 justifyContent: "space-between",
-               }}
-             >
-               <TouchableOpacity onPress={onPress}>
-                 <MaterialIcons name="edit" size={24} color="black" />
-               </TouchableOpacity>
-               <TouchableOpacity>
-                 <MaterialCommunityIcons
-                   name="delete-forever"
-                   size={24}
-                   color="black"
-                 />
-               </TouchableOpacity>
-             </Animated.View>
-           </View>
-         </View>
-       );
+  <View style={styles.container} onPress={onPress}>
+    <View style={styles.content}>
+      <View style={{ width: "20%" }}>
+        <Text style={styles.title}>{item.name}</Text>
+      </View>
+      <View style={{ width: "25%" }}>
+        <Text style={styles.title}>{item.fullName}</Text>
+      </View>
+      <View style={{ width: "25%", paddingHorizontal: "5%" }}>
+        <Text style={styles.title}>{item.chairNum}</Text>
+      </View>
+      <View style={{ width: "20%" }}>
+        <Text style={styles.subtitle}>{item.reserve_time}</Text>
+      </View>
+      <View style={{ width: "20%" }}>
+        <Text style={styles.subtitle}>{item.status}</Text>
+      </View>
+      <Animated.View
+        style={{
+          width: width,
+          marginRight: right,
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+        }}
+      >
+        <TouchableOpacity onPress={onPress}>
+          <MaterialIcons name="edit" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <MaterialCommunityIcons
+            name="delete-forever"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
+  </View>
+);
 
 export const Separator = () => <View style={styles.separator} />;

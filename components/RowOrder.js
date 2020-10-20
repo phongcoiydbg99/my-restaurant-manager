@@ -1,27 +1,20 @@
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Dimensions,
-  Animated,
-  Modal,
+  Dimensions, Image,
+
+
+
+
+
+
+  Modal, StyleSheet, Text,
+
+
+
+  TouchableHighlight, TouchableOpacity, View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
 const { width: WIDTH } = Dimensions.get("window");
-import axios from "axios";
-import { getCurrentDateTime } from "../config/util";
 
 export default class RowOrder extends React.Component {
   constructor(props) {
@@ -38,31 +31,31 @@ export default class RowOrder extends React.Component {
     };
   }
   componentDidMount() {
-   
+
   }
   toggleOverlay = () => {
     this.setState({ visible: !this.state.visible });
   };
   upCount = () => {
-    this.setState({ count: this.state.count + 1 }, ()=> this.props.addOrder({
+    this.setState({ count: this.state.count + 1 }, () => this.props.addOrder({
       name: this.props.item.name,
       call_number: this.state.count,
-     
+
     }));
-   
+
   };
   downCount = () => {
-    this.setState({count: this.state.count -1}, ()=>{
+    this.setState({ count: this.state.count - 1 }, () => {
       this.props.addOrder({
         name: this.props.item.name,
         call_number: this.state.count
-        
+
       });
-      if(this.state.count == 0){
+      if (this.state.count == 0) {
         this.props.deleteOrder(0);
-      } 
+      }
     });
-   
+
   };
   render() {
     const { navigation } = this.props;
@@ -77,7 +70,7 @@ export default class RowOrder extends React.Component {
         >
           <TouchableHighlight style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Image source={{uri: this.props.image}} style={styles.image1} />
+              <Image source={{ uri: this.props.image }} style={styles.image1} />
               <View style={{ ...styles.content, alignItems: "center" }}>
                 <Text
                   style={{ fontSize: 25, fontWeight: "bold", color: "#3a3a3a" }}
@@ -212,9 +205,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius:5,
+    borderRadius: 5,
     marginLeft: 10,
-    marginBottom:2,
+    marginBottom: 2,
     width: "95%"
   },
   image: {
