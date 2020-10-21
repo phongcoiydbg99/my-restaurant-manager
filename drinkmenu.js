@@ -68,7 +68,7 @@ export default class drinkmenu extends Component {
 
   // chuyen doi che do nhap
   toggleInputmode(text) {
-    console.log(text);
+    // console.log(text);
     this.setState({ value: text });
     if (text) {
       this.state.toggleInput = true;

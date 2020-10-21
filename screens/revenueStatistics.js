@@ -29,7 +29,7 @@ export default class revenueStatistics extends Component {
         {
           data: this.state.data,
         },
-      ],
+      ], 
     }
   }
 
@@ -96,8 +96,8 @@ export default class revenueStatistics extends Component {
               borderRadius: 0,
             }}
           />
-          <View style={{ width: WIDTH, height: HEIGHT - 420, marginTop: 10 }}>
-            <Text style={styles.textBillTitle}>Revennue Statistics</Text>
+          <View style={{ width: WIDTH, height: HEIGHT - 320, marginTop: 10 }}>
+            <Text style={styles.textBillTitle}>Revenue Statistics</Text>
             <FlatList
               data={this.state.dataRevenueMonth}
               renderItem={({ item }) => <RowRevenue item={item}
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   textBillTitle: {
     color: '#000',
-    fontSize: 22,
+    fontSize: 28,
     textAlign: 'left',
     marginTop: 5,
     paddingLeft: 10,

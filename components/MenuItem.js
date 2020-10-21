@@ -87,7 +87,7 @@ export default class MenuItem extends React.Component {
       ".png" +
       "?random_number=" +
       new Date().getTime();
-    console.log(this.props.image);
+    // console.log(this.props.image);
     return (
       <TouchableOpacity style={styles.container}>
         <View>

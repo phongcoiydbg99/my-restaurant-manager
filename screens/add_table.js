@@ -232,7 +232,7 @@ export default class AddTable extends React.Component {
           inputStyle={styles.inputStyle}
         />
         <TouchableWithoutFeedback onPress={this.showDatePicker}>
-          <View style={{ marginLeft: -60, marginTop: 30 }}>
+          <View style={{ marginLeft: -60, marginTop: 38  }}>
             <Image source={icon} style={{ width: 30, height: 30 }}></Image>
           </View>
         </TouchableWithoutFeedback>

@@ -18,7 +18,7 @@ export default class OrderItem extends React.Component {
     };
   }
   componentDidMount() {
-    console.log("haha");
+    // console.log("haha");
   }
   toggleOverlay = () => {
     this.setState({ visible: !this.state.visible });

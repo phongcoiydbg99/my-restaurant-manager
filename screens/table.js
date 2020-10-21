@@ -545,7 +545,7 @@ export default class Table extends Component {
                 >
                   <Ionicons
                     name="md-close-circle-outline"
-                    size={24}
+                    size={32}
                     color="black"
                   />
                 </TouchableOpacity>
@@ -593,7 +593,7 @@ export default class Table extends Component {
                 >
                   <MaterialCommunityIcons
                     name="table-plus"
-                    size={24}
+                    size={30}
                     color="#f02a4b"
                   />
                 </TouchableOpacity>
@@ -637,7 +637,7 @@ export default class Table extends Component {
                   inputStyle={styles.inputStyle}
                 />
                 <TouchableWithoutFeedback onPress={this.showDatePicker}>
-                  <View style={{ marginLeft: -60, marginTop: 25 }}>
+                  <View style={{ marginLeft: -60, marginTop: 38 }}>
                     <Image
                       source={icon}
                       style={{ width: 30, height: 30 }}

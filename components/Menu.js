@@ -79,7 +79,7 @@ export default class Menu extends Component {
     // .catch((err) => console.log("Dish error : " + err))
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.model);
+    // console.log(this.state.model);
     if ("" != this.state.model) {
       axios
         .get(`${SERVER_ID}dish/category/${this.props.category}`)
@@ -340,7 +340,7 @@ export default class Menu extends Component {
                   >
                     <Ionicons
                       name="md-close-circle-outline"
-                      size={24}
+                      size={32}
                       color="black"
                     />
                   </TouchableOpacity>
@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   labelStyle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#000",
   },

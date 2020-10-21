@@ -13,5 +13,5 @@ app.post("/", (req, res) => {
     if (err) throw err;
   });
   res.status(200);
-  console.log("Post complete");
+  // console.log("Post complete");
 });

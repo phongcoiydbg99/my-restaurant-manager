@@ -21,7 +21,7 @@ export default () => {
       <Tab.Screen
         name="Table"
         component={Table}
-        initialParams={{ action: "" }}
+        initialParams= {{action:""}}
         options={{
           // headerShown: false,
           headerTitle: false,
@@ -41,7 +41,7 @@ export default () => {
           ),
         }}
       />
-
+      
       <Tab.Screen
         name="AddTable"
         component={AddTable}
@@ -66,7 +66,7 @@ export default () => {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
-
+      
     </Tab.Navigator>
   );
 };

@@ -103,7 +103,7 @@ export default class Menu extends Component {
 
   render() {
     const { navigation } = this.props;
-    console.log(this.state.selectedValue);
+    // console.log(this.state.selectedValue);
     this.state.favFood.filter((item) => {
       this.state.result.filter((item1) => {
         if(item.dishName === item1.name && this.state.fav.length < this.state.favFood.length) 
@@ -138,7 +138,7 @@ export default class Menu extends Component {
               <Picker.Item label="12/2020" value='12' />
             </Picker>
           </View>
-          <View style={{height: HEIGHT - 230}}>
+          <View style={{height: HEIGHT - 180}}>
             <FlatList
               data={this.state.fav}
               renderItem={({ item }) =>  <RowFav item={item} 

@@ -270,11 +270,11 @@ const AuthStackScreen = () => (
 const CustomDrawerContent = (props) => {
   // const { signOut } = React.useContext(AuthContext);
   const { navi } = props;
-  console.log(navi);
+  // console.log(navi);
   const [user, setuser] = useState('');
   AsyncStorage.getItem("token").then((token) => {
     if (token !== null) {
-      console.log(token);
+      // console.log(token);
       AsyncStorage.getItem("user").then((u) => {
         // setuser(user);
         setuser(JSON.parse(u).emp.fullName);
@@ -368,8 +368,8 @@ export default () => {
   }
   return (
     <NavigationContainer>
-      {/* {!userToken ? <RootStackScreen /> : <AppDrawerScreen />} */}
-      <AppDrawerScreen />
+      {!userToken ? <RootStackScreen /> : <AppDrawerScreen />}
+      {/* <AppDrawerScreen /> */}
     </NavigationContainer>
   );
 };
