@@ -1,21 +1,19 @@
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+  Dimensions, Image, ImageBackground, StyleSheet, Text,
 
-import { useNavigation } from "@react-navigation/native";
+
+  TextInput,
+
+
+
+  TouchableOpacity, View
+} from "react-native";
 import Background from "../assets/Backgr-Load.jpg";
 import Logo from "../assets/gb2.png";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+
 
 const { width: WIDTH } = Dimensions.get("window");
 

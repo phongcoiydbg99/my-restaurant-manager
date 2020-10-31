@@ -1,30 +1,16 @@
+import axios from "axios";
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
   Dimensions,
-  TouchableOpacity,
-  FlatList,
+
+  FlatList, ImageBackground, StyleSheet, Text, View
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import Background from "../assets/Backgr-Login.jpg";
-import dataBill from "../data/bill"
-import { SERVER_ID } from "../config/properties";
-import axios from "axios";
-import { RowRevenue, Separator } from '../components/RowRevenue';
 import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
+  LineChart
 } from 'react-native-chart-kit';
+import Background from "../assets/Backgr-Login.jpg";
+import { RowRevenue, Separator } from '../components/RowRevenue';
+import { SERVER_ID } from "../config/properties";
 
 
 export default class revenueStatistics extends Component {
@@ -37,7 +23,7 @@ export default class revenueStatistics extends Component {
       dataRevenueMonth: [],
       revenueStatistics: {},
     };
-    this.data ={
+    this.data = {
       labels: this.state.labels,
       datasets: [
         {
@@ -48,7 +34,7 @@ export default class revenueStatistics extends Component {
   }
 
   componentDidMount() {
-    const { navigation} = this.props;
+    const { navigation } = this.props;
     const { route } = this.props;
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
@@ -61,78 +47,79 @@ export default class revenueStatistics extends Component {
     });
   }
 
-  render(){
-    const {navigation} = this.props;
+  render() {
+    const { navigation } = this.props;
     this.state.dataRevenueMonth.filter((item) => {
       this.state.labels.push(item.month.toString().substr(0, 3));
-      this.state.data.push(item.money/1000000);
+      this.state.data.push(item.money / 1000000);
     });
     console.log(this.state.labels);
-    return(
+    return (
       <ImageBackground source={Background} style={styles.container}>
         <View style={styles.overlayContainer}>
 
-              <View style={styles.billTitle}>
-                <Text style={styles.textBillTitle}>Overview</Text>
-              </View>
-              <LineChart
-                data={this.data}
-                width={WIDTH} // from react-native
-                height={220}
-                yAxisSuffix={'m'}
-                chartConfig={{
-                  backgroundColor: '#1cc910',
-                  backgroundGradientFrom: '#fff',
-                  backgroundGradientTo: '#fff',
-                  decimalPlaces: 2, // optional, defaults to 2dp
-                  color: (opacity = 255) => `rgba(0, 62, 255, ${opacity})`,
-                  style: {
-                    borderRadius: 16,
-                  },
-                  barPercentage: 0.9,
-                  propsForDots: {
-                    r: "6",
-                    // strokeWidth: "2",
-                    // stroke: "#ffa726",
-                    fill:  `rgba(0, 62, 255, 1)`,
-                  },
-                  propsForBackgroundLines: {
-                    stroke: "#000",
-                    strokeLinejoin: 'bevel',
-                    fillRule: 'evenodd',
-                    strokeDasharray: [0, WIDTH],
-                  },
-                }}
-                // verticalLabelRotation={30}
-                bezier
-                style={{
-                  marginVertical: 8,
-                  borderRadius: 0,
-                }}
-              />
-              <View style={{ width: WIDTH, height: HEIGHT - 420, marginTop: 10}}>
-              <Text style={styles.textBillTitle}>Revennue Statistics</Text>
-                <FlatList
-                        data={this.state.dataRevenueMonth}
-                        renderItem={({ item }) =>  <RowRevenue item={item} 
-                        />}
-                        ItemSeparatorComponent={Separator}
-                        ListHeaderComponent={() => <Separator />}
-                        ListFooterComponent={() => <Separator />}
-                        keyExtractor={(item) => {
-                          return `${item.month}`;} }
-                      />
-              </View>
-            
-            </View> 
+          <View style={styles.billTitle}>
+            <Text style={styles.textBillTitle}>Overview</Text>
+          </View>
+          <LineChart
+            data={this.data}
+            width={WIDTH} // from react-native
+            height={220}
+            yAxisSuffix={'m'}
+            chartConfig={{
+              backgroundColor: '#1cc910',
+              backgroundGradientFrom: '#fff',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 255) => `rgba(0, 62, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              barPercentage: 0.9,
+              propsForDots: {
+                r: "6",
+                // strokeWidth: "2",
+                // stroke: "#ffa726",
+                fill: `rgba(0, 62, 255, 1)`,
+              },
+              propsForBackgroundLines: {
+                stroke: "#000",
+                strokeLinejoin: 'bevel',
+                fillRule: 'evenodd',
+                strokeDasharray: [0, WIDTH],
+              },
+            }}
+            // verticalLabelRotation={30}
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 0,
+            }}
+          />
+          <View style={{ width: WIDTH, height: HEIGHT - 320, marginTop: 10 }}>
+            <Text style={styles.textBillTitle}>Revenue Statistics</Text>
+            <FlatList
+              data={this.state.dataRevenueMonth}
+              renderItem={({ item }) => <RowRevenue item={item}
+              />}
+              ItemSeparatorComponent={Separator}
+              ListHeaderComponent={() => <Separator />}
+              ListFooterComponent={() => <Separator />}
+              keyExtractor={(item) => {
+                return `${item.month}`;
+              }}
+            />
+          </View>
+
+        </View>
       </ImageBackground>
     )
   }
 }
-  
 
-const { width: WIDTH} = Dimensions.get('window');
-const { height: HEIGHT} = Dimensions.get('window');
+
+const { width: WIDTH } = Dimensions.get('window');
+const { height: HEIGHT } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -148,15 +135,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   tableContainer: {
-    flexDirection:'row',
-    paddingTop: 10, 
+    flexDirection: 'row',
+    paddingTop: 10,
     backgroundColor: "#fff",
-    borderWidth: 2, 
+    borderWidth: 2,
     borderColor: '#000',
     marginLeft: 10,
     marginRight: 10,
   },
-  searchBarContainer:{
+  searchBarContainer: {
     backgroundColor: "#fff",
     height: 30,
     opacity: .5,
@@ -171,8 +158,8 @@ const styles = StyleSheet.create({
     height: 10,
   },
   textBillTitle: {
-    color: '#000', 
-    fontSize: 22, 
+    color: '#000',
+    fontSize: 28,
     textAlign: 'left',
     marginTop: 5,
     paddingLeft: 10,
@@ -180,7 +167,7 @@ const styles = StyleSheet.create({
 });
 
 export const Order = ({ item }) => (
-  <View style={{flexDirection: 'row',}}>
+  <View style={{ flexDirection: 'row', }}>
     <View>
       <Text style={styles.billTable}>{item.name}</Text>
     </View>

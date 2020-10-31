@@ -1,46 +1,28 @@
-import React, { useState, Component } from "react";
+import axios from "axios";
+import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
   Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
+
+
+  FlatList, ImageBackground,
+
+
+
+
+
+
+
+  Picker, StyleSheet, Text, View
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
-import { SeparatorMenu } from "../components/MenuItem";
-import { Input } from "react-native-elements";
-import MenuItem from "../components/MenuItem";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
-
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import Response from "../components/Response";
-import { getCurrentDateTime } from "../config/util";
-
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
-
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
 import { RowFav, Separator } from '../components/RowFav';
+import { SERVER_ID } from "../config/properties";
+
+
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
-import axios from "axios";
 
 export default class Menu extends Component {
   constructor(props) {
@@ -97,13 +79,13 @@ export default class Menu extends Component {
 
 
   selMonth(month, item){
-    if(month == this.state.monthRecently){
-      let temp;
-      this.state.result.filter((item1) => {
-        if(item1.name == item.dishName) temp = item1.orderTime;
-      })
-      return temp;
-    }else{
+    // if(month == this.state.monthRecently){
+    //   let temp;
+    //   this.state.result.filter((item1) => {
+    //     if(item1.name == item.dishName) temp = item1.orderTime;
+    //   })
+    //   return temp;
+    // }else{
       if(month == 1) return item.january;
       else if(month == 2) return item.february;
       else if(month == 3) return item.march;
@@ -116,12 +98,12 @@ export default class Menu extends Component {
       else if(month == 10) return item.october;
       else if(month == 11) return item.november;
       else if(month == 12) return item.december;
-    }
+    
   }
 
   render() {
     const { navigation } = this.props;
-    console.log(this.state.selectedValue);
+    // console.log(this.state.selectedValue);
     this.state.favFood.filter((item) => {
       this.state.result.filter((item1) => {
         if(item.dishName === item1.name && this.state.fav.length < this.state.favFood.length) 
@@ -156,7 +138,7 @@ export default class Menu extends Component {
               <Picker.Item label="12/2020" value='12' />
             </Picker>
           </View>
-          <View style={{height: HEIGHT - 230}}>
+          <View style={{height: HEIGHT - 180}}>
             <FlatList
               data={this.state.fav}
               renderItem={({ item }) =>  <RowFav item={item} 

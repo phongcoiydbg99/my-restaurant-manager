@@ -1,49 +1,36 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight, 
-  SafeAreaView,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
+  DrawerItemList
 } from "@react-navigation/drawer";
-import { AuthContext } from "../context/context";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState } from "react";
+import {
+  Image, ImageBackground, StyleSheet, Text,
+
+
+
+
+
+
+
+  TouchableHighlight, View
+} from "react-native";
+import Avatar from "../assets/avatar.jpg";
+import BackAv from "../assets/Backgr-Login.jpg";
 import { Splash } from "../components/Splash";
-import AuthProvider from "../context/context"
-import { authContext } from "../context/context";
-import { useNavigation } from "@react-navigation/native";
+import AuthProvider from "../context/context";
 import DangKi from "../screens/dang_ky";
-import Welcome from "../screens/Welcome";
 import QuanLyBan from "../screens/quan_ly_ban";
 import QuanLyKH from "../screens/quan_ly_kh";
 import QuanLyMenu from "../screens/quan_ly_menu";
-import ThongKe from "../screens/thong_ke";
-import HoaDon from "../screens/hoa_don";
-import ThongTin from "../screens/thong_tin";
 import Order from "../screens/quan_ly_order";
-import Logo from "../assets/gb2.png";
-import BackAv from "../assets/Backgr-Login.jpg";
-import Avatar from "../assets/avatar.jpg";
-import AsyncStorage from "@react-native-community/async-storage"
+import ThongKe from "../screens/thong_ke";
+import ThongTin from "../screens/thong_tin";
 const QuanLyBanStack = createStackNavigator();
 const QuanLyBanStackScreen = () => (
   <QuanLyBanStack.Navigator>
@@ -61,30 +48,30 @@ const QuanLyBanStackScreen = () => (
 const QuanLyMenuStack = createStackNavigator();
 const QuanLyMenuStackScreen = () => (
   <QuanLyMenuStack.Navigator>
-    <QuanLyMenuStack.Screen 
-    name="QuanLyMenu" 
-    component={QuanLyMenu}
-    options={{
-      headerTitle: false,
-      headerTransparent: true,
-      headerStyle: {
-        height: 70,
-        opacity: .9,
-      },
-      //headerStatusBarHeight: 20,
-      headerRight: 
-        props => (<LogoTitle {...props} />
-        )
-      ,
-      headerBackground: () =>(
-        <View style={styles.header}>
+    <QuanLyMenuStack.Screen
+      name="QuanLyMenu"
+      component={QuanLyMenu}
+      options={{
+        headerTitle: false,
+        headerTransparent: true,
+        headerStyle: {
+          height: 70,
+          opacity: .9,
+        },
+        //headerStatusBarHeight: 20,
+        headerRight:
+          props => (<LogoTitle {...props} />
+          )
+        ,
+        headerBackground: () => (
+          <View style={styles.header}>
             <Text style={styles.headerTitle}>
               <Text style={styles.GBtype}>GB</Text>
               <Text > Restaurant</Text>
             </Text>
           </View>
-      ),
-    }}
+        ),
+      }}
     />
   </QuanLyMenuStack.Navigator>
 );
@@ -92,14 +79,14 @@ const QuanLyMenuStackScreen = () => (
 const ThongKeStack = createStackNavigator();
 const ThongKeStackScreen = () => (
   <ThongKeStack.Navigator>
-    <ThongKeStack.Screen 
-    name="ThongKe" 
-    component={ThongKe} 
-    options={{
-      headerTitle: false,
-      headerTransparent: true,
-      
-    }}/>
+    <ThongKeStack.Screen
+      name="ThongKe"
+      component={ThongKe}
+      options={{
+        headerTitle: false,
+        headerTransparent: true,
+
+      }} />
   </ThongKeStack.Navigator>
 );
 
@@ -283,11 +270,11 @@ const AuthStackScreen = () => (
 const CustomDrawerContent = (props) => {
   // const { signOut } = React.useContext(AuthContext);
   const { navi } = props;
-  console.log(navi);
+  // console.log(navi);
   const [user, setuser] = useState('');
   AsyncStorage.getItem("token").then((token) => {
     if (token !== null) {
-      console.log(token);
+      // console.log(token);
       AsyncStorage.getItem("user").then((u) => {
         // setuser(user);
         setuser(JSON.parse(u).emp.fullName);
@@ -324,7 +311,7 @@ const CustomDrawerContent = (props) => {
 const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => {
   return (
-    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props } /> }>
+    <AppDrawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <AppDrawer.Screen name="Home" component={AppTabsScreen} />
       <AppDrawer.Screen name="Profile" component={ThongTinStackScreen} />
     </AppDrawer.Navigator>
@@ -343,10 +330,10 @@ const AppDrawerNVScreen = () => {
 };
 
 const EmpScreen = createBottomTabNavigator();
-const EmpScreenNavigator=()=>{
-  return(
+const EmpScreenNavigator = () => {
+  return (
     <EmpScreen.Navigator>
-      
+
     </EmpScreen.Navigator>
   )
 }
@@ -360,8 +347,8 @@ const RootStackScreen = () => (
     initialRouteName="AuthStackScreen"
   >
     <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
-    <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen}  />
-    <RootStack.Screen name="AppDrawerNVScreen" component={AppDrawerNVScreen}  />
+    <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen} />
+    <RootStack.Screen name="AppDrawerNVScreen" component={AppDrawerNVScreen} />
   </RootStack.Navigator>
 );
 

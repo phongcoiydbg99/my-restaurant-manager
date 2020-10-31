@@ -1,37 +1,34 @@
-           
-import React, { useState, useEffect } from "react";
+
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  FlatList,
+  Dimensions, Image, ImageBackground,
+
+
+
+
+
+
   Picker,
-  ScrollView,
+  ScrollView, StyleSheet, Text,
+
+
+
+
+
+
+  TouchableOpacity,
+  TouchableWithoutFeedback, View, YellowBox
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { YellowBox } from "react-native";
-import { RowTable, Separator } from "../components/RowTable";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DatePicker from "react-native-modal-datetime-picker";
-import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
-import Response from "../components/Response";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-import { Ionicons } from "@expo/vector-icons";
-import table from "../data/table";
-import axios from "axios";
-import { getCurrentDateTime } from "../config/util";
+import Response from "../components/Response";
 import { SERVER_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
 const { width: WIDTH } = Dimensions.get("window");
 
 export default class AddTable extends React.Component {
@@ -74,19 +71,6 @@ export default class AddTable extends React.Component {
       () => console.log(this.state)
     );
   }
-  // componentDidUpdate(prevProps,prevState){
-  //   if(prevProps.route.params !== this.props.route.params){
-  //     let act = JSON.stringify(this.props.route.params.action);
-  //     let item = JSON.stringify(this.props.route.params.item);
-
-  //     this.setState({mode:act.name,
-  //                    name:item.name, fullName:item.fullName,chairNum:item.chairNum,
-  //                    status: item.status, price: item.price, reserve_time:item.reserve_time,
-
-  //     });
-  //     console.log(item);
-  //   }
-  // }
   toShortFormat = (date) => {
     var month_names = [
       "Jan",

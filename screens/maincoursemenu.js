@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import Menu from "../components/Menu";
 
 export default class drinkmenu extends Component {

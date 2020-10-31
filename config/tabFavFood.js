@@ -1,21 +1,9 @@
-import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-
-import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import * as React from "react";
 import dessertFav from "../screens/dessertFav";
-import mainCourseFav from "../screens/mainCourseFav";
 import drinkFav from "../screens/drinkFav";
+import mainCourseFav from "../screens/mainCourseFav";
+
 const Tab = createMaterialTopTabNavigator();
 
 export default () => {
@@ -29,10 +17,10 @@ export default () => {
         },
       }}
     >
-      <Tab.Screen name="MainCourse" component={mainCourseFav} /> 
-      <Tab.Screen name="Dessert" component={dessertFav} /> 
+      <Tab.Screen name="MainCourse" component={mainCourseFav} />
+      <Tab.Screen name="Dessert" component={dessertFav} />
       <Tab.Screen name="Drink" component={drinkFav} />
-      
+
     </Tab.Navigator>
   );
 };

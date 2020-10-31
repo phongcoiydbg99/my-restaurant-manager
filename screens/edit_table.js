@@ -1,33 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
+  Dimensions, Image, ImageBackground,
+
+
+
+
+
+
+  Picker, StyleSheet, Text,
+
+
+
+
+
+
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  FlatList,
-  Picker,
+  TouchableWithoutFeedback, View, YellowBox
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { YellowBox } from "react-native";
-import { RowTable, Separator } from "../components/RowTable";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DatePicker from "react-native-modal-datetime-picker";
-import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-import { Ionicons } from "@expo/vector-icons";
-import table from "../data/table";
-import axios from "axios";
 import { SERVER_ID } from "../config/properties";
+import table from "../data/table";
 const { width: WIDTH } = Dimensions.get("window");
 
 export default class AddTable extends React.Component {
@@ -291,7 +289,7 @@ const styles = StyleSheet.create({
   btnBack: {
     margin: 10,
     padding: 15,
-    width:50,
+    width: 50,
   },
   input: {
     width: "60%",

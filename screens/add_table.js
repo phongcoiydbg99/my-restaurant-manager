@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  FlatList,
+  Dimensions, Image, ImageBackground,
+
+
+
+
+
+
   Picker,
-  ScrollView,
+  ScrollView, StyleSheet, Text,
+
+
+
+
+
+
+  TouchableOpacity,
+  TouchableWithoutFeedback, View, YellowBox
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { YellowBox } from "react-native";
-import { RowTable, Separator } from "../components/RowTable";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DatePicker from "react-native-modal-datetime-picker";
-import { CommonActions } from "@react-navigation/native";
 import { Input } from "react-native-elements";
-import Response from "../components/Response";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-import { Ionicons } from "@expo/vector-icons";
-import table from "../data/table";
-import axios from "axios";
-import { getCurrentDateTime } from "../config/util";
+import Response from "../components/Response";
 import { SERVER_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
 const { width: WIDTH } = Dimensions.get("window");
 
 export default class AddTable extends React.Component {
@@ -192,10 +189,10 @@ export default class AddTable extends React.Component {
       } else if (this.state.mode == "editTable") {
         //modify data
         if (newTable.status == 'empty') newTable = {
-                                          ...newTable,
-                                          reserve_time: "",
-                                        };
-      console.log(newTable);
+          ...newTable,
+          reserve_time: "",
+        };
+        // console.log(newTable);
         axios
           .put(`${SERVER_ID}table/modify/${this.state.name}`, newTable)
           .then((res) => {
@@ -220,59 +217,59 @@ export default class AddTable extends React.Component {
   render() {
     const { navigation } = this.props;
     let pickdatetime;
-    if( this.state.status != "empty") {
+    if (this.state.status != "empty") {
       pickdatetime = (<View><View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Input
-              inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="Ngày đặt"
-              label="Thời gian đặt :"
-              value={this.state.datetime}
-              labelStyle={styles.labelStyle}
-              inputStyle={styles.inputStyle}
-            />
-            <TouchableWithoutFeedback onPress={this.showDatePicker}>
-              <View style={{ marginLeft: -60, marginTop: 25 }}>
-                <Image source={icon} style={{ width: 30, height: 30 }}></Image>
-              </View>
-            </TouchableWithoutFeedback>
+        style={{
+          flexDirection: "row",
+        }}
+      >
+        <Input
+          inputContainerStyle={{ width: WIDTH - 100 }}
+          placeholder="Ngày đặt"
+          label="Thời gian đặt :"
+          value={this.state.datetime}
+          labelStyle={styles.labelStyle}
+          inputStyle={styles.inputStyle}
+        />
+        <TouchableWithoutFeedback onPress={this.showDatePicker}>
+          <View style={{ marginLeft: -60, marginTop: 38  }}>
+            <Image source={icon} style={{ width: 30, height: 30 }}></Image>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Input
-              inputContainerStyle={{ width: WIDTH - 100 }}
-              placeholder="Giờ đặt"
-              value={this.state.time}
-              labelStyle={styles.labelStyle}
-              inputStyle={styles.inputStyle}
-            />
-            <TouchableWithoutFeedback onPress={this.showTimePicker}>
-              <View style={{ marginLeft: -60, marginTop: 10 }}>
-                <Image source={clock} style={{ width: 30, height: 30 }}></Image>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          <DateTimePickerModal
-            isVisible={this.state.isDatePickerVisible}
-            mode="date"
-            onConfirm={this.handleConfirm}
-            onCancel={this.hideDatePicker}
+        </TouchableWithoutFeedback>
+      </View>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <Input
+            inputContainerStyle={{ width: WIDTH - 100 }}
+            placeholder="Giờ đặt"
+            value={this.state.time}
+            labelStyle={styles.labelStyle}
+            inputStyle={styles.inputStyle}
           />
-          <DateTimePickerModal
-            isVisible={this.state.isTimePickerVisible}
-            mode="time"
-            onConfirm={this.handleConfirmTime}
-            onCancel={this.hideTimePicker}
-          />
-          </View>)
+          <TouchableWithoutFeedback onPress={this.showTimePicker}>
+            <View style={{ marginLeft: -60, marginTop: 10 }}>
+              <Image source={clock} style={{ width: 30, height: 30 }}></Image>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <DateTimePickerModal
+          isVisible={this.state.isDatePickerVisible}
+          mode="date"
+          onConfirm={this.handleConfirm}
+          onCancel={this.hideDatePicker}
+        />
+        <DateTimePickerModal
+          isVisible={this.state.isTimePickerVisible}
+          mode="time"
+          onConfirm={this.handleConfirmTime}
+          onCancel={this.hideTimePicker}
+        />
+      </View>)
     }
-    else pickdatetime = <View/>
+    else pickdatetime = <View />
     return (
       <ImageBackground source={Background} style={styles.container}>
         <Response action={this.state.action} />

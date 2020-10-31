@@ -1,27 +1,23 @@
+import { Ionicons } from "@expo/vector-icons";
+import {
+  CardStyleInterpolators, createStackNavigator
+} from "@react-navigation/stack";
 import * as React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+  Image, StyleSheet, Text,
 
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
-import Order from "../screens/order";
+
+
+
+
+
+  TouchableOpacity, View
+} from "react-native";
 import AddOrder from "../screens/add_order";
 import Bill from "../screens/bill";
-import Background from "../assets/Backgr-Login.jpg";
-import { Ionicons } from "@expo/vector-icons";
+import Order from "../screens/order";
+
 const Tab = createStackNavigator();
-import axios from "axios";
 export default () => {
   return (
     <Tab.Navigator
@@ -33,7 +29,7 @@ export default () => {
       <Tab.Screen
         name="Orders"
         component={Order}
-        initialParams= {{action:""}}
+        initialParams={{ action: "" }}
         options={{
           headerTitle: false,
           headerTransparent: true,
@@ -56,7 +52,7 @@ export default () => {
       <Tab.Screen
         name="AddOrder"
         component={AddOrder}
-        initialParams= {{action:""}}
+        initialParams={{ action: "" }}
         options={{
           headerShown: false,
           headerTitle: false,
@@ -78,31 +74,31 @@ export default () => {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
-      <Tab.Screen 
-          name="bill" 
-          component={Bill} 
-          options={({navigation}) => ({
-            headerTitle: false,
-            headerTransparent: true,
-            headerStyle: {
-              height: 70,
-            },
-            //headerStatusBarHeight: 20,
-            headerRight: (props) => <LogoTitle {...props} />,
-            headerLeft: () => (
-              <TouchableOpacity
-                  style={styles.btnBack}
-                  onPress = {() => navigation.pop()}
-                >
-                <Ionicons name="ios-arrow-back" size={30} color="white" />
-                </TouchableOpacity>
-            ),
-            headerBackground: () => (
-              <View style={styles.header}>  
-              </View>
-            ),
-          })}
-          />
+      <Tab.Screen
+        name="bill"
+        component={Bill}
+        options={({ navigation }) => ({
+          headerTitle: false,
+          headerTransparent: true,
+          headerStyle: {
+            height: 70,
+          },
+          //headerStatusBarHeight: 20,
+          headerRight: (props) => <LogoTitle {...props} />,
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.btnBack}
+              onPress={() => navigation.pop()}
+            >
+              <Ionicons name="ios-arrow-back" size={30} color="white" />
+            </TouchableOpacity>
+          ),
+          headerBackground: () => (
+            <View style={styles.header}>
+            </View>
+          ),
+        })}
+      />
     </Tab.Navigator>
   );
 };

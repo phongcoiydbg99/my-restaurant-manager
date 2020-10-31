@@ -1,18 +1,8 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
+  StyleSheet
 } from "react-native";
 import TabOrder from "../config/tabOrder";
-import Background from "../assets/Backgr-Login.jpg";
 export default () => <TabOrder />;
 const styles = StyleSheet.create({
   container: {

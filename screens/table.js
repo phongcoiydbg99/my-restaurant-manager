@@ -1,50 +1,45 @@
-import React, { useState, Component } from "react";
+import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
+import axios from "axios";
+import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  FlatList,
-  Modal,
-  CheckBox,
-  Picker,
-  Animated,
-} from "react-native";
-import { Separator } from "../components/Row";
-import Row from "../components/Row";
-import Response from "../components/Response";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { authContext } from "../context/context";
-import FloatingButton from "../components/FloatingButton";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DatePicker from "react-native-modal-datetime-picker";
-import { Input } from "react-native-elements";
+  Animated, Dimensions,
 
+
+
+  FlatList, Image, ImageBackground,
+
+
+
+
+
+
+  Modal, StyleSheet, Text,
+
+
+
+
+
+
+
+  TouchableHighlight, TouchableOpacity,
+
+  TouchableWithoutFeedback, View
+} from "react-native";
+import { Input, SearchBar } from "react-native-elements";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Background from "../assets/Backgr-Login.jpg";
 import icon from "../assets/calendar.png";
 import clock from "../assets/clock.png";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getCurrentDateTime } from "../config/util";
-import { SERVER_ID } from "../config/properties";
-import AsyncStorage from "@react-native-community/async-storage";
-import Background from "../assets/Backgr-Login.jpg";
 import BackgroundTable from "../assets/table.png";
+import Response from "../components/Response";
+import Row, { Separator } from "../components/Row";
+import { SERVER_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
+
 
 const { width: WIDTH } = Dimensions.get("window");
 
-import axios from "axios";
 
 export default class Table extends Component {
   constructor(props) {
@@ -550,7 +545,7 @@ export default class Table extends Component {
                 >
                   <Ionicons
                     name="md-close-circle-outline"
-                    size={24}
+                    size={32}
                     color="black"
                   />
                 </TouchableOpacity>
@@ -598,7 +593,7 @@ export default class Table extends Component {
                 >
                   <MaterialCommunityIcons
                     name="table-plus"
-                    size={24}
+                    size={30}
                     color="#f02a4b"
                   />
                 </TouchableOpacity>
@@ -642,7 +637,7 @@ export default class Table extends Component {
                   inputStyle={styles.inputStyle}
                 />
                 <TouchableWithoutFeedback onPress={this.showDatePicker}>
-                  <View style={{ marginLeft: -60, marginTop: 25 }}>
+                  <View style={{ marginLeft: -60, marginTop: 38 }}>
                     <Image
                       source={icon}
                       style={{ width: 30, height: 30 }}

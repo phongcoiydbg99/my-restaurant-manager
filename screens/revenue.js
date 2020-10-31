@@ -1,28 +1,22 @@
+import axios from "axios";
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+  Dimensions, Image, ImageBackground, StyleSheet, Text,
 
-import { NavigationContainer } from "@react-navigation/native";
+
+
+
+
+
+  TouchableOpacity, View
+} from "react-native";
+import avatar from '../assets/avatar.png';
 import Background from "../assets/Backgr-Login.jpg";
-import { AntDesign } from '@expo/vector-icons'; 
-import { imgFavoriteFood } from "../assets/Backgr-Login.jpg";
-import avatar from '../assets/avatar.png'
-import Group from '../assets/Group.png'
-import outline from '../assets/outline.png'
-import saved from '../assets/saved.png'
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
-import axios from "axios";
+import Group from '../assets/Group.png';
+import outline from '../assets/outline.png';
+import saved from '../assets/saved.png';
+import { SERVER_ID, SERVER_IMAGE_ID } from "../config/properties";
+
 
 
 export default class revenue extends Component {
@@ -43,9 +37,9 @@ export default class revenue extends Component {
     };
   }
   componentDidMount() {
-    const { navigation} = this.props;
+    const { navigation } = this.props;
     const { route } = this.props;
-    
+
     //Adding an event listner om focus
     //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
@@ -76,41 +70,42 @@ export default class revenue extends Component {
     });
   }
 
-  compare_money(a, b){
-    if(a.money < b.money) return 1;
-    else if(a.money > b.money) return -1;
+  compare_money(a, b) {
+    if (a.money < b.money) return 1;
+    else if (a.money > b.money) return -1;
     else return 0;
   }
 
-  compare_orderTime(a, b){
-    if(a.orderTime < b.orderTime) return 1;
-    else if(a.orderTime > b.orderTime) return -1;
+  compare_orderTime(a, b) {
+    if (a.orderTime < b.orderTime) return 1;
+    else if (a.orderTime > b.orderTime) return -1;
     else return 0;
   }
-  formatMonth(month){
-    if(month == 1) return 'January';
-    else if(month == 2) return 'February';
-    else if(month == 3) return 'March';
-    else if(month == 4) return 'April';
-    else if(month == 5) return 'May';
-    else if(month == 6) return 'June';
-    else if(month == 7) return 'July';
-    else if(month == 8) return 'August';
-    else if(month == 9) return 'September';
-    else if(month == 10) return 'October';
-    else if(month == 11) return 'November';
-    else if(month == 12) return 'December';
+  formatMonth(month) {
+    if (month == 1) return 'January';
+    else if (month == 2) return 'February';
+    else if (month == 3) return 'March';
+    else if (month == 4) return 'April';
+    else if (month == 5) return 'May';
+    else if (month == 6) return 'June';
+    else if (month == 7) return 'July';
+    else if (month == 8) return 'August';
+    else if (month == 9) return 'September';
+    else if (month == 10) return 'October';
+    else if (month == 11) return 'November';
+    else if (month == 12) return 'December';
   }
 
-  UTCtoVN(date){
-    if(parseInt(date.substring(12, 14)) >= 17) return ('00' + (parseInt(date.substring(0,2)) + 1)).slice(-2) + date.substring(2, 20);
+  UTCtoVN(date) {
+    if (parseInt(date.substring(12, 14)) >= 17) return ('00' + (parseInt(date.substring(0, 2)) + 1)).slice(-2) + date.substring(2, 20);
     return date;
   }
 
-  render(){
-    const {navigation} = this.props;
+  render() {
+    const { navigation } = this.props;
     var date = new Date().getDate();
     var month = new Date().getMonth();
+    var month_index = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     var day = ('00' + date).slice(-2);
     var month_names = [
@@ -139,7 +134,7 @@ export default class revenue extends Component {
     this.state.dataRevenueMonth.sort(this.compare_money);
     var dem = 0;
     this.state.dataRevenueMonth.filter((item) => {
-      if(dem == 0) this.state.rank1 = item;
+      if (dem == 0) this.state.rank1 = item;
       dem++;
     })
 
@@ -147,57 +142,57 @@ export default class revenue extends Component {
     this.state.allDish.sort(this.compare_orderTime);
     dem = 0;
     this.state.allDish.filter((item) => {
-      if(dem == 0) this.state.favoriteFood = item;
+      if (dem == 0) this.state.favoriteFood = item;
       dem++;
     })
     //console.log(this.state.favoriteFood);
 
     // get so luong khach hang trong thang
-   
+
     this.state.customerData.filter((item) => {
-      if(item.month == this.formatMonth(month)){
+      if (item.month == this.formatMonth(month_index)) {
         this.state.customerMonth = item.amount;
       }
     })
 
     var revDay = 0;
     this.state.billDay.filter((item) => {
-      if(this.UTCtoVN(item.pay_time).substring(0,11) == dateFormat)
+      if (this.UTCtoVN(item.pay_time).substring(0, 11) == dateFormat)
         revDay += item.money;
-        // if(item.id == 45946773)
-        // console.log(this.UTCtoVN(item.pay_time).substring(0,11))
+      // if(item.id == 45946773)
+      // console.log(this.UTCtoVN(item.pay_time).substring(0,11))
 
     })
     console.log(revDay)
-    return(
-    <ImageBackground source={Background} style={styles.container}>
-      <View style={styles.overlayContainer}>
-        <View style={styles.content}>
-          <View style={styles.subContentLeft}>
+    return (
+      <ImageBackground source={Background} style={styles.container}>
+        <View style={styles.overlayContainer}>
+          <View style={styles.content}>
+            <View style={styles.subContentLeft}>
               {/* custommer */}
-            <View style={styles.custommer}>
-              <View style={{flexDirection: 'row', marginBottom: 20,}}>
-                <Text style={styles.title}>Custommer</Text>
-                <View style={styles.iconCustomer}>
-                  <Image source={avatar} style={{width: 16, height: 16,}} />
-                </View>
-              </View>
-               <Text style={{ marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{this.state.customerMonth}</Text>
-                <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>Persons</Text>
-            </View>
-              {/* favoriteFood */}
-            <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Text style={styles.title}>Favorite Food</Text>
-                  <View style={styles.iconFav}>
-                    <Image source={outline} style={{width: 16, height: 16,}} />
+              <View style={styles.custommer}>
+                <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: "center", justifyContent: 'center' }}>
+                  <Text style={styles.title}>Custommer</Text>
+                  <View style={styles.iconCustomer}>
+                    <Image source={avatar} style={{ width: 16, height: 16, }} />
                   </View>
+                </View>
+                <Text style={{ marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10, }}>{this.state.customerMonth}</Text>
+                <Text style={{ marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7, }}>Persons</Text>
               </View>
-              <View>
-                <Text style={styles.nameFav}>{this.state.favoriteFood.fullName}</Text>
-              </View>
-              <View style={{alignItems: 'center'}}>
-                <Image
+              {/* favoriteFood */}
+              <TouchableOpacity activeOpacity={0.6} style={styles.favoriteFood} onPress={() => navigation.navigate('favoriteFood')}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center" }}>
+                  <Text style={styles.title}>Favorite Food</Text>
+                  <View style={styles.iconFav}>
+                    <Image source={outline} style={{ width: 16, height: 16, }} />
+                  </View>
+                </View>
+                <View>
+                  <Text style={styles.nameFav}>{this.state.favoriteFood.fullName}</Text>
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Image
                     source={{
                       uri:
                         `${SERVER_IMAGE_ID}` +
@@ -205,47 +200,49 @@ export default class revenue extends Component {
                         this.state.favoriteFood.name +
                         ".png",
                     }}
-                    style={{alignItems: "center", marginTop: 15, width: 150, height: 150, borderColor: '#3BAA9E', borderRadius: 10, }}
+                    style={{ alignItems: "center", marginTop: 15, width: 120, height: 120, borderColor: '#3BAA9E', borderRadius: 10, }}
                   />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.subContentRight}> 
-            {/* revenueStatistics */}
-            <TouchableOpacity activeOpacity={0.6} style={styles.revenueStatistics} onPress={() => navigation.navigate('revenueStatistics')}>
-              <View  style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Text style={styles.title}>One month</Text>
-                <View style={styles.iconRev}>
-                  <Image source={saved} style={{width: 16, height: 16,}} />
                 </View>
-              </View>
-              <Text style={styles.subTitle}>Revenue statistics</Text>
-              <View style={{}}>
-                <Text style={{fontSize: 32, color: "#fff", paddingTop: 20, marginLeft: 30, fontWeight: 'bold', textShadowColor: '#000', textShadowRadius: 10}}>#1. {this.state.rank1.month}</Text>
-                <Text style={{fontSize: 28, color: "#fff", paddingTop: 20, marginLeft: 30,}}>{this.state.rank1.money}</Text>
-                <Text style={{marginLeft: 30, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-            {/* revenueInDay */}
-            <View style={styles.revenueInDay}>
-              <View  style={{flexDirection: 'row', marginBottom: 20,}}>
-                <Text style={styles.title}>Revenue in day</Text>
-                <View style={styles.iconRevDay}>
-                  <Image source={Group} style={{width: 16, height: 16,}} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.subContentRight}>
+              {/* revenueStatistics */}
+              <TouchableOpacity activeOpacity={0.6} style={styles.revenueStatistics} onPress={() => navigation.navigate('revenueStatistics')}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center" }}>
+                  <Text style={styles.title}>One month</Text>
+                  <View style={styles.iconRev}>
+                    <Image source={saved} style={{ width: 16, height: 16, }} />
+                  </View>
                 </View>
+                <Text style={styles.subTitle}>Revenue statistics</Text>
+                <View style={{}}>
+                  <Text style={{ fontSize: 32, color: "#fff", paddingTop: 20, marginLeft: 30, fontWeight: 'bold', textShadowColor: '#000', textShadowRadius: 10 }}>#1. {this.state.rank1.month}</Text>
+                  <Text style={{ fontSize: 28, color: "#fff", paddingTop: 20, marginLeft: 30, }}>{this.state.rank1.money}</Text>
+                  <Text style={{ marginLeft: 30, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7, }}>VNĐ</Text>
+                </View>
+              </TouchableOpacity>
+              {/* revenueInDay */}
+              <View style={styles.revenueInDay}>
+                <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: "center", justifyContent: 'center' }}>
+                  <Text style={styles.title}>Revenue in day</Text>
+                  <View style={styles.iconRevDay}>
+                    <Image source={Group} style={{ width: 16, height: 16, }} />
+                  </View>
+                </View>
+                <Text style={{ marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10, }}>{revDay}</Text>
+                <Text style={{ marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7, }}>VNĐ</Text>
               </View>
-                <Text style={{marginLeft: 20, fontSize: 35, color: '#fff', textShadowColor: '#000', textShadowRadius: 10,}}>{revDay}</Text>
-                <Text style={{marginLeft: 20, fontSize: 25, color: '#fff', fontStyle: 'italic', opacity: 0.7,}}>VNĐ</Text>
             </View>
           </View>
-        </View> 
-      </View>
-    </ImageBackground>
-)}};
+        </View>
+      </ImageBackground>
+    )
+  }
+};
 
 
-const { width: WIDTH} = Dimensions.get('window');
-const { height: HEIGHT} = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get('window');
+const { height: HEIGHT } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -372,8 +369,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     marginTop: 40,
-    marginLeft: 20,
+    marginLeft: 10,
     marginBottom: 5,
+    alignItems: "center"
   },
   subTitle: {
     fontSize: 18,

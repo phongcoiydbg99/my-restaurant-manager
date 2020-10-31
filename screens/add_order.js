@@ -1,54 +1,43 @@
-import React, { useState, Component } from "react";
+import { FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
+import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  FlatList,
+  Alert, Dimensions,
+
+
+
+  FlatList, Image, ImageBackground,
+
+
+
+
+
+
   Modal,
-  CheckBox,
-  Picker,
-  Animated,
-  SectionList,
-  Alert,
+
+
+
+  SectionList, StyleSheet, Text,
+
+
+
+
+
+
+
+  TouchableHighlight, TouchableOpacity, View
 } from "react-native";
-
-import { MenuItem, Separator } from "../components/MenuItem";
 import {
-  List,
-  ListItem,
-  SearchBar,
-  Overlay,
-  Input,
+  SearchBar
 } from "react-native-elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
-
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { SERVER_ID } from "../config/properties";
-import { SERVER_IMAGE_ID } from "../config/properties";
 import Background from "../assets/Backgr-Login.jpg";
-import icon from "../assets/calendar.png";
-import clock from "../assets/clock.png";
+import RowOrder from "../components/RowOrder";
+import { SERVER_ID, SERVER_IMAGE_ID } from "../config/properties";
+import { getCurrentDateTime } from "../config/util";
+
+
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
-import Response from "../components/Response";
-import { Ionicons } from "@expo/vector-icons";
-import axios from "axios";
-import { getCurrentDateTime } from "../config/util";
-import RowOrder from "../components/RowOrder";
-import OrderItem from "../components/OrderItem";
 
 export default class AddOrder extends Component {
   constructor(props) {
@@ -123,7 +112,7 @@ export default class AddOrder extends Component {
       });
     }
   }
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) { }
   onRefresh = () => {
     this.setState({ refresh: !this.state.refresh });
   };
@@ -156,7 +145,7 @@ export default class AddOrder extends Component {
         .then(
           axios.spread((...responses) => {
             const responseOne = responses[0];
-            console.log(responseOne);
+            // console.log(responseOne);
             // use/access the results
           })
         )
@@ -284,7 +273,7 @@ export default class AddOrder extends Component {
       status: "empty",
       price: this.state.price,
       fullName: this.state.fullName,
-      reserve_time: reserve,
+      reserve_time: "",
     };
     let newData = {};
     const { navigation, route } = this.props;
@@ -392,7 +381,7 @@ export default class AddOrder extends Component {
             <View
               style={{
                 backgroundColor: "#fff",
-                width: 100,
+                width: 80,
                 height: 40,
                 borderRadius: 10,
                 alignItems: "center",
@@ -743,7 +732,7 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     color: "#fff",
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
     marginLeft: 20,
   },
@@ -751,9 +740,10 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   btnBack: {
-    margin: 10,
-    padding: 15,
-    width: 50,
+    marginTop: 25,
+    marginLeft: 12,
+    padding: 20,
+    width: 100,
   },
   elementForm: {
     marginTop: 10,

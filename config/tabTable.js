@@ -1,26 +1,14 @@
+import {
+  CardStyleInterpolators, createStackNavigator
+} from "@react-navigation/stack";
 import * as React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
+  Image, StyleSheet, Text, View
 } from "react-native";
-
-import {
-  createStackNavigator,
-  CardStyleInterpolators
-} from "@react-navigation/stack";
-import Table from "../screens/table";
 import AddTable from "../screens/add_table.js";
-import Order from "../screens/order";
-import Background from "../assets/Backgr-Login.jpg";
+import Table from "../screens/table";
+
 const Tab = createStackNavigator();
-import axios from "axios";
 export default () => {
   return (
     <Tab.Navigator

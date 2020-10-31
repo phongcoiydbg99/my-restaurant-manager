@@ -1,27 +1,14 @@
+import axios from "axios";
 import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  StyleSheetRegistry,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
   Dimensions,
-  TouchableOpacity,
-  FlatList,
-  Animated,
+
+  FlatList, ImageBackground, StyleSheet, View
 } from "react-native";
+import { SearchBar } from "react-native-elements";
 import Background from "../assets/Backgr-Login.jpg";
-import { overlay, Dialog } from "react-native-paper";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import table from "../data/table";
-import { RowTable } from "../components/RowTable";
 import { RowBill, Separator } from "../components/RowBill";
-import { and } from "react-native-reanimated";
 import { SERVER_ID } from "../config/properties";
-import axios from "axios";
 
 export default class BillOfTable extends Component {
   constructor(props) {

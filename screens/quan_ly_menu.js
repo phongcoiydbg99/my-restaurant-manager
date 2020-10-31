@@ -1,25 +1,16 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
+  Dimensions, ImageBackground, StyleSheet, View
 } from "react-native";
-import TabMenu from "../config/tabMenu";
 import Background from "../assets/Backgr-Login.jpg";
+import TabMenu from "../config/tabMenu";
 
 const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 
 export default () => (
   <ImageBackground source={Background} style={styles.container}>
-    <View style ={styles.overlayContainer}>
+    <View style={styles.overlayContainer}>
       <TabMenu />
     </View>
   </ImageBackground>

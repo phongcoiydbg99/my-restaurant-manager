@@ -1,20 +1,19 @@
+import axios from "axios";
 import React, { Component } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
   Dimensions,
-  TouchableOpacity,
-  FlatList,
+
+  FlatList, ImageBackground, StyleSheet, Text,
+
+
+
+
+
+
+  TouchableOpacity, View
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import Background from "../assets/Backgr-Login.jpg";
 import { SERVER_ID } from "../config/properties";
-import axios from "axios";
 
 export default class Bill extends Component {
   constructor(props) {
@@ -30,11 +29,7 @@ export default class Bill extends Component {
     const { navigation } = this.props;
     const { route } = this.props;
     const tableInfo = route.params.table;
-    //console.log(tableInfo);
-    //Adding an event listner om focus
-    //So whenever the screen will have focus it will set the state to zero
     this.focusListener = navigation.addListener("focus", () => {
-      // if (navigation.params != undefined )
       console.log(route.parmas);
     });
     axios.get(`${SERVER_ID}table_dish/table/${tableInfo.name}`).then((res) => {
@@ -42,18 +37,6 @@ export default class Bill extends Component {
       this.setState({ table: res.data });
     });
   }
-
-  // //thanh toan
-  // paid = () => {
-  //   const { navigation, route } = this.props;
-  //   const tableInfo = route.params.table;
-  //   const newTable = tableInfo;
-  //   newTable.status = "empty";
-  //   axios.put(`${SERVER_ID}table/modify/${newTable.name}`, newTable);
-
-  //   navigation.navigate("billOfTable", newTable);
-  // };
-
   render() {
     const { navigation, route } = this.props;
     const tableInfo = route.params.table;

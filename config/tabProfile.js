@@ -1,21 +1,11 @@
+import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
+  Image, StyleSheet, Text, View
 } from "react-native";
-
-import { createStackNavigator } from "@react-navigation/stack";
-import Profile from "../screens/profile";
 import EmployeeManager from "../screens/employee_manager";
-import WareHouse from "../screens/ware_house";
-import Background from "../assets/Backgr-Login.jpg";
+import Profile from "../screens/profile";
+
 const Tab = createStackNavigator();
 
 export default () => {

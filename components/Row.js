@@ -1,29 +1,29 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { default as axios, default as Axios } from "axios";
 import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Animated,
-  Alert,
-  Picker,
-  Modal,
-  Dimensions,
-} from "react-native";
+  Alert, Animated,
 
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
+  Dimensions, Image,
+
+
+
+
+
+
+
+  Modal, StyleSheet, Text,
+
+
+
+  TouchableHighlight, TouchableOpacity, View
+} from "react-native";
 import { SERVER_ID } from "../config/properties";
-import axios from "axios";
 import { getCurrentDateTime } from "../config/util";
+
 const { width: WIDTH } = Dimensions.get("window");
-import Axios from "axios";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -118,6 +118,8 @@ export default class Row extends React.Component {
       reserve_time: this.props.item.reserve_time,
       status: this.state.sort,
     };
+    if (table.status == 'empty') table.reserve_time = "";
+
     Axios.post(`${SERVER_ID}table/add`, table).then((res) => {
       this.props.navigation.setParams({
         action: {
@@ -193,7 +195,7 @@ export default class Row extends React.Component {
               <Text style={styles.label}>Tên: </Text>
               <Text style={styles.title}> {item.fullName}</Text>
             </View>
-            <View style={{ flexDirection: "row", width: "20%" }}>
+            <View style={{ flexDirection: "row", width: "30%" }}>
               <Text style={styles.label}>Số ghế: </Text>
               <Text style={styles.title}>{item.chairNum}</Text>
             </View>
